@@ -112,4 +112,4 @@ alias sr="swaync-client -R -rs"
 
 
 # edit hyprland
-alias hypr="nvim ~/.config/hypr/hyprland.conf"
+alias hypr="cd ~/.config/hypr && nvim"
