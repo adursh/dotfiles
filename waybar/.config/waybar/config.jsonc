@@ -1,7 +1,10 @@
 // -*- mode: jsonc -*-
 {
-    "layer": "top",
+    "layer": "bottom",
+    "position": "top",
+    "height": 30,
     "exclusive": true,
+    "margin": 0,
     "spacing": 3,
     "modules-left": [
         "custom/arch-logo",

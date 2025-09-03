@@ -110,3 +110,6 @@ alias ls="eza --icons=always"
 # swaync reload 
 alias sr="swaync-client -R -rs"
 
+
+# edit hyprland
+alias hypr="nvim ~/.config/hypr/hyprland.conf"
