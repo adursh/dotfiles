@@ -2,7 +2,7 @@
 # ========================================================================================================================
 # Author:
 #     Mohamed Hussein Al-Adawy
-# Version: 1.2.0
+# Version: 1.3.0
 # Description:
 #     This setup script installs and configures OCR4Linux and its dependencies.
 #     It handles the installation of:
@@ -40,10 +40,10 @@ sys_requirements=(
     python-opencv
 )
 wayland_session_apps=(
-    grim
+    grimblast-git
     wl-clipboard
     cliphist
-    wofi
+    rofi-wayland
 )
 x11_session_apps=(
     xclip

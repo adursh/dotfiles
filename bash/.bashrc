@@ -113,3 +113,6 @@ alias sr="swaync-client -R -rs"
 
 # edit hyprland
 alias hypr="cd ~/.config/hypr && nvim"
+
+
+# replace cat with bat
