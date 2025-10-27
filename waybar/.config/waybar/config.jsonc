@@ -40,6 +40,7 @@
             "4": "", // Media: Spotify / YouTube / VLC
             "5": "󰍩", // Chat / Notes: Discord, Telegram, Notion, Tusk
             "6": "", // Virtual Machine / Emulators
+            "7": "󰙯",
             "10": "", // Email workspace
             "urgent": "",
             "focused": ""
