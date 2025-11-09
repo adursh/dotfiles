@@ -116,3 +116,4 @@ alias hypr="cd ~/.config/hypr && nvim"
 
 
 # replace cat with bat
+alias mycli='mariadb -u adarsh -p'

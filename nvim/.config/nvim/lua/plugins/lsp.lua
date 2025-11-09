@@ -1,124 +1,3 @@
--- -- return {
--- -- 	{
--- -- 		"williamboman/mason.nvim",
--- -- 		lazy = false,
--- -- 		build = ":MasonUpdate",
--- -- 		config = function()
--- -- 			require("mason").setup()
--- -- 		end,
--- -- 	},
--- --
--- -- 	{
--- -- 		"williamboman/mason-lspconfig.nvim",
--- -- 		lazy = false,
--- -- 		opts = {
--- -- 			ensure_installed = { "clangd", "lua_ls", "jdtls", "html", "tailwindcss", "cssls", "jsonls" },
--- -- 			auto_install = true,
--- -- 		},
--- -- 	},
--- --
--- -- 	{
--- -- 		"neovim/nvim-lspconfig",
--- -- 		lazy = false,
--- -- 		config = function()
--- -- 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
--- --
--- -- 			local lspconfig = require("lspconfig")
--- --
--- -- 			lspconfig.lua_ls.setup({ capabilities = capabilities })
--- -- 			lspconfig.ts_ls.setup({ capabilities = capabilities })
--- -- 			lspconfig.clangd.setup({ capabilities = capabilities })
--- -- 			lspconfig.jdtls.setup({ capabilities = capabilities })
--- -- 			--			lspconfig.pyright.setup({ capabilities = capabilities })
--- -- 			--			lspconfig.rust_analyzer.setup({ capabilities = capabilities })
--- -- 			lspconfig.html.setup({ capabilities = capabilities })
--- -- 			lspconfig.cssls.setup({ capabilities = capabilities })
--- -- 			lspconfig.tailwindcss.setup({ capabilities = capabilities })
--- -- 			lspconfig.jsonls.setup({ capabilities = capabilities })
--- --
--- -- 			-- vim.keymap.set("n", "gh", vim.lsp.buf.hover, {})
--- -- 			-- vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
--- -- 			-- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
--- -- 			-- vim.keymap.set("n", "gca", vim.lsp.buf.code_action, {})
--- -- 		end,
--- -- 	},
--- -- }
---
---
---
--- return {
---     -- Mason for managing LSPs, linters, and formatters
---     {
---         "williamboman/mason.nvim",
---         lazy = false,
---         build = ":MasonUpdate",
---         config = function()
---             require("mason").setup()
---         end,
---     },
---
---     -- Mason LSP config for auto-installing language servers
---     {
---         "williamboman/mason-lspconfig.nvim",
---         lazy = false,
---         opts = {
---             -- ensure_installed = { "clangd", "lua_ls", "jdtls", "html", "tailwindcss", "cssls", "jsonls" },
---             auto_install = false,
---         },
---     },
---
---     -- nvim-lspconfig to configure installed LSP servers
---     {
---         "neovim/nvim-lspconfig",
---         lazy = false,
---         config = function()
---             local capabilities = require("cmp_nvim_lsp").default_capabilities()
---
---             local lspconfig = require("lspconfig")
---
---             -- Setup LSPs with capabilities
---             lspconfig.lua_ls.setup({ capabilities = capabilities })
---             lspconfig.ts_ls.setup({ capabilities = capabilities })
---             lspconfig.clangd.setup({ capabilities = capabilities })
---             lspconfig.jdtls.setup({ capabilities = capabilities })
---             -- lspconfig.pyright.setup({ capabilities = capabilities })
---             -- lspconfig.rust_analyzer.setup({ capabilities = capabilities })
---             lspconfig.html.setup({ capabilities = capabilities })
---             lspconfig.cssls.setup({ capabilities = capabilities })
---             lspconfig.tailwindcss.setup({ capabilities = capabilities })
---             lspconfig.jsonls.setup({ capabilities = capabilities })
---
---             -- Keymaps for LSP actions (hover, go to definition, references, etc.)
---             -- vim.keymap.set("n", "gh", vim.lsp.buf.hover, {})
---             -- vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
---             -- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
---             -- vim.keymap.set("n", "gca", vim.lsp.buf.code_action, {})
---         end,
---     },
---
---     -- Mason-null-ls for managing formatters and linters (auto-install)
---     {
---         "jay-babu/mason-null-ls.nvim",
---         dependencies = {
---             "williamboman/mason.nvim",
---             "nvimtools/none-ls.nvim",
---         },
---         config = function()
---             require("mason-null-ls").setup({
---                 -- ensure_installed = {
---                 --     -- Formatters
---                 --     "stylua", "black", "isort", "clang-format", "google_java_format", "prettierd", "stylelint",
---                 --     -- Linters
---                 --     "cppcheck", "eslint_d", "luacheck", "flake8", "rustfmt", "clippy"
---                 -- },
---                 automatic_installation = false,
---             })
---         end,
---     },
--- }
---
---
-
 return {
 	-- 1. Mason (package manager for LSPs, formatters, linters)
 	{
@@ -171,7 +50,6 @@ return {
 			-- Safely check if cmp_nvim_lsp is available
 			local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			
 			if has_cmp then
 				capabilities = cmp_nvim_lsp.default_capabilities()
 			end
@@ -237,46 +115,7 @@ return {
 	{ "hrsh7th/cmp-buffer" },
 	{ "hrsh7th/cmp-path" },
 
-	-- 5. None-LS (null-ls) for formatters and linters
-	{
-		"nvimtools/none-ls.nvim",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			local has_null_ls, null_ls = pcall(require, "null-ls")
-			if not has_null_ls then
-				return
-			end
-
-			null_ls.setup({
-				sources = {
-					-- Lua
-					null_ls.builtins.formatting.stylua,
-					null_ls.builtins.diagnostics.luacheck,
-
-					-- C/C++
-					null_ls.builtins.formatting.clang_format,
-					null_ls.builtins.diagnostics.cppcheck,
-
-					-- Java
-					null_ls.builtins.formatting.google_java_format,
-
-					-- Python
-					null_ls.builtins.formatting.black,
-					null_ls.builtins.formatting.isort,
-					null_ls.builtins.diagnostics.flake8,
-
-					-- JavaScript/TypeScript/Web
-					null_ls.builtins.formatting.prettierd,
-					null_ls.builtins.diagnostics.eslint_d,
-
-					-- CSS
-					null_ls.builtins.diagnostics.stylelint,
-				},
-			})
-		end,
-	},
-
-	-- 6. Mason-Null-LS (auto-installs formatters and linters)
+	-- 5. Mason-Null-LS (auto-installs formatters and linters)
 	{
 		"jay-babu/mason-null-ls.nvim",
 		dependencies = {
@@ -298,7 +137,6 @@ return {
 					"black",              -- Python
 					"isort",              -- Python imports
 					"prettierd",          -- JS/TS/HTML/CSS/JSON
-					
 					-- Linters
 					"luacheck",           -- Lua
 					"cppcheck",           -- C/C++

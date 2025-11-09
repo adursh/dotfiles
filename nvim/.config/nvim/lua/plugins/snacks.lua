@@ -14,6 +14,9 @@ return {
 			replace_netrw = true,
 			hidden = true,
 			auto_close = true,
+			filters = {
+				exclude = { ".env" }
+			},
 		},
 		indent = { enabled = true },
 		input = { enabled = true },
