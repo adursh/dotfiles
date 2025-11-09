@@ -1,108 +1,60 @@
 return {
-	-- 1. Mason (package manager for LSPs, formatters, linters)
 	{
 		"williamboman/mason.nvim",
-		lazy = false,
-		build = ":MasonUpdate",
 		config = function()
-			require("mason").setup({
-				ui = {
-					icons = {
-						package_installed = "✓",
-						package_pending = "➜",
-						package_uninstalled = "✗",
-					},
-				},
-			})
+			require("mason").setup()
 		end,
 	},
 
-	-- 2. Mason-LSPConfig (auto-installs LSP servers)
 	{
 		"williamboman/mason-lspconfig.nvim",
-		lazy = false,
 		dependencies = { "williamboman/mason.nvim" },
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					"clangd",      -- C/C++
-					"lua_ls",      -- Lua
-					"jdtls",       -- Java
-					"html",        -- HTML
-					"tailwindcss", -- Tailwind CSS
-					"cssls",       -- CSS
-					"jsonls",      -- JSON
+					"lua_ls",
+					"clangd",
+					"jdtls",
+					"html",
+					"cssls",
+					"tailwindcss",
+					"jsonls",
 				},
-				automatic_installation = true,
+				handlers = {
+					-- Default handler (runs for all servers)
+					function(server_name)
+						require("lspconfig")[server_name].setup({
+							capabilities = require("cmp_nvim_lsp").default_capabilities(),
+						})
+					end,
+				},
 			})
 		end,
 	},
 
-	-- 3. nvim-lspconfig (configures the LSP servers)
 	{
 		"neovim/nvim-lspconfig",
-		lazy = false,
 		dependencies = {
 			"williamboman/mason-lspconfig.nvim",
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
-			-- Safely check if cmp_nvim_lsp is available
-			local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			if has_cmp then
-				capabilities = cmp_nvim_lsp.default_capabilities()
-			end
-
-			-- Safely check if lspconfig is available
-			local has_lspconfig, lspconfig = pcall(require, "lspconfig")
-			if not has_lspconfig then
-				vim.notify("lspconfig not found", vim.log.levels.ERROR)
-				return
-			end
-
-			-- List of servers to setup
-			local servers = {
-				"lua_ls",
-				"clangd",
-				"jdtls",
-				"html",
-				"cssls",
-				"tailwindcss",
-				"jsonls",
-			}
-
-			-- Setup each server with error handling
-			for _, server in ipairs(servers) do
-				-- Check if server config exists
-				if lspconfig[server] then
-					local ok, err = pcall(function()
-						lspconfig[server].setup({
-							capabilities = capabilities,
-						})
-					end)
-					if not ok then
-						vim.notify("Failed to setup " .. server .. ": " .. tostring(err), vim.log.levels.WARN)
-					end
-				else
-					vim.notify("LSP config not found for: " .. server, vim.log.levels.WARN)
-				end
-			end
-
-			-- Keymaps for LSP features (uncomment to use)
-			-- vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show hover documentation" })
-			-- vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
-			-- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
-			-- vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Show references" })
-			-- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
-			-- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-			-- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
-			-- vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
-			-- vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+			-- LSP Keybindings (runs when LSP attaches)
+			vim.api.nvim_create_autocmd("LspAttach", {
+				callback = function(args)
+					local opts = { buffer = args.buf }
+					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+					vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+					vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+					vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+				end,
+			})
 		end,
 	},
 
-	-- 4. Completion plugins
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
@@ -110,41 +62,20 @@ return {
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 		},
-	},
-	{ "hrsh7th/cmp-nvim-lsp" },
-	{ "hrsh7th/cmp-buffer" },
-	{ "hrsh7th/cmp-path" },
-
-	-- 5. Mason-Null-LS (auto-installs formatters and linters)
-	{
-		"jay-babu/mason-null-ls.nvim",
-		dependencies = {
-			"williamboman/mason.nvim",
-			"nvimtools/none-ls.nvim",
-		},
 		config = function()
-			local has_mason_null_ls, mason_null_ls = pcall(require, "mason-null-ls")
-			if not has_mason_null_ls then
-				return
-			end
-
-			mason_null_ls.setup({
-				ensure_installed = {
-					-- Formatters
-					"stylua",             -- Lua
-					"clang-format",       -- C/C++
-					"google-java-format", -- Java (note the hyphen!)
-					"black",              -- Python
-					"isort",              -- Python imports
-					"prettierd",          -- JS/TS/HTML/CSS/JSON
-					-- Linters
-					"luacheck",           -- Lua
-					"cppcheck",           -- C/C++
-					"eslint_d",           -- JavaScript/TypeScript
-					"flake8",             -- Python
-					"stylelint",          -- CSS
+			local cmp = require("cmp")
+			cmp.setup({
+				mapping = cmp.mapping.preset.insert({
+					["<C-Space>"] = cmp.mapping.complete(),
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
+					["<Tab>"] = cmp.mapping.select_next_item(),
+					["<S-Tab>"] = cmp.mapping.select_prev_item(),
+				}),
+				sources = {
+					{ name = "nvim_lsp" },
+					{ name = "buffer" },
+					{ name = "path" },
 				},
-				automatic_installation = true,
 			})
 		end,
 	},

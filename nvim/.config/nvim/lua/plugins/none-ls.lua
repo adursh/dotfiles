@@ -1,59 +1,42 @@
 return {
-    "nvimtools/none-ls.nvim",
-    dependencies = {
-        "nvim-lua/plenary.nvim",
-    },
+	"nvimtools/none-ls.nvim",
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+		"jay-babu/mason-null-ls.nvim",
+	},
+	config = function()
+		-- Install formatters/linters via Mason
+		require("mason-null-ls").setup({
+			ensure_installed = {
+				"stylua",
+				"black",
+				"isort",
+				"prettierd",
+				"clang-format",
+			},
+			automatic_installation = true,
+		})
 
-    config = function()
-        local null_ls = require("null-ls")
-        local b = null_ls.builtins
+		-- Configure none-ls
+		local null_ls = require("null-ls")
+		null_ls.setup({
+			sources = {
+				null_ls.builtins.formatting.stylua,
+				null_ls.builtins.formatting.black,
+				null_ls.builtins.formatting.isort,
+				null_ls.builtins.formatting.prettierd,
+				null_ls.builtins.formatting.clang_format,
+			},
+		})
 
-        null_ls.setup({
-            sources = {
-                -- Lua
-                b.formatting.stylua,
-                --	b.diagnostics.luacheck,
+		-- Format on save (optional, uncomment if you want it)
+		-- vim.api.nvim_create_autocmd("BufWritePre", {
+		-- 	callback = function()
+		-- 		vim.lsp.buf.format({ async = false })
+		-- 	end,
+		-- })
 
-                -- Python
-                b.formatting.black,
-                b.formatting.isort,
-                --				b.diagnostics.flake8,
-
-                -- C / C++
-                b.formatting.clang_format,
-                b.diagnostics.cppcheck, -- optional
-                -- Rust
-                --                b.formatting.rustfmt,
-                --		b.diagnostics.clippy,
-
-                -- Java
-                b.formatting.google_java_format,
-
-                -- JS / TS / React / CSS / Tailwind
-                b.formatting.prettierd.with({
-                    extra_args = { "--trailing-comma", "none" },
-                }),
-                --               b.diagnostics.eslint_d,
-                --              b.code_actions.eslint_d,
-
-                -- HTML / CSS / JSON / YAML / Markdown
-                b.diagnostics.stylelint,
-            },
-        })
-
-        vim.keymap.set("n", "<leader>bf", vim.lsp.buf.format, {})
-        -- format on save
-        -- vim.api.nvim_create_autocmd("BufWritePre", {
-        --     callback = function()
-        --         vim.lsp.buf.format({ async = false })
-        --     end,
-        -- })
-
-        vim.diagnostic.config({
-            virtual_text = true,
-            signs = true,
-            underline = true,
-            update_in_insert = false,
-        })
-    end,
+		-- Manual format keymap
+		vim.keymap.set("n", "<leader>bf", vim.lsp.buf.format, {})
+	end,
 }
