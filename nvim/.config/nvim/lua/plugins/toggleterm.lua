@@ -15,7 +15,7 @@ return {
             -- shading_ratio  = '<number>', -- ratio of shading factor for light/dark terminal bg (default: -3)
 
             start_in_insert = true,
-            insert_mappings = false,  -- whether open_mapping applies in insert mode
+            insert_mappings = true,  -- whether open_mapping applies in insert mode
             terminal_mappings = true, -- whether mappings apply inside terminals
             persist_size = true,
             persist_mode = false,     -- remember previous terminal mode

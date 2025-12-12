@@ -4,7 +4,7 @@
 
 
 # ---- Starship ----
-eval "$(starship init bash)"
+# eval "$(starship init bash)"
 
 
 # If not running interactively, don't do anything
@@ -117,3 +117,8 @@ alias hypr="cd ~/.config/hypr && nvim"
 
 # replace cat with bat
 alias mycli='mariadb -u adarsh -p'
+
+
+# run c++
+alias rcpp='f() { g++ -std=c++17 "$1" -o "${1%.cpp}" && ./"${1%.cpp}"; }; f'
+

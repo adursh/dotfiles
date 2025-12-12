@@ -13,7 +13,7 @@ vim.keymap.set({"n", "i"}, "<C-l>", "<Cmd>wincmd l<CR>", {})
 function _G.set_terminal_keymaps()
 	local opts = { noremap = true }
 	local map = vim.api.nvim_buf_set_keymap
-	map(0, "t", "<esc>", [[<C-\><C-n><C-w>]], opts)
+	map(0, "t", "<esc>", [[<C-\><C-n>]], opts)
 	map(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
 	map(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
 	map(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
@@ -24,6 +24,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
 	callback = function()
 		pcall(set_terminal_keymaps)
+        vim.cmd("startinsert")
 	end,
 })
 
