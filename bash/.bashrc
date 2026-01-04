@@ -125,3 +125,7 @@ alias rcpp='f() { g++ -std=c++17 "$1" -o "${1%.cpp}" && ./"${1%.cpp}"; }; f'
 
 # open ~/Documents/cpp_practice/
 alias cpp='cd ~/Documents/cpp_practice/ && nvim'
+
+
+# start hyprland
+alias start="start-hyprland"
