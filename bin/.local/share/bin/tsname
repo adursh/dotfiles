@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# tsname — generate UTC ISO-8601-style names and copy to clipboard
+
+set -u  # error on unset variables
+
+# ---- Bash guard (explicit is good) ----
+if [ -z "${BASH_VERSION:-}" ]; then
+    echo "Error: tsname requires bash" >&2
+    exit 99
+fi
+
+usage() {
+    echo "Usage: tsname <prefix> [extension]" >&2
+    echo "Example: tsname backup .tar.gz" >&2
+}
+
+# ---- Input validation ----
+if [ $# -lt 1 ]; then
+    usage
+    exit 1
+fi
+
+prefix="$1"
+ext=""
+
+# Reject unsafe prefix characters
+case "$prefix" in
+    *[[:space:]/]*)
+        echo "Error: prefix must not contain spaces or '/'" >&2
+        exit 2
+        ;;
+esac
+
+# Optional extension validation
+if [ $# -ge 2 ]; then
+    case "$2" in
+        .*) ext="$2" ;;
+        *)
+            echo "Error: extension must start with a dot (e.g. .tar.gz)" >&2
+            exit 3
+            ;;
+    esac
+fi
+
+# ---- Timestamp (portable) ----
+timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
+name="${prefix}-${timestamp}${ext}"
+
+# ---- Clipboard handling (capability-based) ----
+copied=false
+
+if command -v wl-copy >/dev/null 2>&1; then
+    printf "%s" "$name" | wl-copy
+    copied=true
+elif command -v pbcopy >/dev/null 2>&1; then
+    printf "%s" "$name" | pbcopy
+    copied=true
+elif command -v xclip >/dev/null 2>&1; then
+    printf "%s" "$name" | xclip -selection clipboard
+    copied=true
+fi
+
+if [ "$copied" = false ]; then
+    echo "Warning: no clipboard tool found; output not copied" >&2
+fi
+
+# ---- Always print (script-friendly) ----
+echo "$name"
