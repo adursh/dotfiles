@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# show current hour:minute on demand
+
+# Get current time
+time_now=$(date "+%H:%M %p")
+
+# Show notification
+notify-send "$time_now"
