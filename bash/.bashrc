@@ -128,3 +128,7 @@ alias cpp='cd ~/Documents/cpp_practice/ && nvim'
 
 # start hyprland
 alias start="start-hyprland"
+
+
+# source bashrc
+alias sb="source ~/.bashrc"
