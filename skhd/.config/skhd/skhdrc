@@ -1,0 +1,173 @@
+# ################################
+# # APPLICATIONS
+# ################################
+#
+# alt - return : open -na kitty
+# alt - b      : open -a "Brave Browser"
+#
+#
+# ################################
+# # WINDOW FOCUS (VIM STYLE)
+# ################################
+#
+# alt - h : yabai -m window --focus west  || yabai -m display --focus west
+# alt - j : yabai -m window --focus south || yabai -m display --focus south
+# alt - k : yabai -m window --focus north || yabai -m display --focus north
+# alt - l : yabai -m window --focus east  || yabai -m display --focus east
+#
+# # cycle focus if no directional neighbor
+# alt - n : yabai -m window --focus next || yabai -m window --focus first
+# alt - p : yabai -m window --focus prev || yabai -m window --focus last
+#
+#
+# ################################
+# # MOVE / SWAP WINDOWS
+# ################################
+#
+# shift + alt - h : yabai -m window --swap west
+# shift + alt - j : yabai -m window --swap south
+# shift + alt - k : yabai -m window --swap north
+# shift + alt - l : yabai -m window --swap east
+#
+# # warp (insert and resize tree)
+# shift + cmd - h : yabai -m window --warp west
+# shift + cmd - j : yabai -m window --warp south
+# shift + cmd - k : yabai -m window --warp north
+# shift + cmd - l : yabai -m window --warp east
+#
+#
+# ################################
+# # RESIZE
+# ################################
+#
+# alt - 0x1B : yabai -m window --resize left:-30:0; yabai -m window --resize right:-30:0   # alt -
+# alt - 0x18 : yabai -m window --resize left:30:0;  yabai -m window --resize right:30:0    # alt =
+#
+# # fine resize
+# ctrl + alt - h : yabai -m window --resize left:-20:0
+# ctrl + alt - l : yabai -m window --resize right:20:0
+# ctrl + alt - k : yabai -m window --resize top:0:-20
+# ctrl + alt - j : yabai -m window --resize bottom:0:20
+#
+# # balance all windows equally
+# shift + alt - b : yabai -m space --balance
+#
+#
+# ################################
+# # LAYOUT TOGGLES
+# ################################
+#
+# alt - q           : yabai -m window --close
+# shift + alt - space : yabai -m window --toggle float; yabai -m window --grid 4:4:1:1:2:2
+# alt - f           : yabai -m window --toggle zoom-fullscreen
+# shift + alt - f   : yabai -m window --toggle native-fullscreen
+# alt - e           : yabai -m window --toggle split          # toggle horizontal/vertical split
+# shift + alt - t   : yabai -m space --layout bsp             # switch space to tiling
+# shift + alt - y   : yabai -m space --layout float           # switch space to float
+# shift + alt - u   : yabai -m space --layout stack           # switch space to stack
+#
+#
+# ################################
+# # STACK NAVIGATION (when space is in stack layout)
+# ################################
+#
+# alt - period : yabai -m window --focus stack.next || yabai -m window --focus stack.first
+# alt - comma  : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
+#
+#
+# ################################
+# # SCRATCHPAD
+# ################################
+#
+# # toggle kitty scratchpad (terminal always available)
+# alt - s : yabai -m window --toggle scratchpad scratch_term || \
+#           open -na kitty --args --title scratch_term
+#
+# # register a window as scratchpad manually
+# shift + alt - s : yabai -m window --toggle scratchpad scratch_misc
+#
+#
+# ################################
+# # WORKSPACE SWITCH
+# ################################
+#
+# alt - 1 : yabai -m space --focus 1
+# alt - 2 : yabai -m space --focus 2
+# alt - 3 : yabai -m space --focus 3
+# alt - 4 : yabai -m space --focus 4
+# alt - 5 : yabai -m space --focus 5
+# alt - 6 : yabai -m space --focus 6
+# alt - 7 : yabai -m space --focus 7
+# alt - 8 : yabai -m space --focus 8
+# alt - 9 : yabai -m space --focus 9
+# alt - 0 : yabai -m space --focus 10
+#
+# # cycle spaces
+# alt - right : yabai -m space --focus next || yabai -m space --focus first
+# alt - left  : yabai -m space --focus prev || yabai -m space --focus last
+#
+#
+# ################################
+# # MOVE WINDOW TO WORKSPACE (and follow it)
+# ################################
+#
+# shift + alt - 1 : yabai -m window --space 1; yabai -m space --focus 1
+# shift + alt - 2 : yabai -m window --space 2; yabai -m space --focus 2
+# shift + alt - 3 : yabai -m window --space 3; yabai -m space --focus 3
+# shift + alt - 4 : yabai -m window --space 4; yabai -m space --focus 4
+# shift + alt - 5 : yabai -m window --space 5; yabai -m space --focus 5
+# shift + alt - 6 : yabai -m window --space 6; yabai -m space --focus 6
+# shift + alt - 7 : yabai -m window --space 7; yabai -m space --focus 7
+# shift + alt - 8 : yabai -m window --space 8; yabai -m space --focus 8
+# shift + alt - 9 : yabai -m window --space 9; yabai -m space --focus 9
+# shift + alt - 0 : yabai -m window --space 10; yabai -m space --focus 10
+#
+# # move window without following
+# ctrl + alt - 1 : yabai -m window --space 1
+# ctrl + alt - 2 : yabai -m window --space 2
+# ctrl + alt - 3 : yabai -m window --space 3
+# ctrl + alt - 4 : yabai -m window --space 4
+# ctrl + alt - 5 : yabai -m window --space 5
+#
+#
+# ################################
+# # DISPLAY FOCUS
+# ################################
+#
+# alt - d      : yabai -m display --focus next || yabai -m display --focus first
+# shift + alt - d : yabai -m window --display next; yabai -m display --focus next
+#
+#
+# ################################
+# # ROTATE / MIRROR
+# ################################
+#
+# shift + alt - r : yabai -m space --rotate 90
+# shift + alt - x : yabai -m space --mirror x-axis
+# shift + alt - z : yabai -m space --mirror y-axis
+#
+#
+# ################################
+# # CREATE / DESTROY SPACES (SIP required)
+# ################################
+#
+# shift + alt - c : yabai -m space --create
+# shift + alt - q : yabai -m space --destroy
+#
+#
+# ################################
+# # SCREENSHOT
+# ################################
+#
+# shift + alt - p : screencapture -i -c ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png
+#
+#
+# ################################
+# # RELOAD
+# ################################
+#
+# shift + alt - r : yabai --restart-service; skhd --restart-service
+#
+
+alt - i : open -a "System Settings" &
+alt - e : open -a "Finder" &
