@@ -68,6 +68,9 @@ outer.bottom = 6
 
 alt-enter = "exec-and-forget open -na kitty"
 alt-b     = "exec-and-forget open -a 'Brave Browser'"
+alt-i     = "exec-and-forget open -a 'System Settings'"
+alt-e     = "exec-and-forget open -a 'Finder'"
+
 
 
 ###############################
@@ -79,11 +82,11 @@ alt-j = "focus down"
 alt-k = "focus up"
 alt-l = "focus right"
 
-# layout toggles — disabled, not using layouts
-# alt-n = "focus dfs-next"
-# alt-p = "focus dfs-prev"
-# alt-slash = "layout tiles horizontal vertical"
-# alt-comma = "layout accordion horizontal vertical"
+#layout toggles — disabled, not using layouts
+alt-n = "focus dfs-next"
+alt-p = "focus dfs-prev"
+alt-slash = "layout tiles horizontal vertical"
+alt-comma = "layout accordion horizontal vertical"
 
 
 ###############################
@@ -109,6 +112,7 @@ alt-equal = "resize smart +30"
 ###############################
 
 alt-q           = "close --quit-if-last-window"
+alt-w           = "close"
 alt-shift-space = "layout floating tiling"
 alt-f           = "fullscreen"
 
@@ -212,6 +216,10 @@ run = "move-node-to-workspace 4"
 
 [[on-window-detected]]
 if.app-id = "com.hnc.Discord"
+run = "move-node-to-workspace 5"
+
+[[on-window-detected]]
+if.app-id = "net.whatsapp.WhatsApp"
 run = "move-node-to-workspace 5"
 
 [[on-window-detected]]
