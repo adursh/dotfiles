@@ -9,7 +9,10 @@ alias find="fd"
 alias grep="rg"
 
 # oh-my-posh
-eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/config.toml)"
+# eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/config.toml)"
+
+# starship
+eval "$(starship init zsh)"
 
 # Initialize zsh-vi-mode instantly on shell start
 ZVM_INIT_MODE=sourcing
