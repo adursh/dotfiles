@@ -3,30 +3,31 @@ vim.g.mapleader = " "
 -- Netrw
 vim.keymap.set("n", "<leader>cd", vim.cmd.Ex)
 
--- Navigate vim panels better
-vim.keymap.set({"n", "i"}, "<C-h>", "<Cmd>wincmd h<CR>", {})
-vim.keymap.set({"n", "i"}, "<C-j>", "<Cmd>wincmd j<CR>", {})
-vim.keymap.set({"n", "i"}, "<C-k>", "<Cmd>wincmd k<CR>", {})
-vim.keymap.set({"n", "i"}, "<C-l>", "<Cmd>wincmd l<CR>", {})
-
--- Nevigate better in terminal mode
-function _G.set_terminal_keymaps()
-	local opts = { noremap = true }
-	local map = vim.api.nvim_buf_set_keymap
-	map(0, "t", "<esc>", [[<C-\><C-n>]], opts)
-	map(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
-	map(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
-	map(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
-	map(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
-end
-
-vim.api.nvim_create_autocmd("TermOpen", {
-	pattern = "*",
-	callback = function()
-		pcall(set_terminal_keymaps)
-        vim.cmd("startinsert")
-	end,
-})
+-- vim-tmux-navigator is controlling this
+-- -- Navigate vim panels better
+-- vim.keymap.set({"n", "i"}, "<C-h>", "<Cmd>wincmd h<CR>", {})
+-- vim.keymap.set({"n", "i"}, "<C-j>", "<Cmd>wincmd j<CR>", {})
+-- vim.keymap.set({"n", "i"}, "<C-k>", "<Cmd>wincmd k<CR>", {})
+-- vim.keymap.set({"n", "i"}, "<C-l>", "<Cmd>wincmd l<CR>", {})
+--
+-- -- Nevigate better in terminal mode
+-- function _G.set_terminal_keymaps()
+-- 	local opts = { noremap = true }
+-- 	local map = vim.api.nvim_buf_set_keymap
+-- 	map(0, "t", "<esc>", [[<C-\><C-n>]], opts)
+-- 	map(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
+-- 	map(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
+-- 	map(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
+-- 	map(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
+-- end
+--
+-- vim.api.nvim_create_autocmd("TermOpen", {
+-- 	pattern = "*",
+-- 	callback = function()
+-- 		pcall(set_terminal_keymaps)
+--         vim.cmd("startinsert")
+-- 	end,
+-- })
 
 -- clipboard
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })
