@@ -103,6 +103,11 @@ alt-shift-l = "move right"
 # RESIZE
 ###############################
 
+alt-ctrl-h = "resize width -30"
+alt-ctrl-l = "resize width +30"
+alt-ctrl-k = "resize height -30"
+alt-ctrl-j = "resize height +30"
+
 alt-minus = "resize smart -30"
 alt-equal = "resize smart +30"
 
@@ -237,12 +242,8 @@ run = "move-node-to-workspace 8"
 
 [[on-window-detected]]
 if.app-id = "com.google.Chrome"
-run = "move-node-to-workspace 9"
-
-[[on-window-detected]]
-if.app-id = "org.torproject.torbrowser"
 run = "move-node-to-workspace 10"
 
 # [[on-window-detected]]
-# if.app-id = "com.apple.systempreferences"
-# run = "move-node-to-workspace I"
+# if.app-id = "org.torproject.torbrowser"
+# run = "move-node-to-workspace 10"
