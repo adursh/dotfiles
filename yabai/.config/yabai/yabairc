@@ -1,2 +1,10 @@
 #!/usr/bin/env sh
-yabai -m config focus_follows_mouse autofocus
+# yabai -m config focus_follows_mouse autofocus
+# yabai -m config mouse_follows_focus on
+#
+# yabai -m rule --add app="^System Settings$" manage=off sticky=on layer=above delay=1
+# aerospace ignores these
+# yabai -m rule --add app="^System Settings$" manage=off sticky=on layer=above
+# yabai -m rule --add app="^Calculator$" manage=off sticky=on layer=above
+# yabai -m rule --add app="^App Store$" manage=off sticky=on layer=above
+# yabai -m rule --add app="^System Information$" manage=off sticky=on layer=above
