@@ -66,29 +66,28 @@ outer.bottom = 6
 # APPLICATIONS
 ###############################
 
-alt-enter = "exec-and-forget open -na kitty"
+# alt-enter = "exec-and-forget open -a kitty"
+alt-enter = "exec-and-forget open -na 'kitty'"
 alt-b     = "exec-and-forget open -a 'Brave Browser'"
 alt-i     = "exec-and-forget open -a 'System Settings'"
 alt-e     = "exec-and-forget open -a 'Finder'"
 
+# change layouts
+alt-comma  = "layout accordion horizontal vertical"
+alt-slash  = "layout tiles horizontal vertical"
 
 
 ###############################
 # WINDOW FOCUS (VIM STYLE)
 ###############################
 
-alt-h = "focus left"
-alt-j = "focus down"
-alt-k = "focus up"
-alt-l = "focus right"
+alt-h = "focus --boundaries-action wrap-around-the-workspace left"
+alt-j = "focus --boundaries-action wrap-around-the-workspace down"
+alt-k = "focus --boundaries-action wrap-around-the-workspace up"
+alt-l = "focus --boundaries-action wrap-around-the-workspace right"
 
-#layout toggles — disabled, not using layouts
-# alt-n = "focus dfs-next"
-# alt-p = "focus dfs-prev"
-alt-n = 'focus --boundaries-action wrap-around-the-workspace dfs-next'
-alt-p = 'focus --boundaries-action wrap-around-the-workspace dfs-prev'
-alt-slash = "layout tiles horizontal vertical"
-alt-comma = "layout accordion horizontal vertical"
+alt-n = "focus --boundaries-action wrap-around-the-workspace dfs-next"
+alt-p = "focus --boundaries-action wrap-around-the-workspace dfs-prev"
 
 
 ###############################
@@ -99,7 +98,6 @@ alt-shift-h = "move left"
 alt-shift-j = "move down"
 alt-shift-k = "move up"
 alt-shift-l = "move right"
-
 
 ###############################
 # RESIZE
@@ -133,6 +131,7 @@ alt-7 = "workspace 7"
 alt-8 = "workspace 8"
 alt-9 = "workspace 9"
 alt-0 = "workspace 10"
+# alt-i = "workspace i"
 
 
 ###############################
@@ -243,3 +242,7 @@ run = "move-node-to-workspace 9"
 [[on-window-detected]]
 if.app-id = "org.torproject.torbrowser"
 run = "move-node-to-workspace 10"
+
+# [[on-window-detected]]
+# if.app-id = "com.apple.systempreferences"
+# run = "move-node-to-workspace I"
