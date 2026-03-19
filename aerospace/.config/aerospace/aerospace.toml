@@ -9,19 +9,21 @@ after-startup-command = [
   "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
 ]
 
+# sketchybar
+# exec-on-workspace-change = [
+#   '/bin/bash', '-c',
+#   'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
+# ]
+
+# open apps in certain ws
 exec-on-workspace-change = [
   '/bin/bash', '-c',
-  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
+  '~/.config/aerospace/on-workspace-change.sh $AEROSPACE_FOCUSED_WORKSPACE'
 ]
 
 # disabled — fight layout and cause chaos on restart
 enable-normalization-flatten-containers = false
 enable-normalization-opposite-orientation-for-nested-containers = false
-
-# layout disabled — using workspaces only, one app per workspace
-# default-root-container-layout = "accordion"
-# default-root-container-orientation = "auto"
-# accordion-padding = 30
 
 key-mapping.preset = "qwerty"
 
@@ -66,25 +68,24 @@ outer.bottom = 6
 # APPLICATIONS
 ###############################
 
-# alt-enter = "exec-and-forget open -a kitty"
-alt-enter = "exec-and-forget open -na 'kitty'"
-alt-b     = "exec-and-forget open -a 'Brave Browser'"
+# alt-enter = "exec-and-forget open -na 'kitty'"
+# alt-b     = "exec-and-forget open -a 'Brave Browser'"
 alt-i     = "exec-and-forget open -a 'System Settings'"
 alt-e     = "exec-and-forget open -a 'Finder'"
 
 # change layouts
-alt-comma  = "layout accordion horizontal vertical"
-alt-slash  = "layout tiles horizontal vertical"
+alt-shift-semicolon  = "layout accordion horizontal"
+# alt-semicolon  = "layout tiles horizontal vertical"
 
 
 ###############################
 # WINDOW FOCUS (VIM STYLE)
 ###############################
 
-alt-h = "focus --boundaries-action wrap-around-the-workspace left"
-alt-j = "focus --boundaries-action wrap-around-the-workspace down"
-alt-k = "focus --boundaries-action wrap-around-the-workspace up"
-alt-l = "focus --boundaries-action wrap-around-the-workspace right"
+# alt-h = "focus --boundaries-action wrap-around-the-workspace left"
+# alt-j = "focus --boundaries-action wrap-around-the-workspace down"
+# alt-k = "focus --boundaries-action wrap-around-the-workspace up"
+# alt-l = "focus --boundaries-action wrap-around-the-workspace right"
 
 alt-n = "focus --boundaries-action wrap-around-the-workspace dfs-next"
 alt-p = "focus --boundaries-action wrap-around-the-workspace dfs-prev"
@@ -103,10 +104,10 @@ alt-shift-l = "move right"
 # RESIZE
 ###############################
 
-alt-ctrl-h = "resize width -30"
-alt-ctrl-l = "resize width +30"
-alt-ctrl-k = "resize height -30"
-alt-ctrl-j = "resize height +30"
+# alt-ctrl-h = "resize width -30"
+# alt-ctrl-l = "resize width +30"
+# alt-ctrl-k = "resize height -30"
+# alt-ctrl-j = "resize height +30"
 
 alt-minus = "resize smart -30"
 alt-equal = "resize smart +30"
@@ -118,7 +119,7 @@ alt-equal = "resize smart +30"
 
 alt-q           = "close --quit-if-last-window"
 alt-w           = "close"
-alt-shift-space = "layout floating tiling"
+alt-v = "layout floating tiling"
 alt-f           = "fullscreen"
 
 
@@ -136,7 +137,6 @@ alt-7 = "workspace 7"
 alt-8 = "workspace 8"
 alt-9 = "workspace 9"
 alt-0 = "workspace 10"
-# alt-i = "workspace i"
 
 
 ###############################
@@ -161,11 +161,6 @@ alt-shift-0 = "move-node-to-workspace 10 --focus-follows-window"
 ###############################
 
 alt-shift-p = "exec-and-forget screencapture -i -c ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
-
-
-##############################
-# NOTIFICATION
-##############################
 
 
 ###############################
@@ -213,11 +208,19 @@ if.app-id = "com.microsoft.VSCode"
 run = "move-node-to-workspace 3"
 
 [[on-window-detected]]
+if.app-id = "md.obsidian"
+run = "move-node-to-workspace 3"
+
+[[on-window-detected]]
 if.app-id = "io.mpv"
 run = "move-node-to-workspace 4"
 
 [[on-window-detected]]
 if.app-id = "org.videolan.vlc"
+run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = "com.spotify.client"
 run = "move-node-to-workspace 4"
 
 [[on-window-detected]]
@@ -237,7 +240,7 @@ if.app-id = "org.mozilla.librewolf"
 run = "move-node-to-workspace 8"
 
 [[on-window-detected]]
-if.app-id = "net.mullvad.MullvadBrowser"
+if.app-id = "net.mullvad.mullvadbrowser"
 run = "move-node-to-workspace 8"
 
 [[on-window-detected]]
