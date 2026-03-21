@@ -1,0 +1,79 @@
+(defcfg
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+  )
+  process-unmapped-keys no
+  log-layer-changes no
+  danger-enable-cmd yes
+  concurrent-tap-hold yes
+)
+
+(defvar
+  tap-time 200
+  hold-time 200
+)
+
+(defsrc
+  esc
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps   a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft
+  fn     lctl lalt lmet          spc         rmet ralt ◀    ▼    ▶
+)
+
+(defalias
+  ;; lmet: tap = ret, hold = callum-mods layer
+  lmet-ret  (tap-hold-press $tap-time $hold-time ret (layer-while-held callum-mods))
+
+  ;; rmet: tap = bspc, hold = sym layer
+  rmet-sym  (tap-hold-press $tap-time $hold-time bspc (layer-while-held sym))
+
+  ;; caps: tap = esc, hold = nav layer (handled in layer directly for tap)
+  caps-nav  (tap-hold-press $tap-time $hold-time esc (layer-while-held nav))
+
+  ;; app launchers
+  app-brave     (cmd open -a "Brave Browser")
+  app-kitty     (cmd open -a "kitty")
+  app-whatsapp  (cmd open -a "WhatsApp")
+  app-spotify   (cmd open -a "Spotify")
+  app-librewolf (cmd open -a "LibreWolf")
+  app-vscode    (cmd open -a "Visual Studio Code")
+  app-chrome    (cmd open -a "Google Chrome")
+)
+
+(deflayer main
+  caps
+  grv          1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab          q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @caps-nav    a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft         z    x    c    v    b    n    m    ,    .    /    ▲    rsft
+  fn           lctl lalt @lmet-ret     spc         @rmet-sym ralt ◀    ▼    ▶
+)
+
+(deflayer callum-mods
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    (one-shot 2000 lctl) (one-shot 2000 lsft) (one-shot 2000 lalt) (one-shot 2000 lmet) _ _ (one-shot 2000 rmet) (one-shot 2000 ralt) (one-shot 2000 rsft) (one-shot 2000 rctl) _ _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer nav
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    del
+  _    _    @app-whatsapp  _    _    _    _    _    _    _    _    _    _    _
+  _    _    @app-spotify   @app-librewolf    _    _    ◀    ▼    ▲    ▶    _    _    _
+  _    _    _    @app-chrome @app-vscode @app-brave _  _    _    _    _    _    _
+  _    _    _    @app-kitty              _              _    _    _    _    _
+)
+
+(deflayer sym
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  -    _    _
+  _    1    2    3    4    5    6    7    8    9    0    `    _
+  _    _    _    S-/  [    ]    S-[  S-]  _    .    /    _    _
+  _    _    _    _              _              _    _    _    _    _
+)

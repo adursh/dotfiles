@@ -1,0 +1,82 @@
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold yes
+  log-layer-changes no
+  chords-v2-min-idle 200
+)
+
+(defvar
+  tap-time  200
+  hold-time 300
+
+  left-hand-keys  (q w e r t a s d f g z x c v b)
+  right-hand-keys (y u i o p h j k l ; n m , . /)
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  fn   lctl lalt lmet           spc            rmet ralt
+)
+
+(deffakekeys
+  to-base (layer-switch base)
+)
+
+(defalias
+  tap (multi
+    (layer-switch nomods)
+    (on-idle-fakekey to-base tap 200)
+  )
+
+  a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lctl $left-hand-keys)
+  d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lalt $left-hand-keys)
+  f (tap-hold-release-keys $tap-time $hold-time (multi f @tap) lmet $left-hand-keys)
+  j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rmet $right-hand-keys)
+  k (tap-hold-release-keys $tap-time $hold-time (multi k @tap) ralt $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time (multi ; @tap) rctl $right-hand-keys)
+
+  cap esc
+  rmt (tap-hold-press $tap-time $hold-time bspc (layer-while-held symbols))
+  mhome (tap-hold $tap-time $hold-time . (layer-switch homerow))
+  back  (layer-switch base)
+)
+
+(deflayer base
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @cap @a   s    @d   @f   g    h    @j   @k   l    @;   '    ret
+  lsft z    x    c    v    b    n    m    ,    @mhome /   rsft
+  fn   lctl lmet lalt           spc            @rmt rmet
+)
+
+(deflayer nomods
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @cap a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    @mhome /   rsft
+  fn   lctl lmet lalt           spc            @rmt rmet
+)
+
+(deflayer homerow
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  esc  a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    @back /   rsft
+  fn   lctl lmet lalt           spc            bspc rmet
+)
+
+(deflayer symbols
+  XX   XX     XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX
+  XX   XX     XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX     XX
+  S--  S-1    S-2     S-3     S-4     S-5     S-6     S-7     S-8     S-9     S-0     -       XX     -
+  S-`  1      2       3       4       5       6       7       8       9       0       `       ret
+  S-=  S-,    S-.     S-/     [       ]       S-[     S-]     ,       .       /       rsft
+  XX   XX     XX      XX                bspc                  XX      XX
+)
