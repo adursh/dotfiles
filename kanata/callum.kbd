@@ -1,0 +1,234 @@
+(defcfg
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+  )
+  process-unmapped-keys no
+  log-layer-changes no
+  danger-enable-cmd yes
+  concurrent-tap-hold yes
+)
+
+(defvar
+  tap-time 200
+  hold-time 200
+  subl-time 200
+)
+
+(defsrc
+  esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ;; ESC + F-ROW
+ ;; esc   brdn brup f3   f4   f5   f6 prev ▶⏸   next mute vold volu
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc   ;; NUM
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \      ;; Q
+  caps   a    s    d    f    g    h    j    k    l    ;    '    ret         ;; A
+  lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft        ;; Z
+  fn     lctl lalt lmet          spc         rmet ralt ◀    ▼    ▶         ;; MOD
+)
+
+;; ============================================================
+;; LAYER TRIGGERS
+;; ============================================================
+(defalias
+  ;; lmet: tap = ret, hold = callum-mods layer
+  lmet-ret  (tap-hold-press $tap-time $hold-time ret (layer-while-held callum-mods))
+  ;; rmet: tap = bspc, hold = sym layer
+  rmet-sym  (tap-hold-press $tap-time $hold-time bspc (layer-while-held sym))
+  ;; caps: tap = esc, hold = nav layer
+  caps-nav  (tap-hold-press $tap-time $hold-time esc (layer-while-held nav))
+  ;; lalt: tap = lalt, hold = sublayer
+  lalt-subl (tap-hold-press $subl-time $subl-time lalt (layer-while-held sublayer))
+  ;; w: tap = w, hold = system layer
+  tab-sys     (tap-hold-release $tap-time $hold-time tab (layer-while-held system))
+)
+
+;; ============================================================
+;; SUBLAYER ENTRIES
+;; ============================================================
+(defalias
+  subl-apps (layer-while-held apps)
+  subl-rayc (layer-while-held raycast)
+  ;; subl-aero (tap-hold-press $subl-time $subl-time s (layer-toggle aerospace))
+  subl-aero (layer-switch aerospace)
+)
+
+;; ============================================================
+;; SCAM ALIASES (hyper key combos)
+;; ============================================================
+
+(defalias
+  scam1 S-C-A-M-1   ;; homerow click
+  scam2 S-C-A-M-2   ;; homerow search
+  scam3 S-C-A-M-3   ;; homerow scroll
+  scam4 S-C-A-M-4   ;; raycast
+  ;; scam5 S-C-A-M-5   ;; raycast snippets
+)
+
+;; ============================================================
+;; APP LAUNCHERS
+;; ============================================================
+(defalias
+  app-brave     (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Brave Browser'")
+  app-kitty     (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'kitty'")
+  app-whatsapp  (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'WhatsApp'")
+  app-spotify   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Spotify'")
+  app-librewolf (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'LibreWolf'")
+  app-vscode    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Visual Studio Code'")
+  app-chrome    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Google Chrome'")
+  app-discord   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Discord'")
+)
+
+;; ============================================================
+;; RAYCAST
+;; ============================================================
+(defalias
+  rayc-emoji (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
+  rayc-goog  (cmd open "raycast://extensions/mblode/google-search/index")
+  rayc-file  (cmd open "raycast://extensions/raycast/file-search/search-files")
+  rayc-clip  (cmd open "raycast://extensions/raycast/clipboard-history/index")
+)
+
+;; ============================================================
+;; AEROSPACE
+;; ============================================================
+(defalias
+  aero-exit         (layer-switch main)
+  aero-reload       A-S-r
+  aero-focus-h      A-h
+  aero-focus-j      A-j
+  aero-focus-k      A-k
+  aero-focus-l      A-l
+  aero-move-h       A-S-h
+  aero-move-j       A-S-j
+  aero-move-k       A-S-k
+  aero-move-l       A-S-l
+  aero-resize-w-inc A-S-a
+  aero-resize-h-dec A-S-s
+  aero-resize-h-inc A-S-d
+  aero-resize-w-dec A-S-f
+  aero-smart-dec    A--
+  aero-smart-inc    A-=
+  aero-full-scr     A-S-z
+  aero-float        A-S-v
+  aero-layout-adn   A-;
+  aero-layout-spt   A-/
+  aero-ws-1         A-1
+  aero-ws-2         A-2
+  aero-ws-3         A-3
+  aero-ws-4         A-4
+  aero-ws-5         A-5
+  aero-ws-6         A-6
+  aero-ws-7         A-7
+  aero-ws-8         A-8
+  aero-ws-9         A-9
+  aero-ws-10        A-0
+)
+
+;; ============================================================
+;; SYSTEM CONTROLS
+;; ============================================================
+
+(defalias
+    sys-kbdup (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kbdbrightness.sh up")
+    sys-kbddn (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kbdbrightness.sh down")
+)
+
+;; reload kanata with notification
+(defalias
+    kanata-reload (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kanatareload.sh") 500 lrld)
+)
+
+
+;; ============================================================
+;; LAYERS
+;; ============================================================
+
+(deflayer main
+  esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ;; ESC + F-ROW
+  ;; caps   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX        ;; ESC + F-ROW
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc  ;; NUM
+  @tab-sys    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
+  @caps-nav a  s    d   f    g    h    j    k    l    ;    '    ret        ;; A
+  lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft       ;; Z
+  fn     lctl @lalt-subl @lmet-ret    spc    @rmet-sym ralt ◀   ▼    ▶    ;; MOD
+)
+
+
+(deflayer callum-mods
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; Q
+  XX   (one-shot 2000 lctl) (one-shot 2000 lsft) (one-shot 2000 lalt) (one-shot 2000 lmet) XX XX (one-shot 2000 rmet) (one-shot 2000 ralt) (one-shot 2000 rsft) (one-shot 2000 rctl) XX XX ;; A
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+;; (deflayer nav
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   del    ;; NUM
+;;   XX   XX   XX   XX   XX   M-t  XX   S-A-◀ S-A-▼ S-A-▲ S-A-▶ XX  XX   XX ;; Q
+;;   XX   XX   XX   M-[  M-]  @scam1   ◀    ▼    ▲    ▶    XX   XX   XX          ;; A
+;;   XX   XX   M-w  XX   XX   XX   M-n  XX   XX   XX   XX   XX   XX          ;; Z
+;;   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+;; )
+
+(deflayer nav
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   del    ;; NUM
+  XX   M-q  XX   XX   XX   M-t  XX   S-A-◀ S-A-▼ S-A-▲ S-A-▶ XX  XX   XX ;; Q
+  XX   XX   @scam2   @scam3   @scam1   @scam4   M-[  M-S-[ M-S-] M-]  XX   XX   XX        ;; A
+  XX   XX   M-w  XX   XX   XX   M-n  ◀    ▼    ▲    ▶    XX    XX         ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer sym
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  -   XX   XX    ;; Q
+  XX   1    2    3    4    5    6    7    8    9    0    `   XX             ;; A
+  XX   XX   XX   S-/  [    ]    S-[  S-]  XX   .    /   XX   XX           ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer sublayer
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   XX   @subl-rayc XX  XX  XX   XX  XX   XX   XX   XX  XX XX ;; Q
+  XX   @subl-apps @subl-aero  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; A
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer apps
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   @app-whatsapp XX XX  XX   XX   XX   XX   XX   XX   XX   XX   XX ;; Q
+  XX   XX   @app-spotify  XX @app-librewolf XX XX @app-kitty XX XX  XX   XX XX ;; A
+  XX   XX   XX   @app-chrome @app-vscode @app-brave XX @app-discord XX XX XX XX XX ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer raycast
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   XX   @rayc-emoji XX  XX   XX   XX   XX   XX   XX   XX   XX   XX ;; Q
+  XX   XX   XX   XX   XX   @rayc-goog XX  XX   XX   @rayc-file XX  XX   XX  ;; A
+  XX   XX   XX   @rayc-clip XX  XX   XX   XX   XX   XX   XX   XX   XX     ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer aerospace
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX                    ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @aero-smart-dec @aero-smart-inc XX ;; NUM
+  XX   @aero-ws-1 @aero-ws-2 @aero-ws-3 @aero-ws-4 @aero-ws-5 @aero-ws-6 @aero-ws-7 @aero-ws-8 @aero-ws-9 @aero-ws-10 XX XX XX ;; Q
+  @aero-exit @aero-resize-w-inc @aero-resize-h-dec @aero-resize-h-inc @aero-resize-w-dec XX @aero-focus-h @aero-focus-j @aero-focus-k @aero-focus-l @aero-layout-adn XX XX ;; A
+  lsft @aero-full-scr   XX  @aero-reload  @aero-float XX   XX   XX   XX   XX   @aero-layout-spt  XX  rsft ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX               ;; MOD
+)
+
+(deflayer system
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   mute XX   XX   @kanata-reload   XX   XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
+  XX   XX   XX   XX   XX   XX  prev vold volu next ▶⏸ XX  XX          ;; A
+  XX   XX   XX   XX   XX   M-C-q XX  mute M-,  XX  XX   XX   XX          ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)

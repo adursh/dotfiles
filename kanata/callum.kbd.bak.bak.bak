@@ -1,0 +1,200 @@
+(defcfg
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+  )
+  process-unmapped-keys no
+  log-layer-changes no
+  danger-enable-cmd yes
+  concurrent-tap-hold yes
+)
+
+(defvar
+  tap-time 200
+  hold-time 200
+  subl-time 200
+)
+
+(defsrc
+  esc
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps   a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft
+  fn     lctl lalt lmet          spc         rmet ralt ◀    ▼    ▶
+)
+
+;; ============================================================
+;; LAYER TRIGGERS
+;; ============================================================
+(defalias
+  ;; lmet: tap = ret, hold = callum-mods layer
+  lmet-ret  (tap-hold-press $tap-time $hold-time ret (layer-while-held callum-mods))
+  ;; rmet: tap = bspc, hold = sym layer
+  rmet-sym  (tap-hold-press $tap-time $hold-time bspc (layer-while-held sym))
+  ;; caps: tap = esc, hold = nav layer
+  caps-nav  (tap-hold-press $tap-time $hold-time esc (layer-while-held nav))
+  ;; lalt: tap = lalt, hold = sublayer
+  lalt-subl (tap-hold-press $subl-time $subl-time lalt (layer-while-held sublayer))
+)
+
+;; ============================================================
+;; SUBLAYER ENTRIES
+;; ============================================================
+(defalias
+  subl-apps (tap-hold-press $subl-time $subl-time a (layer-while-held apps))
+  subl-rayc (tap-hold-press $subl-time $subl-time r (layer-while-held raycast))
+  subl-aero (tap-hold-press $subl-time $subl-time y (layer-toggle aerospace))
+)
+
+;; ============================================================
+;; SCAM ALIASES (hyper key combos)
+;; ============================================================
+(defalias
+  scam2 S-C-A-M-2   ;; BetterDisplay fav res 1
+  scam3 S-C-A-M-3   ;; BetterDisplay fav res 2
+  scam6 S-C-A-M-6   ;; homerow
+  scam0 S-C-A-M-0   ;; cleanshot capture area
+  scam9 S-C-A-M-9   ;; cleanshot capture previous area
+  scatb S-C-A-M-tab ;; cleanshot capture history
+  scam= S-C-A-M-=   ;; cleanshot capture history
+  scamw S-C-A-M-w   ;; paste app
+  scamz S-C-A-M-z   ;; mouseless app
+  scamd S-C-A-M-d   ;; presentify app
+  scamg S-C-A-M-g   ;; raycast
+  scam; S-C-A-M-;   ;;
+  scamb S-C-A-M-b   ;; raycast snippets
+  scamt S-C-A-M-t   ;;
+)
+
+;; ============================================================
+;; APP LAUNCHERS
+;; ============================================================
+(defalias
+  app-brave     (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Brave Browser'")
+  app-kitty     (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'kitty'")
+  app-whatsapp  (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'WhatsApp'")
+  app-spotify   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Spotify'")
+  app-librewolf (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'LibreWolf'")
+  app-vscode    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Visual Studio Code'")
+  app-chrome    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Google Chrome'")
+  app-discord   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Discord'")
+)
+
+;; ============================================================
+;; RAYCAST
+;; ============================================================
+(defalias
+  rayc-emoji (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
+  rayc-goog  (cmd open "raycast://extensions/mblode/google-search/index")
+  rayc-file  (cmd open "raycast://extensions/raycast/file-search/search-files")
+  rayc-clip  (cmd open "raycast://extensions/raycast/clipboard-history/index")
+)
+
+;; ============================================================
+;; AEROSPACE
+;; ============================================================
+(defalias
+  aero-focus-prev  A-p
+  aero-focus-next  A-n
+  aero-move-h      A-S-h
+  aero-move-j      A-S-j
+  aero-move-k      A-S-k
+  aero-move-l      A-S-l
+  aero-resize-dec  A--
+  aero-resize-inc  A-=
+  aero-ws-1        A-1
+  aero-ws-2        A-2
+  aero-ws-3        A-3
+  aero-ws-4        A-4
+  aero-ws-5        A-5
+  aero-ws-6        A-6
+  aero-ws-7        A-7
+  aero-ws-8        A-8
+  aero-ws-9        A-9
+  aero-ws-10       A-0
+)
+
+;; ============================================================
+;; LAYERS
+;; ============================================================
+
+(deflayer main
+  caps
+  grv          1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab          q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @caps-nav    a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft         z    x    c    v    b    n    m    ,    .    /    ▲    rsft
+  fn           lctl @lalt-subl @lmet-ret    spc         @rmet-sym ralt ◀    ▼    ▶
+)
+
+(deflayer callum-mods
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    (one-shot 2000 lctl) (one-shot 2000 lsft) (one-shot 2000 lalt) (one-shot 2000 lmet) _ _ (one-shot 2000 rmet) (one-shot 2000 ralt) (one-shot 2000 rsft) (one-shot 2000 rctl) _ _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer nav
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    del
+  _    _    _    _    _    M-t    _    S-A-◀ S-A-▼ S-A-▲ S-A-▶ _   _    _
+  _    _    _    M-[  M-]  _    ◀    ▼    ▲    ▶    _    _    _
+  _    _    M-w  _    _    _    M-n  _    _    _    _    _    _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer nav
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    del
+  _    M-q    _    _    _    M-t    _    S-A-◀ S-A-▼ S-A-▲ S-A-▶ _   _    _
+  _    _    _    _    _    _    M-[    M-S-[    M-S-]    M-]    _    _    _
+  _    _    M-w  _    _    _    M-n     ◀    ▼    ▲    ▶    _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer sym
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  -    _    _
+  _    1    2    3    4    5    6    7    8    9    0    `    _
+  _    _    _    S-/  [    ]    S-[  S-]  _    .    /    _    _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer sublayer
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    @subl-rayc _    _    @subl-aero _    _    _    _    _    _    _
+  _    @subl-apps _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer apps
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    @app-whatsapp _    _    _    _    _    _    _    _    _    _    _
+  _    _    @app-spotify  _    @app-librewolf _ _  @app-kitty _   _    _    _    _
+  _    _    _    @app-chrome @app-vscode @app-brave _ @app-discord _ _ _   _    _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer raycast
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    @rayc-emoji _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    @rayc-goog _    _    _    @rayc-file _   _    _
+  _    _    _    @rayc-clip _    _    _    _    _    _    _    _    _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer aerospace
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    @aero-ws-1 @aero-ws-2 @aero-ws-3 @aero-ws-4 @aero-ws-5 @aero-ws-6 @aero-ws-7 @aero-ws-8 @aero-ws-9 @aero-ws-10 @aero-resize-dec _ _
+  _    @aero-focus-prev _ _  @aero-focus-next _ @aero-move-h @aero-move-j @aero-move-k @aero-move-l _ _ _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _              _              _    _    _    _    _
+)
