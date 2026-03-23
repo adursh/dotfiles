@@ -95,8 +95,7 @@
 
 (defalias
   ar-ex     (layer-switch main)
-  ar-cw     A-x
-  ar-qw     A-S-x
+  ar-qw      A-q
   ar-rld     A-S-c
   ar-fcu     A-u
   ar-fci     A-i
@@ -228,9 +227,9 @@
 (deflayer aerospace
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX            ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @ar-smtd   @ar-smti   XX ;; NUM
-  XX   XX   XX   XX   XX   @ar-lytst   @ar-lytad   @ar-fcu   @ar-fci   @ar-fco   @ar-fcp   XX   XX   XX ;; Q
+  XX   @ar-qw   XX   XX   XX   @ar-lytst   @ar-lytad   @ar-fcu   @ar-fci   @ar-fco   @ar-fcp   XX   XX   XX ;; Q
   @ar-ex @ar-ws1 @ar-ws2 @ar-ws3 @ar-ws4 @ar-ws5 @ar-ws6 @ar-ws7 @ar-ws8 @ar-ws9 @ar-ws10 XX   XX ;; A
-  lsft @ar-fsc   @ar-cw   @ar-rld   @ar-flt   XX   XX  @ar-rswi @ar-rshd @ar-rshi @ar-rswd  XX    rsft ;; Z
+  lsft @ar-fsc   @ar-qw   @ar-rld   @ar-flt   XX   XX  @ar-rswi @ar-rshd @ar-rshi @ar-rswd  XX    rsft ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX               ;; MOD
 )
 
