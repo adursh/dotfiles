@@ -35,7 +35,7 @@
   ;; caps: tap = esc, hold = nav layer
   caps-nav  (tap-hold-press $tap-time $hold-time esc (layer-while-held nav))
   ;; lalt: tap = lalt, hold = sublayer
-  lalt-subl (tap-hold-press $subl-time $subl-time lalt (layer-while-held sublayer))
+  ivt-subl (tap-hold-press $subl-time $subl-time ' (layer-while-held sublayer))
   ;; w: tap = w, hold = system layer
   tab-sys     (tap-hold-release $tap-time $hold-time tab (layer-while-held system))
 )
@@ -43,11 +43,11 @@
 ;; ============================================================
 ;; SUBLAYER ENTRIES
 ;; ============================================================
+
 (defalias
   subl-apps (layer-while-held apps)
   subl-rayc (layer-while-held raycast)
-  ;; subl-aero (tap-hold-press $subl-time $subl-time s (layer-toggle aerospace))
-  subl-aero (layer-switch aerospace)
+  subl-aero (layer-while-held aerospace)
 )
 
 ;; ============================================================
@@ -74,6 +74,8 @@
   app-vscode    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Visual Studio Code'")
   app-chrome    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Google Chrome'")
   app-discord   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Discord'")
+  app-settings   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'System Settings'")
+  app-finder   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Finder'")
 )
 
 ;; ============================================================
@@ -86,40 +88,44 @@
   rayc-clip  (cmd open "raycast://extensions/raycast/clipboard-history/index")
 )
 
+
 ;; ============================================================
 ;; AEROSPACE
 ;; ============================================================
+
 (defalias
-  aero-exit         (layer-switch main)
-  aero-reload       A-S-r
-  aero-focus-h      A-h
-  aero-focus-j      A-j
-  aero-focus-k      A-k
-  aero-focus-l      A-l
-  aero-move-h       A-S-h
-  aero-move-j       A-S-j
-  aero-move-k       A-S-k
-  aero-move-l       A-S-l
-  aero-resize-w-inc A-S-a
-  aero-resize-h-dec A-S-s
-  aero-resize-h-inc A-S-d
-  aero-resize-w-dec A-S-f
-  aero-smart-dec    A--
-  aero-smart-inc    A-=
-  aero-full-scr     A-S-z
-  aero-float        A-S-v
-  aero-layout-adn   A-;
-  aero-layout-spt   A-/
-  aero-ws-1         A-1
-  aero-ws-2         A-2
-  aero-ws-3         A-3
-  aero-ws-4         A-4
-  aero-ws-5         A-5
-  aero-ws-6         A-6
-  aero-ws-7         A-7
-  aero-ws-8         A-8
-  aero-ws-9         A-9
-  aero-ws-10        A-0
+  ar-ex     (layer-switch main)
+  ar-cw     A-x
+  ar-qw     A-S-x
+  ar-rld     A-S-c
+  ar-fcu     A-u
+  ar-fci     A-i
+  ar-fco     A-o
+  ar-fcp     A-p
+  ar-mvu     A-S-u
+  ar-mvi     A-S-i
+  ar-mvo     A-S-o
+  ar-mvp     A-S-p
+  ar-rswi    A-m
+  ar-rshd    A-,
+  ar-rshi    A-.
+  ar-rswd    A-/
+  ar-smtd     A--
+  ar-smti     A-=
+  ar-fsc     A-z
+  ar-flt     A-v
+  ar-lytad    A-y
+  ar-lytst    A-t
+  ar-ws1    A-1
+  ar-ws2    A-2
+  ar-ws3    A-3
+  ar-ws4    A-4
+  ar-ws5    A-5
+  ar-ws6    A-6
+  ar-ws7    A-7
+  ar-ws8    A-8
+  ar-ws9    A-9
+  ar-ws10   A-0
 )
 
 ;; ============================================================
@@ -136,6 +142,10 @@
     kanata-reload (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kanatareload.sh") 500 lrld)
 )
 
+(defalias
+    kanata-reload1 (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/notify.sh Kanata config-reloaded!") 500 lrld)
+)
+
 
 ;; ============================================================
 ;; LAYERS
@@ -146,9 +156,9 @@
   ;; caps   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX        ;; ESC + F-ROW
   grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc  ;; NUM
   @tab-sys    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
-  @caps-nav a  s    d   f    g    h    j    k    l    ;    '    ret        ;; A
+  @caps-nav a  s    d   f    g    h    j    k    l    ;    @ivt-subl    ret        ;; A
   lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft       ;; Z
-  fn     lctl @lalt-subl @lmet-ret    spc    @rmet-sym ralt ◀   ▼    ▶    ;; MOD
+  fn     lctl lalt @lmet-ret    spc    @rmet-sym ralt ◀   ▼    ▶    ;; MOD
 )
 
 
@@ -173,10 +183,10 @@
 (deflayer nav
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   del    ;; NUM
-  XX   M-q  XX   XX   XX   M-t  XX   S-A-◀ S-A-▼ S-A-▲ S-A-▶ XX  XX   XX ;; Q
+  XX   M-q  XX   XX   XX   M-t  XX   S-A-◀ S-A-▲ S-A-▼ S-A-▶ XX  XX   XX ;; Q
   XX   XX   @scam2   @scam3   @scam1   @scam4   M-[  M-S-[ M-S-] M-]  XX   XX   XX        ;; A
   XX   XX   M-w  XX   XX   XX   M-n  ◀    ▼    ▲    ▶    XX    XX         ;; Z
-  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+  XX   XX   XX   XX             @scam3             XX   XX   XX   XX   XX     ;; MOD
 )
 
 (deflayer sym
@@ -194,13 +204,13 @@
   XX   XX   XX   @subl-rayc XX  XX  XX   XX  XX   XX   XX   XX  XX XX ;; Q
   XX   @subl-apps @subl-aero  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; A
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; Z
-  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+  XX   XX   XX   @subl-aero           XX            XX   XX   XX   XX   XX     ;; MOD
 )
 
 (deflayer apps
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
-  XX   XX   @app-whatsapp XX XX  XX   XX   XX   XX   XX   XX   XX   XX   XX ;; Q
+  XX   XX   @app-whatsapp @app-finder XX  XX   XX   XX   @app-settings   XX   XX   XX   XX   XX ;; Q
   XX   XX   @app-spotify  XX @app-librewolf XX XX @app-kitty XX XX  XX   XX XX ;; A
   XX   XX   XX   @app-chrome @app-vscode @app-brave XX @app-discord XX XX XX XX XX ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
@@ -216,19 +226,19 @@
 )
 
 (deflayer aerospace
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX                    ;; ESC + F-ROW
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @aero-smart-dec @aero-smart-inc XX ;; NUM
-  XX   @aero-ws-1 @aero-ws-2 @aero-ws-3 @aero-ws-4 @aero-ws-5 @aero-ws-6 @aero-ws-7 @aero-ws-8 @aero-ws-9 @aero-ws-10 XX XX XX ;; Q
-  @aero-exit @aero-resize-w-inc @aero-resize-h-dec @aero-resize-h-inc @aero-resize-w-dec XX @aero-focus-h @aero-focus-j @aero-focus-k @aero-focus-l @aero-layout-adn XX XX ;; A
-  lsft @aero-full-scr   XX  @aero-reload  @aero-float XX   XX   XX   XX   XX   @aero-layout-spt  XX  rsft ;; Z
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX            ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @ar-smtd   @ar-smti   XX ;; NUM
+  XX   XX   XX   XX   XX   @ar-lytst   @ar-lytad   @ar-fcu   @ar-fci   @ar-fco   @ar-fcp   XX   XX   XX ;; Q
+  @ar-ex @ar-ws1 @ar-ws2 @ar-ws3 @ar-ws4 @ar-ws5 @ar-ws6 @ar-ws7 @ar-ws8 @ar-ws9 @ar-ws10 XX   XX ;; A
+  lsft @ar-fsc   @ar-cw   @ar-rld   @ar-flt   XX   XX  @ar-rswi @ar-rshd @ar-rshi @ar-rswd  XX    rsft ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX               ;; MOD
 )
 
 (deflayer system
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
-  XX   mute XX   XX   @kanata-reload   XX   XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
+  XX   mute XX   XX   @kanata-reload1   XX   XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
   XX   XX   XX   XX   XX   XX  prev vold volu next ▶⏸ XX  XX          ;; A
-  XX   XX   XX   XX   XX   M-C-q XX  mute M-,  XX  XX   XX   XX          ;; Z
+  XX   XX   XX   @kanata-reload1   XX   M-C-q XX  mute M-,  XX  XX   XX   XX          ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
 )
