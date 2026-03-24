@@ -193,7 +193,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
   XX   S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  -   XX   XX    ;; Q
   XX   1    2    3    4    5    6    7    8    9    0    `   XX             ;; A
-  XX   XX   XX   S-/  [    ]    S-[  S-]  XX   .    /   XX   XX           ;; Z
+  XX   S-`  XX   S-/  [    ]    S-[  S-]  XX   .    /   XX   XX           ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
 )
 
@@ -237,7 +237,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
   XX   mute XX   XX   @kanata-reload1   XX   XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
-  XX   XX   XX   XX   XX   XX  prev vold volu next ▶⏸ XX  XX          ;; A
+  XX   XX   XX   XX   XX   XX  prev vold volu next ▶⏸ XX XX          ;; A
   XX   XX   XX   @kanata-reload1   XX   M-C-q XX  mute M-,  XX  XX   XX   XX          ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
 )
