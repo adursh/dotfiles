@@ -49,20 +49,36 @@ alias grep="rg"
 alias v="nvim"
 alias sc="source ~/.zshrc"
 alias zsh-plugin-update='for d in "$ZSH_PLUGINS_DIR"/*/; do git -C "$d" pull; done'
+alias gs="git status"
 
-# ─── ZSH-VI-MODE ──────────────────────────────────────────────────────────────
-ZVM_INIT_MODE=sourcing
+## ─── ZSH-VI-MODE ──────────────────────────────────────────────────────────────
+# ZVM_INIT_MODE=sourcing
+# ZVM_LAZY_KEYBINDINGS=false
+# ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+# ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
+# ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
+# source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
+## everything that hooks into ZLE must live here — zvm resets widgets on init
+# zvm_after_init() {
+#   eval "$(fzf --zsh)"
+#   eval "$(starship init zsh)"
+#   source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+#   ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+#   source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  # must be last
+# }
+
 ZVM_LAZY_KEYBINDINGS=false
 ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
 ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
 ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
-source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
-# everything that hooks into ZLE must live here — zvm resets widgets on init
 zvm_after_init() {
   eval "$(fzf --zsh)"
   eval "$(starship init zsh)"
   source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
   ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-  source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  # must be last
+  source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 }
+
+source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
