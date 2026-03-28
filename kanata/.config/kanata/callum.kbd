@@ -34,8 +34,8 @@
   rmet-sym  (tap-hold-press $tap-time $hold-time bspc (layer-while-held sym))
   ;; caps: tap = esc, hold = nav layer
   caps-nav  (tap-hold-press $tap-time $hold-time esc (layer-while-held nav))
-  ;; ivt: tap = inverted-comma, hold = sublayer
-  ivt-subl (tap-hold-press $subl-time $subl-time ' (layer-while-held sublayer))
+  ;; scln: tap = inverted-comma, hold = sublayer
+  scln-subl (tap-hold-press $subl-time $subl-time ; (layer-while-held sublayer))
   ;; w: tap = w, hold = system layer
   tab-sys     (tap-hold-release $tap-time $hold-time tab (layer-while-held system))
 )
@@ -55,37 +55,36 @@
 ;; ============================================================
 
 (defalias
-  scam1 S-C-A-M-1   ;; homerow click
-  scam2 S-C-A-M-2   ;; homerow search
-  scam3 S-C-A-M-3   ;; homerow scroll
-  scam4 S-C-A-M-4   ;; raycast
-  ;; scam5 S-C-A-M-5   ;; raycast snippets
+  scam-hrclc C-A-M-m   ;; homerow click
+  scam-hrsrc M-S-C-A-/  ;; homerow search
+  scam-hrscl C-A-M-.   ;; homerow scroll
+  scam-rc C-A-M-spc   ;; raycast
 )
 
 ;; ============================================================
 ;; APP LAUNCHERS
 ;; ============================================================
 (defalias
-  app-brave     (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Brave Browser'")
-  app-ghostty   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Ghostty'")
-  app-whatsapp  (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'WhatsApp'")
-  app-spotify   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Spotify'")
-  app-librewolf (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'LibreWolf'")
-  app-vscode    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Visual Studio Code'")
-  app-chrome    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Google Chrome'")
-  app-discord   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Discord'")
-  app-settings   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'System Settings'")
-  app-finder   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Finder'")
+  abrave     (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Brave Browser'")
+  aghostty   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Ghostty'")
+  awhatsapp  (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'WhatsApp'")
+  aspotify   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Spotify'")
+  alibrewolf (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'LibreWolf'")
+  avscode    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Visual Studio Code'")
+  achrome    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Google Chrome'")
+  adiscord   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Discord'")
+  asettings   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'System Settings'")
+  afinder   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Finder'")
 )
 
 ;; ============================================================
 ;; RAYCAST
 ;; ============================================================
 (defalias
-  rayc-emoji (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
-  rayc-goog  (cmd open "raycast://extensions/mblode/google-search/index")
-  rayc-file  (cmd open "raycast://extensions/raycast/file-search/search-files")
-  rayc-clip  (cmd open "raycast://extensions/raycast/clipboard-history/index")
+  ryemoji (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
+  rygoog  (cmd open "raycast://extensions/mblode/google-search/index")
+  ryfile  (cmd open "raycast://extensions/raycast/file-search/search-files")
+  ryclip  (cmd open "raycast://extensions/raycast/clipboard-history/index")
 )
 
 
@@ -138,13 +137,10 @@
 
 ;; reload kanata with notification
 (defalias
-    kanata-reload (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kanatareload.sh") 500 lrld)
+    ;;live reload uses old config if the reload is failed
+    lrld (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/notify.sh Kanata live-reloaded!") 500 lrld)
+    hrld (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/notify.sh Kanata hard-reloading! && launchctl kickstart -k gui/501/com.nvc.kanata"))
 )
-
-(defalias
-    kanata-reload1 (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/notify.sh Kanata config-reloaded!") 500 lrld)
-)
-
 
 ;; ============================================================
 ;; LAYERS
@@ -155,7 +151,7 @@
   ;; caps   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX        ;; ESC + F-ROW
   grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc  ;; NUM
   @tab-sys    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
-  @caps-nav a  s    d   f    g    h    j    k    l    ;    @ivt-subl    ret        ;; A
+  @caps-nav a  s    d   f    g    h    j    k    l    @scln-subl   '    ret        ;; A
   lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft       ;; Z
   fn     lctl lalt @lmet-ret    spc    @rmet-sym ralt ◀   ▼    ▶    ;; MOD
 )
@@ -164,10 +160,10 @@
 (deflayer callum-mods
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
-  M-tab   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; Q
-  XX   (one-shot 2000 lctl) (one-shot 2000 lsft) (one-shot 2000 lalt) (one-shot 2000 lmet) XX XX (one-shot 2000 rmet) (one-shot 2000 ralt) (one-shot 2000 rsft) (one-shot 2000 rctl) XX @app-ghostty ;; A
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; Z
-  XX   XX   XX   XX             @scam4             @app-ghostty   XX   XX   XX   XX     ;; MOD ;;duplicate launcher and terminal keymap for convenience
+  M-tab  @ar-ws1  @ar-ws2  @ar-ws3  @ar-ws4  @ar-ws5  @ar-ws6  @ar-ws7  @ar-ws8  @ar-ws9  @ar-ws10   XX   XX   XX     ;; Q
+  XX   (one-shot 2000 lctl) (one-shot 2000 lsft) (one-shot 2000 lalt) (one-shot 2000 lmet) XX XX (one-shot 2000 rmet) (one-shot 2000 ralt) (one-shot 2000 rsft) (one-shot 2000 rctl) XX XX ;; A
+  lsft   XX   XX   XX   XX   XX   XX   XX   XX   @scam-hrscl   @scam-hrclc   XX   rsft          ;; Z
+  XX   XX   XX   XX             @scam-rc             @aghostty   XX   XX   XX   XX     ;; MOD ;;duplicate launcher and terminal keymap for convenience
 )
 
 ;; (deflayer nav
@@ -179,12 +175,21 @@
 ;;   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
 ;; )
 
+;; (deflayer sym
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+;;   S-`   S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  -   =   XX    ;; Q
+;;   XX   1    2    3    4    5    6    7    8    9    0    `   XX             ;; A
+;;   lsft   XX  XX   XX   [    S-[  S-]  ]  XX   XX   XX   \   rsft           ;; Z
+;;   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+;; )
+
 (deflayer sym
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
-  XX   S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  -   =   XX    ;; Q
-  XX   1    2    3    4    5    6    7    8    9    0    `   XX             ;; A
-  lsft   S-`  XX   XX   [    S-[  S-]  ]  XX   XX   XX   \   rsft           ;; Z
+  S-`  1    2    3    4    5    6    7    8    9    0    -    =    XX    ;; Q
+  XX  S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0    `   XX             ;; A
+  lsft   XX  XX   XX   [    S-[  S-]  ]  XX   XX   XX   \   rsft           ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
 )
 
@@ -200,18 +205,18 @@
 (deflayer apps
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
-  XX   XX   @app-whatsapp @app-finder XX  XX   XX   XX   @app-settings   XX   XX   XX   XX   XX ;; Q
-  XX   XX   @app-spotify  XX @app-librewolf XX XX XX XX XX  XX   XX XX ;; A
-  XX   XX   XX   @app-chrome @app-vscode @app-brave XX @app-discord XX XX XX XX XX ;; Z
+  XX   XX   @awhatsapp @afinder XX  XX   XX   XX   @asettings   XX   XX   XX   XX   XX ;; Q
+  XX   XX   @aspotify  XX @alibrewolf XX XX XX XX XX  XX   XX XX ;; A
+  XX   XX   XX   @achrome @avscode @abrave XX @adiscord XX XX XX XX XX ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
 )
 
 (deflayer raycast
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
-  XX   XX   XX   @rayc-emoji XX  XX   XX   XX   XX   XX   XX   XX   XX   XX ;; Q
-  XX   XX   XX   XX   XX   @rayc-goog XX  XX   XX   @rayc-file XX  XX   XX  ;; A
-  XX   XX   XX   @rayc-clip XX  XX   XX   XX   XX   XX   XX   XX   XX     ;; Z
+  XX   XX   XX   @ryemoji XX  XX   XX   XX   XX   XX   XX   XX   XX   XX ;; Q
+  XX   XX   XX   XX   XX   @rygoog XX  XX   XX   @ryfile XX  XX   XX  ;; A
+  XX   XX   XX   @ryclip XX  XX   XX   XX   XX   XX   XX   XX   XX     ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
 )
 
@@ -227,17 +232,17 @@
 (deflayer system
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
-  XX   M-q  M-w  XX   @kanata-reload1  M-t  XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
-  XX   XX   XX   XX   XX   XX   prev vold volu next ▶⏸   XX   XX          ;; A
-  XX   XX   XX   @kanata-reload1   XX   M-C-q XX  mute M-,  XX  XX   XX   XX          ;; Z
+  XX   M-q  M-w  XX   @lrld  M-t  XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
+  XX   XX   XX   XX   XX   XX   prev vold volu next ▶⏸  XX   XX          ;; A
+  XX   XX   XX   @hrld   XX   M-C-q XX  mute M-,  XX  XX   XX   XX          ;; Z
   XX   XX   XX   M--             XX             M-=   XX   XX   XX   XX     ;; MOD
 )
 
 (deflayer nav
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX    ;; NUM
-  XX   M-q  M-w  XX   M-r   M-t   XX   S-A-◀ S-A-▲ S-A-▼ S-A-▶ XX  XX   XX ;; Q
-  XX   XX   @scam2   @scam3   @scam1   @scam4   M-[  M-S-[ M-S-] M-]  XX   XX   XX        ;; A
-  lsft   XX   XX   XX   XX   XX   XX  ◀    ▼    ▲    ▶   XX  rsft         ;; Z
-  XX   XX   XX   M--             @scam3             M-=   XX   XX   XX   XX     ;; MOD
+  XX   XX  XX  XX   XX   XX  XX  S-A-◀ S-A-▲ S-A-▼ S-A-▶  XX  XX   XX ;; Q
+  XX   XX   XX   XX   XX   XX   M-[  M-S-[ M-S-] M-]  XX   XX   XX        ;; A
+  lsft   XX   XX   XX   XX   XX   XX   ◀    ▼    ▲    ▶   XX  rsft         ;; Z
+  XX   XX   XX   M--             @scam-rc             A-bspc   XX   XX   XX   XX     ;; MOD
 )
