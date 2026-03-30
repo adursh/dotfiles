@@ -10,15 +10,9 @@ after-startup-command = [
 ]
 
 # sketchybar
-# exec-on-workspace-change = [
-#   '/bin/bash', '-c',
-#   'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
-# ]
-
-# open apps in certain ws
 exec-on-workspace-change = [
   '/bin/bash', '-c',
-  '~/.config/aerospace/on-workspace-change.sh $AEROSPACE_FOCUSED_WORKSPACE'
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
 ]
 
 # disabled — fight layout and cause chaos on restart
@@ -36,9 +30,9 @@ key-mapping.preset = "qwerty"
 inner.horizontal = 6
 inner.vertical = 6
 outer.left = 6
-outer.right =6
-outer.top = 6
-outer.bottom = 6
+outer.right =4
+outer.top = 8
+outer.bottom = 2
 
 
 ################################
@@ -68,47 +62,48 @@ outer.bottom = 6
 # APPLICATIONS
 ###############################
 
-# alt-enter = "exec-and-forget open -na 'kitty'"
+# alt-enter = "exec-and-forget open -a 'ghostty'"
+# alt-enter = "exec-and-forget /Applications/ghostty.app/Contents/MacOS/kitty --single-instance"
 # alt-b     = "exec-and-forget open -a 'Brave Browser'"
-alt-i     = "exec-and-forget open -a 'System Settings'"
-alt-e     = "exec-and-forget open -a 'Finder'"
 
 # change layouts
-alt-shift-semicolon  = "layout accordion horizontal"
-# alt-semicolon  = "layout tiles horizontal vertical"
+alt-y  = "layout accordion horizontal vertical"
+alt-t  = "layout tiles horizontal vertical"
 
 
 ###############################
 # WINDOW FOCUS (VIM STYLE)
 ###############################
 
-# alt-h = "focus --boundaries-action wrap-around-the-workspace left"
-# alt-j = "focus --boundaries-action wrap-around-the-workspace down"
-# alt-k = "focus --boundaries-action wrap-around-the-workspace up"
-# alt-l = "focus --boundaries-action wrap-around-the-workspace right"
+alt-u = "focus --boundaries-action wrap-around-the-workspace left"
+alt-i = "focus --boundaries-action wrap-around-the-workspace down"
+alt-o = "focus --boundaries-action wrap-around-the-workspace up"
+alt-p = "focus --boundaries-action wrap-around-the-workspace right"
 
-alt-n = "focus --boundaries-action wrap-around-the-workspace dfs-next"
-alt-p = "focus --boundaries-action wrap-around-the-workspace dfs-prev"
+# alt-n = "focus --boundaries-action wrap-around-the-workspace dfs-next"
+# alt-p = "focus --boundaries-action wrap-around-the-workspace dfs-prev"
 
 
 ###############################
 # MOVE WINDOWS
 ###############################
 
-alt-shift-h = "move left"
-alt-shift-j = "move down"
-alt-shift-k = "move up"
-alt-shift-l = "move right"
+alt-shift-u = "move left"
+alt-shift-i = "move down"
+alt-shift-o = "move up"
+alt-shift-p = "move right"
 
 ###############################
 # RESIZE
 ###############################
 
-# alt-ctrl-h = "resize width -30"
-# alt-ctrl-l = "resize width +30"
-# alt-ctrl-k = "resize height -30"
-# alt-ctrl-j = "resize height +30"
+# Resize 4 sides
+alt-m = "resize width +30"
+alt-comma = "resize height -30"
+alt-period = "resize height +30"
+alt-slash = "resize width -30"
 
+# aerosapce smart resize lol
 alt-minus = "resize smart -30"
 alt-equal = "resize smart +30"
 
@@ -117,10 +112,10 @@ alt-equal = "resize smart +30"
 # WINDOW CONTROLS
 ###############################
 
-alt-q           = "close --quit-if-last-window"
-alt-w           = "close"
+# alt-q = "close --quit-if-last-window"
+# alt-x = "close --quit-if-last-window"
 alt-v = "layout floating tiling"
-alt-f           = "fullscreen"
+alt-z = "fullscreen"
 
 
 ###############################
@@ -160,14 +155,18 @@ alt-shift-0 = "move-node-to-workspace 10 --focus-follows-window"
 # SCREENSHOT
 ###############################
 
-alt-shift-p = "exec-and-forget screencapture -i -c ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
+# alt-shift-p = "exec-and-forget screencapture -i -c ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
 
 
 ###############################
 # CONFIG RELOAD
 ###############################
 
-alt-shift-r = "reload-config"
+# alt-shift-c = "reload-config"
+alt-shift-c = [
+  "exec-and-forget aerospace reload-config",
+  "exec-and-forget $HOME/.config/scripts/macos/notify.sh Aerospace config-reloaded!"
+]
 
 
 ################################
@@ -200,7 +199,7 @@ run = "layout floating"
 ##############################
 
 [[on-window-detected]]
-if.app-id = "net.kovidgoyal.kitty"
+if.app-id = "net.kovidgoyal.ghostty"
 run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
@@ -242,6 +241,10 @@ run = "move-node-to-workspace 8"
 [[on-window-detected]]
 if.app-id = "net.mullvad.mullvadbrowser"
 run = "move-node-to-workspace 8"
+
+[[on-window-detected]]
+if.app-id = "com.brave.browser"
+run = "move-node-to-workspace 9"
 
 [[on-window-detected]]
 if.app-id = "com.google.Chrome"
