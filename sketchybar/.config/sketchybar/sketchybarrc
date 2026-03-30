@@ -3,14 +3,15 @@ export CONFIG_DIR="$HOME/.config/sketchybar"
 export PLUGIN_DIR="$CONFIG_DIR/plugins"
 export ITEM_DIR="$CONFIG_DIR/items"
 
+source "$ITEM_DIR/apple.sh"
 source "$CONFIG_DIR/colors.sh"
 
 sketchybar --bar \
-  height=32         \
+  height=30         \
   position=top      \
-  color=$BAR_COLOR  \
+  color=0x80111128 \
+  blur_radius=90    \
   border_width=0    \
-  border_color=$SURFACE1 \
   padding_left=12   \
   padding_right=12  \
   shadow=off        \
