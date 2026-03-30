@@ -1,5 +1,10 @@
-# ─── PATH ─────────────────────────────────────────────────────────────────────
+# ─── PATH ────────────────────────────────────────────────────────────────────
 export PATH="$PATH:/Users/nvc/.local/bin"
+
+# ─── TMUX ────────────────────────────────────────────────────────────────────
+if command -v tmux &>/dev/null && [[ -z "$TMUX" ]]; then
+  tmux new-session -A -s home -c ~
+fi
 
 # ─── HISTORY ──────────────────────────────────────────────────────────────────
 HISTFILE=~/.zsh_history
@@ -50,6 +55,7 @@ alias v="nvim"
 alias sc="source ~/.zshrc"
 alias zsh-plugin-update='for d in "$ZSH_PLUGINS_DIR"/*/; do git -C "$d" pull; done'
 alias gs="git status"
+alias tmux-clean='rm -f ~/.local/share/tmux/resurrect/last && tmux kill-server'
 
 ## ─── ZSH-VI-MODE ──────────────────────────────────────────────────────────────
 # ZVM_INIT_MODE=sourcing
