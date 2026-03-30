@@ -31,7 +31,7 @@ return {
 						"location",
 
 						-- colors
-						color = { fg = "#cdd6f4", bg = "NONE", gui = "italic"}, -- gui: bold, italic, underline
+						color = { fg = "grey", bg = "NONE", gui = "italic"}, -- gui: bold, italic, underline
 
 						-- separators (override just this component's separators)
 						separator = { left = "", right = "" }, -- set to "" to remove

@@ -11,7 +11,7 @@ opt.breakindent = true
 
 -- UI
 opt.number = true
--- opt.relativenumber = true
+opt.relativenumber = true
 opt.cursorline = true
 g.background = "dark"
 
