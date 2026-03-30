@@ -12,6 +12,7 @@
   tap-time 200
   hold-time 200
   subl-time 200
+  tmux-delay 40
 )
 
 (defsrc
@@ -48,6 +49,8 @@
   subl-apps (layer-while-held apps)
   subl-rayc (layer-while-held raycast)
   subl-aero (layer-while-held aerospace)
+  ;; subl-tmux (layer-while-held tmux)
+  subl-tmux (one-shot-press-pcancel 2000 (layer-while-held tmux))
 )
 
 ;; ============================================================
@@ -142,6 +145,29 @@
     hrld (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/notify.sh Kanata hard-reloading! && launchctl kickstart -k gui/501/com.nvc.kanata"))
 )
 
+
+;; ============================================================
+;; TMUX MACROS
+;; ============================================================
+
+(defalias
+  tx-home (macro @aghostty 300 C-spc $tmux-delay h)
+  tx-conf (macro @aghostty 300 C-spc $tmux-delay f)
+  tx-down (macro @aghostty 300 C-spc $tmux-delay w)
+  tx-priv (macro @aghostty 300 C-spc $tmux-delay i)
+  tx-proj (macro @aghostty 300 C-spc $tmux-delay j)
+  tx-dotf (macro @aghostty 300 C-spc $tmux-delay .)
+  tx-sesh (macro @aghostty 300 C-spc $tmux-delay S-t)
+
+  tx-rnmw (macro @aghostty 300 C-spc $tmux-delay ,)
+  tx-rtmx (macro @aghostty 300 C-spc $tmux-delay r)
+  tx-furl (macro @aghostty 300 C-spc $tmux-delay u)
+  tx-tcmd (macro @aghostty 300 C-spc $tmux-delay S-;)
+  tx-splt (macro @aghostty 300 C-spc $tmux-delay /)
+  tx-last (macro @aghostty 300 C-spc $tmux-delay spc)
+)
+
+
 ;; ============================================================
 ;; LAYERS
 ;; ============================================================
@@ -189,7 +215,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
   S-`  1    2    3    4    5    6    7    8    9    0    -    =    XX    ;; Q
   XX  S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0    `   XX             ;; A
-  lsft   XX  XX   XX   [    S-[  S-]  ]  XX   XX   XX   \   rsft           ;; Z
+  lsft   XX  XX   XX   [    S-[  S-]  ]  XX   XX   \   XX   rsft           ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
 )
 
@@ -197,7 +223,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
   XX   XX   XX   @subl-rayc XX  XX  XX   XX  XX   XX   XX   XX  XX XX ;; Q
-  XX   @subl-apps @subl-aero  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; A
+  XX   @subl-apps @subl-tmux  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; A
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; Z
   XX   XX   XX   @subl-aero           XX            XX   XX   XX   XX   XX     ;; MOD
 )
@@ -223,9 +249,9 @@
 (deflayer aerospace
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX            ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @ar-smtd   @ar-smti   XX ;; NUM
-  XX   @ar-qw    XX   XX  @ar-rld   @ar-lytst   @ar-lytad   @ar-fcu   @ar-fci   @ar-fco   @ar-fcp   XX   XX   XX ;; Q
+  XX   @ar-qw    XX   XX  @ar-rld   @ar-lytad  @ar-lytad @ar-fcu   @ar-fci   @ar-fco   @ar-fcp  @ar-smtd  @ar-smti  XX ;; Q
   @ar-ex @ar-ws1 @ar-ws2 @ar-ws3 @ar-ws4 @ar-ws5 @ar-ws6 @ar-ws7 @ar-ws8 @ar-ws9 @ar-ws10 XX   XX ;; A
-  lsft @ar-fsc   @ar-qw   @ar-rld   @ar-flt   XX   XX  @ar-rswi @ar-rshd @ar-rshi @ar-rswd  XX    rsft ;; Z
+  lsft @ar-fsc   @ar-qw   @ar-rld   @ar-flt   XX   XX   @ar-rswi @ar-rshd @ar-rshi @ar-rswd  XX   rsft ;; Z
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX               ;; MOD
 )
 
@@ -233,7 +259,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
   XX   M-q  M-w  XX   @lrld  M-t  XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
-  XX   XX   XX   XX   XX   XX   prev vold volu next ▶⏸  XX   XX          ;; A
+  XX   XX   XX   XX   XX   XX   XX  prev vold volu next ▶⏸   XX          ;; A
   XX   XX   XX   @hrld   XX   M-C-q XX  mute M-,  XX  XX   XX   XX          ;; Z
   XX   XX   XX   M--             XX             M-=   XX   XX   XX   XX     ;; MOD
 )
@@ -241,8 +267,17 @@
 (deflayer nav
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX    ;; NUM
-  XX   XX  XX  XX   XX   XX  XX  S-A-◀ S-A-▲ S-A-▼ S-A-▶  XX  XX   XX ;; Q
+  XX   M-q   M-w  XX  M-r  M-t  XX  S-A-◀ S-A-▼ S-A-▲ S-A-▶ XX  XX   XX ;; Q
   XX   XX   XX   XX   XX   XX   M-[  M-S-[ M-S-] M-]  XX   XX   XX        ;; A
-  lsft   XX   XX   XX   XX   XX   XX   ◀    ▼    ▲    ▶   XX  rsft         ;; Z
+  lsft   XX   XX   XX   XX   XX  XX  ◀    ▼    ▲    ▶   XX  rsft         ;; Z
   XX   XX   XX   M--             @scam-rc             A-bspc   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer tmux
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX             ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX        ;; NUM
+  XX   XX   @tx-down  XX   @tx-rtmx  XX   XX   @tx-furl  @tx-priv  XX  XX  XX  XX  XX  ;; Q
+  XX   XX   XX   XX   @tx-conf  XX   XX   @tx-proj   @tx-sesh  XX   @tx-tcmd XX  XX   ;; A
+  lsft XX   XX   @tx-conf  XX   XX   XX   XX   @tx-rnmw  @tx-dotf  @tx-splt XX  rsft  ;; Z
+  XX   XX   XX   XX             @tx-last            XX   XX   XX   XX   XX  ;; MOD
 )
