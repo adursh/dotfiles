@@ -1,0 +1,182 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "bottom",
+    "position": "top",
+    "exclusive": true,
+    "margin": 0,
+    "spacing": 3,
+    "modules-left": [
+        "custom/arch-logo",
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        // "clock"
+        "custom/notification"
+    ],
+    "modules-right": [
+        "custom/network-speed",
+        "tray",
+        "network",
+        "mpd",
+        "pulseaudio",
+        "backlight",
+        "battery"
+    ],
+    "custom/arch-logo": {
+        "format": " ",
+        // "on-click": "pgrep wofi && pkill wofi || wofi -a",
+        "tooltip-format": "Menu"
+    },
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "warp-on-scroll": false,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "", // Terminal: Core system control (Alacritty / Zsh / Tmux)
+            "2": "", // Browser: LibreWolf for docs, stackoverflow, portals
+            "3": "", // Code Editor: Neovim, VSCode, JetBrains IDEs
+            "4": "", // Media: Spotify / YouTube / VLC
+            "5": "󰍩", // Chat / Notes: Discord, Telegram, Notion, Tusk
+            "6": "", // Virtual Machine / Emulators
+            // "7": "󰙯",
+            "9": "",
+            // "10": "", // Email workspace
+            "urgent": "",
+            "focused": ""
+            // "default": ""
+        }
+    },
+    "hyprland/window": {
+        "format": "{class}",
+        "tooltip": false
+    },
+    "network": {
+        "format-wifi": "{icon} {essid}",
+        "format-icons": [
+            "󰤯", // 0-25% — low
+            "󰤟", // 25-50% — medium-low
+            "󰤢", // 50-75% — medium
+            "󰤥", // 75-100% — strong
+            "󰤨" // full signal (optional)
+        ],
+        "format-ethernet": "󰈁 Ethernet",
+        "format-disconnected": "󰖪 Disconnected",
+        "tooltip-format": "{ifname} → {ipaddr}/{cidr}\nGateway: {gwaddr}\nSSID: {essid} ({signalStrength}%)",
+        // "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        "format-alt": "{icon} {essid}"
+    },
+    "pulseaudio": {
+        "scroll-step": 3,
+        "format": "{icon} {volume}%",
+        "format-bluetooth": " {icon} {volume}%",
+        "format-bluetooth-muted": " 󰝟 {volume}%",
+        "format-muted": "󰝟 {volume}%",
+        "format-source": "",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": [
+                "",
+                "",
+                ""
+            ]
+        },
+        "on-click": "pamixer -t"
+        // "on-click-right": "bluetuith"
+    },
+    "clock": {
+        "format": " {:%I:%M %p}",
+        "tooltip-format": "<big>{:%I:%M %p}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%Y-%m-%d}"
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "{icon} {capacity}%",
+        //"format-full": "{icon} {capacity}%",
+        //"format-charging": " {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": " {capacity}%",
+        //"format-alt": "{icon} {time}",
+        "format-icons": [
+            "󰂎",
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ]
+    },
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "on-click": "brightnessctl set 10%-",
+        "on-click-right": "brightnessctl set +10%"
+    },
+    "custom/network-speed": {
+        "exec": "$HOME/.config/waybar/scripts/network_speed.py",
+        "interval": 1,
+        "tooltip": false
+    },
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "<span foreground='red'><sup></sup></span>",
+            "none": "",
+            "dnd-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-none": "",
+            "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "inhibited-none": "",
+            "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-inhibited-none": ""
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "sleep 0.1 && swaync-client -t -sw",
+        "on-click-right": "sleep 0.1 && swaync-client -d -sw",
+        "escape": true
+    },
+    "tray": {
+        "icon-size": 19,
+        "spacing": 10,
+        "icons": {
+            "blueman": "bluetooth",
+            "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+        }
+    },
+    "custom/spotify": {
+        "exec": "/usr/bin/python3 /home/novice/.config/waybar/scripts/mediaplayer.py --player spotify",
+        "format": "{}",
+        "return-type": "json",
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous"
+    }
+}

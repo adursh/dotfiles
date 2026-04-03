@@ -1,0 +1,125 @@
+;; ============================================================
+;; LAYERS
+;; ============================================================
+
+(deflayer template
+  ;;     a      s      d      f      g      h      j      k      l      ;      '
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;;F1
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     ;;NUM
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     ;;Q
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;;A
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;;Z
+  XX    XX   XX     XX         XX             XX      XX         XX     XX     XX                   ;;MOD
+)
+
+
+(deflayer main
+  caps    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ;; ESC + F-ROW
+  ;; caps   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX        ;; ESC + F-ROW
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc  ;; NUM
+  @tab-sys    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
+  @caps-nav a  s    d   f    g    h    j    k    l    @scln-subl   '    ret        ;; A
+  lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft       ;; Z
+  fn     lctl lalt @lmet-ret    spc    @rmet-sym ralt ◀   ▼    ▶    ;; MOD
+)
+
+
+(deflayer callum-mods
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  M-tab  @ar-ws1  @ar-ws2  @ar-ws3  @ar-ws4  @ar-ws5  @ar-ws6  @ar-ws7  @ar-ws8  @ar-ws9  @ar-ws10   XX   XX   XX     ;; Q
+  XX   (one-shot 2000 lctl) (one-shot 2000 lsft) (one-shot 2000 lalt) (one-shot 2000 lmet) XX XX (one-shot 2000 rmet) (one-shot 2000 ralt) (one-shot 2000 rsft) (one-shot 2000 rctl) XX XX ;; A
+  lsft   XX   XX   XX   XX   XX   XX   XX   XX   @scam-hrscl   @scam-hrclc   XX   rsft          ;; Z
+  XX   XX   XX   XX             @scam-rc             @aghostty   XX   XX   XX   XX     ;; MOD ;;duplicate launcher and terminal keymap for convenience
+)
+
+;; (deflayer nav
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   del    ;; NUM
+;;   XX   XX   XX   XX   XX   M-t  XX   S-A-◀ S-A-▼ S-A-▲ S-A-▶ XX  XX   XX ;; Q
+;;   XX   XX   XX   M-[  M-]  @scam1   ◀    ▼    ▲    ▶    XX   XX   XX          ;; A
+;;   XX   XX   M-w  XX   XX   XX   M-n  XX   XX   XX   XX   XX   XX          ;; Z
+;;   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+;; )
+
+;; (deflayer sym
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+;;   S-`   S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  -   =   XX    ;; Q
+;;   XX   1    2    3    4    5    6    7    8    9    0    `   XX             ;; A
+;;   lsft   XX  XX   XX   [    S-[  S-]  ]  XX   XX   XX   \   rsft           ;; Z
+;;   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+;; )
+
+(deflayer sym
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  S-`  1    2    3    4    5    6    7    8    9    0    -    =    XX    ;; Q
+  XX  S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0    `   XX             ;; A
+  lsft   XX  XX   XX   [    S-[  S-]  ]  XX   XX   XX   \   rsft           ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer sublayer
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   XX   @subl-rayc XX  XX  XX   XX  XX   XX   XX   XX  XX XX ;; Q
+  XX   @subl-apps @subl-aero  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; A
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; Z
+  XX   XX   XX   @subl-aero           XX            XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer apps
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   @awhatsapp @afinder XX  XX   XX   XX   @asettings   XX   XX   XX   XX   XX ;; Q
+  XX   XX   @aspotify  XX @alibrewolf XX XX XX XX XX  XX   XX XX ;; A
+  XX   XX   XX   @achrome @avscode @abrave XX @adiscord XX XX XX XX XX ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer raycast
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   XX   @ryemoji XX  XX   XX   XX   XX   XX   XX   XX   XX   XX ;; Q
+  XX   XX   XX   XX   XX   @rygoog XX  XX   XX   @ryfile XX  XX   XX  ;; A
+  XX   XX   XX   @ryclip XX  XX   XX   XX   XX   XX   XX   XX   XX     ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer aerospace
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX            ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @ar-smtd   @ar-smti   XX ;; NUM
+  XX   @ar-qw    XX   XX  @ar-rld   @ar-lytst   @ar-lytad   @ar-fcu   @ar-fci   @ar-fco   @ar-fcp   XX   XX   XX ;; Q
+  @ar-ex @ar-ws1 @ar-ws2 @ar-ws3 @ar-ws4 @ar-ws5 @ar-ws6 @ar-ws7 @ar-ws8 @ar-ws9 @ar-ws10 XX   XX ;; A
+  lsft @ar-fsc   @ar-qw   @ar-rld   @ar-flt   XX   XX  @ar-rswi @ar-rshd @ar-rshi @ar-rswd  XX    rsft ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX               ;; MOD
+)
+
+(deflayer system
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   M-q  M-w  XX   @lrld  M-t  XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
+  XX   XX   XX   XX   XX   XX   prev vold volu next ▶⏸  XX   XX          ;; A
+  XX   XX   XX   @hrld   XX   M-C-q XX  mute M-,  XX  XX   XX   XX          ;; Z
+  XX   XX   XX   M--             XX             M-=   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer nav
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX    ;; NUM
+  XX   XX  XX  XX   XX   XX  XX  S-A-◀ S-A-▲ S-A-▼ S-A-▶  XX  XX   XX ;; Q
+  XX   XX   XX   XX   XX   XX   M-[  M-S-[ M-S-] M-]  XX   XX   XX        ;; A
+  lsft   XX   XX   XX   XX   XX   XX   ◀    ▼    ▲    ▶   XX  rsft         ;; Z
+  XX   XX   XX   M--             @scam-rc             A-bspc   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer session
+  ;;     a      s      d      f      g      h      j      k      l      ;      '
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;;F1
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     ;;NUM
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     ;;Q
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;;A
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;;Z
+  XX    XX   XX     XX         XX             XX      XX         XX     XX     XX                   ;;MOD
+)

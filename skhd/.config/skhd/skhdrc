@@ -1,0 +1,18 @@
+# Display & Keyboard Brightness
+# alt + cmd - u : lunar displays builtin brightness +10
+# alt + cmd - i : lunar displays builtin brightness -10
+# alt + cmd - o : "$HOME/.config/scripts/macos/kbdbrightness.sh down"
+# alt + cmd - p : "$HOME/.config/scripts/macos/kbdbrightness.sh up"
+
+# Media & Volume
+# alt + shift - u : osascript -e "tell application \"System Events\" to key code 144"  # prev
+# alt + shift - i : osascript -e "tell application \"System Events\" to key code 153"  # next
+# alt + shift - o : osascript -e "tell application \"System Events\" to key code 114"  # vold
+# alt + shift - p : osascript -e "tell application \"System Events\" to key code 115"  # volu
+
+# open system settings
+alt - i : open -a "System Settings"
+alt - e : open -a "Finder"
+
+# open Safari
+alt - s : open -a Safari

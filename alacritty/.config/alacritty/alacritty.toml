@@ -1,0 +1,190 @@
+# Alacritty Configuration File
+# Located at ~/.config/alacritty/alacritty.toml
+
+# -----------------------------------------------------------------------------
+# General Configuration
+# -----------------------------------------------------------------------------
+[general]
+import = [
+    "~/.config/alacritty/themes/catppuccin-mocha.toml"
+]
+
+# -----------------------------------------------------------------------------
+# Environment Configuration
+# -----------------------------------------------------------------------------
+[env]
+TERM = "xterm-256color"
+
+# -----------------------------------------------------------------------------
+# Window Configuration
+# -----------------------------------------------------------------------------
+[window]
+# Eliminate the title bar and window decorations.
+# This makes the window appear borderless and provides more screen real estate.
+decorations = "none"
+opacity = 1.0
+startup_mode = "Windowed"
+dynamic_title = true
+
+# Optional: You can set specific dimensions if you want.
+# Otherwise, Alacritty will use default or dynamically resize.
+[window.dimensions]
+columns = 120
+lines = 30
+
+# Optional: Set padding around the terminal content.
+[window.padding]
+x = 10
+y = 10
+
+# Optional: Offset the window from the top-left corner (0,0 is top-left).
+# This can be useful if you don't use a tiling window manager that positions windows.
+# [window.position]
+# x = 0
+# y = 0
+
+# -----------------------------------------------------------------------------
+# Font Configuration
+# -----------------------------------------------------------------------------
+[font]
+size = 14.0
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Bold Italic"
+
+# Optional: Offsets for font (fine-tuning positioning if needed).
+[font.offset]
+x = 0
+y = 0
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+# -----------------------------------------------------------------------------
+# Cursor Configuration
+# -----------------------------------------------------------------------------
+[cursor]
+unfocused_hollow = true
+thickness = 0.15
+
+[cursor.style]
+# Cursor style (Block, Underline, Beam)
+shape = "Block"
+blinking = "On"
+
+[cursor.vi_mode_style]
+shape = "Beam"
+blinking = "On"
+
+# -----------------------------------------------------------------------------
+# Shell Configuration (Optional)
+# -----------------------------------------------------------------------------
+# The program Alacritty will execute. Default is your user's default shell.
+# [shell]
+# program = "/bin/bash"
+# args = ["--login"]
+
+# -----------------------------------------------------------------------------
+# Scrolling Configuration
+# -----------------------------------------------------------------------------
+# Number of lines in the scrollback buffer.
+[scrolling]
+history = 10000
+multiplier = 3
+
+# -----------------------------------------------------------------------------
+# Mouse Configuration
+# -----------------------------------------------------------------------------
+[mouse]
+hide_when_typing = true
+
+# Right click to copy selection
+[[mouse.bindings]]
+mouse = "Right"
+mode = "~Vi"
+action = "Copy"
+
+# Middle click to paste from primary selection
+[[mouse.bindings]]
+mouse = "Middle"
+mode = "~Vi"
+action = "Paste"
+
+# Right click with Control to paste from clipboard
+[[mouse.bindings]]
+mouse = "Right"
+mods = "Control"
+mode = "~Vi"
+action = "Paste"
+
+# -----------------------------------------------------------------------------
+# Selection Configuration
+# -----------------------------------------------------------------------------
+[selection]
+# Automatically copy selected text to system clipboard
+save_to_clipboard = true
+# Characters that are used as separators for double click selection
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+# -----------------------------------------------------------------------------
+# Visual Bell Configuration for Copy Feedback
+# -----------------------------------------------------------------------------
+[bell]
+duration = 0  # Disable the visual bell
+animation = "Linear"
+
+# -----------------------------------------------------------------------------
+# Key Bindings
+# -----------------------------------------------------------------------------
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "Insert"
+mods = "Shift"
+action = "PasteSelection"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
+
+# -----------------------------------------------------------------------------
+# Debug Configuration
+# -----------------------------------------------------------------------------
+[debug]
+render_timer = false
+persistent_logging = false
+log_level = "Warn"
+print_events = false

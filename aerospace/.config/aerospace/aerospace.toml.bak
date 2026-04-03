@@ -1,0 +1,222 @@
+################################
+# GENERAL
+################################
+
+start-at-login = true
+
+after-startup-command = [
+  "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
+]
+
+exec-on-workspace-change = [
+  '/bin/bash', '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
+]
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+default-root-container-layout = "tiles"
+default-root-container-orientation = "auto"
+
+accordion-padding = 30
+
+key-mapping.preset = "qwerty"
+
+
+################################
+# GAPS
+################################
+
+[gaps]
+inner.horizontal = 2
+inner.vertical = 2
+outer.left = 2
+outer.right = 2
+outer.top = 2
+outer.bottom = 2
+
+
+################################
+# WORKSPACE PERSISTENCE
+################################
+
+[workspace-to-monitor-force-assignment]
+1 = 1
+2 = 1
+3 = 1
+4 = 1
+5 = 1
+6 = 1
+7 = 1
+8 = 1
+9 = 1
+10 = 1
+
+
+################################
+# KEYBINDINGS
+################################
+
+[mode.main.binding]
+
+###############################
+# APPLICATIONS
+###############################
+
+alt-enter = "exec-and-forget open -na kitty"
+alt-b = "exec-and-forget open -a 'Brave Browser'"
+
+
+###############################
+# WINDOW FOCUS (VIM STYLE)
+###############################
+
+alt-h = "focus left"
+alt-j = "focus down"
+alt-k = "focus up"
+alt-l = "focus right"
+
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+
+
+###############################
+# MOVE WINDOWS
+###############################
+
+alt-shift-h = "move left"
+alt-shift-j = "move down"
+alt-shift-k = "move up"
+alt-shift-l = "move right"
+
+
+###############################
+# RESIZE
+###############################
+
+alt-minus = "resize smart -30"
+alt-equal = "resize smart +30"
+
+
+###############################
+# WINDOW CONTROLS
+###############################
+
+alt-q = 'close --quit-if-last-window'
+alt-shift-space = "layout floating tiling"
+alt-f = "fullscreen"
+
+
+###############################
+# WORKSPACES
+###############################
+
+alt-1 = "workspace 1"
+alt-2 = "workspace 2"
+alt-3 = "workspace 3"
+alt-4 = "workspace 4"
+alt-5 = "workspace 5"
+alt-6 = "workspace 6"
+alt-7 = "workspace 7"
+alt-8 = "workspace 8"
+alt-9 = "workspace 9"
+alt-0 = "workspace 10"
+
+
+###############################
+# MOVE WINDOW TO WORKSPACE
+# --focus-follows-window fires exec-on-workspace-change
+# so sketchybar always updates when moving windows
+###############################
+
+alt-shift-1 = "move-node-to-workspace 1 --focus-follows-window"
+alt-shift-2 = "move-node-to-workspace 2 --focus-follows-window"
+alt-shift-3 = "move-node-to-workspace 3 --focus-follows-window"
+alt-shift-4 = "move-node-to-workspace 4 --focus-follows-window"
+alt-shift-5 = "move-node-to-workspace 5 --focus-follows-window"
+alt-shift-6 = "move-node-to-workspace 6 --focus-follows-window"
+alt-shift-7 = "move-node-to-workspace 7 --focus-follows-window"
+alt-shift-8 = "move-node-to-workspace 8 --focus-follows-window"
+alt-shift-9 = "move-node-to-workspace 9 --focus-follows-window"
+alt-shift-0 = "move-node-to-workspace 10 --focus-follows-window"
+
+
+###############################
+# SCREENSHOT
+###############################
+
+alt-shift-p = "exec-and-forget screencapture -i -c ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
+
+
+###############################
+# CONFIG RELOAD
+###############################
+
+alt-shift-r = "reload-config"
+
+
+################################
+# FLOATING RULES
+################################
+
+[[on-window-detected]]
+if.app-id = "org.pqrs.Karabiner-Elements.Settings"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.systempreferences"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.calculator"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.AppStore"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.finder"
+run = "layout floating"
+
+
+##############################
+### WINDOW RULES
+##############################
+
+[[on-window-detected]]
+if.app-id = "net.kovidgoyal.kitty"
+run = "move-node-to-workspace 2"
+
+[[on-window-detected]]
+if.app-id = "com.microsoft.VSCode"
+run = "move-node-to-workspace 3"
+
+[[on-window-detected]]
+if.app-id = "io.mpv"
+run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = "com.hnc.Discord"
+run = "move-node-to-workspace 5"
+
+[[on-window-detected]]
+if.app-id = "org.virt-manager.virt-manager"
+run = "move-node-to-workspace 6"
+
+[[on-window-detected]]
+if.app-id = "org.mozilla.librewolf"
+run = "move-node-to-workspace 8"
+
+[[on-window-detected]]
+if.app-id = "net.mullvad.MullvadBrowser"
+run = "move-node-to-workspace 8"
+
+[[on-window-detected]]
+if.app-id = "com.google.Chrome"
+run = "move-node-to-workspace 9"
+
+[[on-window-detected]]
+if.app-id = "org.torproject.torbrowser"
+run = "move-node-to-workspace 10"

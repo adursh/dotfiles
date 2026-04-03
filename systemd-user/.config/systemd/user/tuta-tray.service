@@ -1,0 +1,16 @@
+[Unit]
+Description=Tuta Desktop Tray
+After=graphical-session.target network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/tutanota-desktop -a
+Restart=on-failure
+RestartSec=5
+#MemoryMax=200M
+#CPUQuota=50%
+Environment=DISPLAY=:0
+Environment=XDG_RUNTIME_DIR=%t
+
+[Install]
+WantedBy=default.target

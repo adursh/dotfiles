@@ -1,0 +1,272 @@
+################################
+# GENERAL
+################################
+
+start-at-login = true
+
+default-root-container-layout = 'accordion'
+
+# janky borders
+# after-startup-command = [
+#   "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=3.0 style=square hidpi=off"
+# ]
+
+after-startup-command = [
+  "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=3.0 style=square hidpi=off",
+  'workspace 1', 'layout v_accordion',
+  'workspace 2', 'layout v_accordion',
+  'workspace 3', 'layout v_accordion',
+  'workspace 4', 'layout v_accordion',
+  'workspace 5', 'layout v_accordion',
+  'workspace 6', 'layout v_accordion',
+  'workspace 7', 'layout v_accordion',
+  'workspace 8', 'layout v_accordion',
+  'workspace 9', 'layout v_accordion',
+  'workspace 10', 'layout v_accordion',
+]
+
+# sketchybar
+# exec-on-workspace-change = [
+#   '/bin/bash', '-c',
+#   'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
+# ]
+
+exec-on-workspace-change = ['/bin/bash', '-c', 'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE']
+
+# disabled — fight layout and cause chaos on restart
+enable-normalization-flatten-containers = false
+enable-normalization-opposite-orientation-for-nested-containers = false
+
+key-mapping.preset = "qwerty"
+
+
+################################
+# GAPS
+################################
+
+[gaps]
+inner.horizontal = 6
+inner.vertical = 6
+outer.left = 6
+outer.right = 6
+outer.top = 6
+outer.bottom = 6
+
+
+################################
+# WORKSPACE PERSISTENCE
+################################
+
+[workspace-to-monitor-force-assignment]
+1 = 1
+2 = 1
+3 = 1
+4 = 1
+5 = 1
+6 = 1
+7 = 1
+8 = 1
+9 = 1
+10 = 1
+
+
+################################
+# KEYBINDINGS
+################################
+
+[mode.main.binding]
+
+###############################
+# APPLICATIONS
+###############################
+
+# alt-b     = "exec-and-forget open -a 'Brave Browser'"
+
+# change layouts
+alt-y  = "layout accordion horizontal vertical"
+alt-t  = "layout tiles horizontal vertical"
+
+
+###############################
+# WINDOW FOCUS (VIM STYLE)
+###############################
+
+alt-h = "focus --boundaries-action wrap-around-the-workspace left"
+alt-j = "focus --boundaries-action wrap-around-the-workspace down"
+alt-k = "focus --boundaries-action wrap-around-the-workspace up"
+alt-l = "focus --boundaries-action wrap-around-the-workspace right"
+
+# alt-n = "focus --boundaries-action wrap-around-the-workspace dfs-next"
+# alt-p = "focus --boundaries-action wrap-around-the-workspace dfs-prev"
+
+
+###############################
+# MOVE WINDOWS
+###############################
+
+alt-shift-h = "move left"
+alt-shift-j = "move down"
+alt-shift-k = "move up"
+alt-shift-l = "move right"
+
+###############################
+# RESIZE
+###############################
+
+# Resize 4 sides
+alt-cmd-h = "resize width +30"
+alt-cmd-j = "resize height -30"
+alt-cmd-k = "resize height +30"
+alt-cmd-l = "resize width -30"
+
+# aerosapce smart resize lol
+alt-minus = "resize smart -30"
+alt-equal = "resize smart +30"
+
+
+###############################
+# WINDOW CONTROLS
+###############################
+
+alt-q = 'close'
+alt-shift-q = 'close --quit-if-last-window'
+alt-v = "layout floating tiling"
+alt-f = "fullscreen"
+
+
+###############################
+# WORKSPACES
+###############################
+
+alt-1 = "workspace 1"
+alt-2 = "workspace 2"
+alt-3 = "workspace 3"
+alt-4 = "workspace 4"
+alt-5 = "workspace 5"
+alt-6 = "workspace 6"
+alt-7 = "workspace 7"
+alt-8 = "workspace 8"
+alt-9 = "workspace 9"
+alt-0 = "workspace 10"
+
+
+###############################
+# MOVE WINDOW TO WORKSPACE
+# --focus-follows-window fires exec-on-workspace-change
+###############################
+
+alt-shift-1 = "move-node-to-workspace 1 --focus-follows-window"
+alt-shift-2 = "move-node-to-workspace 2 --focus-follows-window"
+alt-shift-3 = "move-node-to-workspace 3 --focus-follows-window"
+alt-shift-4 = "move-node-to-workspace 4 --focus-follows-window"
+alt-shift-5 = "move-node-to-workspace 5 --focus-follows-window"
+alt-shift-6 = "move-node-to-workspace 6 --focus-follows-window"
+alt-shift-7 = "move-node-to-workspace 7 --focus-follows-window"
+alt-shift-8 = "move-node-to-workspace 8 --focus-follows-window"
+alt-shift-9 = "move-node-to-workspace 9 --focus-follows-window"
+alt-shift-0 = "move-node-to-workspace 10 --focus-follows-window"
+
+
+###############################
+# SCREENSHOT
+###############################
+
+# alt-shift-p = "exec-and-forget screencapture -i -c ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
+
+
+###############################
+# CONFIG RELOAD
+###############################
+
+# alt-shift-r = "reload-config"
+
+alt-shift-r = [
+  "exec-and-forget aerospace reload-config",
+  "exec-and-forget $HOME/.config/scripts/macos/notify.sh Aerospace config-reloaded!"
+]
+
+
+################################
+# FLOATING RULES
+################################
+
+[[on-window-detected]]
+if.app-id = "org.pqrs.Karabiner-Elements.Settings"
+run = "layout floating"
+
+# [[on-window-detected]]
+# if.app-id = "com.apple.systempreferences"
+# run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.calculator"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.AppStore"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.finder"
+run = "layout floating"
+
+
+##############################
+### WINDOW RULES
+##############################
+
+[[on-window-detected]]
+if.app-id = "com.mitchellh.ghostty"
+run = "move-node-to-workspace 2"
+
+[[on-window-detected]]
+if.app-id = "com.microsoft.VSCode"
+run = "move-node-to-workspace 3"
+
+[[on-window-detected]]
+if.app-id = "md.obsidian"
+run = "move-node-to-workspace 3"
+
+[[on-window-detected]]
+if.app-id = "io.mpv"
+run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = "org.videolan.vlc"
+run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = "com.spotify.client"
+run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = "com.hnc.Discord"
+run = "move-node-to-workspace 5"
+
+[[on-window-detected]]
+if.app-id = "net.whatsapp.WhatsApp"
+run = "move-node-to-workspace 5"
+
+[[on-window-detected]]
+if.app-id = "org.virt-manager.virt-manager"
+run = "move-node-to-workspace 6"
+
+[[on-window-detected]]
+if.app-id = "org.mozilla.librewolf"
+run = "move-node-to-workspace 8"
+
+[[on-window-detected]]
+if.app-id = "net.mullvad.mullvadbrowser"
+run = "move-node-to-workspace 8"
+
+[[on-window-detected]]
+if.app-id = "com.brave.Browser"
+run = "move-node-to-workspace 9"
+
+[[on-window-detected]]
+if.app-id = "com.google.Chrome"
+run = "move-node-to-workspace 10"
+
+# [[on-window-detected]]
+# if.app-id = "org.torproject.torbrowser"
+# run = "move-node-to-workspace 10"

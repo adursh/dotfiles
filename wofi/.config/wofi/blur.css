@@ -1,0 +1,39 @@
+window {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Apply blur to the main window */
+window.main {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+/* Entry (input field) */
+entry {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: white;
+}
+
+/* List of items */
+box.vertical {
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+}
+
+/* Individual list items */
+row {
+    background: transparent;
+    color: white;
+    padding: 5px 10px;
+}
+
+row:selected {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+

@@ -1,0 +1,252 @@
+(defcfg
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+  )
+  process-unmapped-keys no
+  log-layer-changes no
+  danger-enable-cmd yes
+  concurrent-tap-hold yes
+)
+
+(defoverrides
+  (lmet bspc) (lalt bspc)
+)
+
+(defvar
+  tap-time 200
+  hold-time 200
+  subl-time 200
+  tmux-delay 40
+)
+
+(defsrc
+  esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ;; ESC + F-ROW
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc   ;; NUM
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \      ;; Q
+  caps   a    s    d    f    g    h    j    k    l    ;    '    ret         ;; A
+  lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft        ;; Z
+  fn     lctl lalt lmet          spc         rmet ralt ◀    ▼    ▶         ;; MOD
+)
+
+
+;; ============================================================
+;; GENERAL
+;; ============================================================
+
+(defalias
+    lmet-ret (tap-hold-press $tap-time $hold-time ret lalt)
+    esc-lmet (tap-hold-release $tap-time $hold-time esc lmet)
+    ivt-rmet  (tap-hold-press $tap-time $hold-time ' rmet)
+)
+
+;; ============================================================
+;; LAYER TRIGGERS
+;; ============================================================
+
+(defalias
+  scln-subl (tap-hold-release $subl-time $subl-time ; (layer-while-held sublayer))
+  tab-nav     (tap-hold-release $tap-time $hold-time tab (layer-while-held nav))
+)
+
+;; ============================================================
+;; SUBLAYER ENTRIES
+;; ============================================================
+
+(defalias
+  ;; subl-demo (layer-while-held demo)
+  subl-apps (one-shot-press-pcancel 2000 (layer-while-held apps))
+  subl-rayc (one-shot-press-pcancel 2000 (layer-while-held raycast))
+  subl-aero (one-shot-press-pcancel 2000 (layer-while-held aerospace))
+  subl-tmux (one-shot-press-pcancel 2000 (layer-while-held tmux))
+)
+
+;; ============================================================
+;; SCAM ALIASES (hyper key combos)
+;; ============================================================
+
+(defalias
+  scam-hrclc C-A-M-m   ;; homerow click
+  scam-hrsrc M-S-C-A-/  ;; homerow search
+  scam-hrscl C-A-M-.   ;; homerow scroll
+)
+
+;; ============================================================
+;; APP LAUNCHERS
+;; ============================================================
+(defalias
+  abrave     (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Brave Browser'")
+  aghostty   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Ghostty'")
+  awhatsapp  (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'WhatsApp'")
+  aspotify   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Spotify'")
+  alibrewolf (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'LibreWolf'")
+  avscode    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Visual Studio Code'")
+  achrome    (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Google Chrome'")
+  adiscord   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Discord'")
+  asettings   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'System Settings'")
+  afinder   (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/launchapps.sh 'Finder'")
+)
+
+;; ============================================================
+;; RAYCAST
+;; ============================================================
+(defalias
+  ryemoji (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
+  rygoog  (cmd open "raycast://extensions/mblode/google-search/index")
+  ryfile  (cmd open "raycast://extensions/raycast/file-search/search-files")
+  ryclip  (cmd open "raycast://extensions/raycast/clipboard-history/index")
+)
+
+
+;; ============================================================
+;; AEROSPACE
+;; ============================================================
+
+(defalias
+  ar-ex     (layer-switch main)
+  ar-qw      A-q
+  ar-rld     A-S-c
+  ar-fcl     A-h
+  ar-fcd     A-j
+  ar-fcu     A-k
+  ar-fcr     A-l
+  ar-mvl     A-S-h
+  ar-mvd     A-S-j
+  ar-mvu     A-S-k
+  ar-mvr     A-S-l
+  ar-rswl    A-C-h
+  ar-rshd    A-C-j
+  ar-rshu    A-C-k
+  ar-rswr    A-C-l
+  ar-smtd     A--
+  ar-smti     A-=
+  ar-fsc     A-z
+  ar-flt     A-v
+  ar-lytad    A-y
+  ar-lytst    A-t
+  ar-ws1    A-1
+  ar-ws2    A-2
+  ar-ws3    A-3
+  ar-ws4    A-4
+  ar-ws5    A-5
+  ar-ws6    A-6
+  ar-ws7    A-7
+  ar-ws8    A-8
+  ar-ws9    A-9
+  ar-ws10   A-0
+)
+
+;; ============================================================
+;; SYSTEM CONTROLS
+;; ============================================================
+
+(defalias
+    sys-kbdup (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kbdbrightness.sh up")
+    sys-kbddn (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kbdbrightness.sh down")
+)
+
+;; reload kanata with notification
+(defalias
+    ;;live reload uses old config if the reload is failed
+    lrld (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/notify.sh Kanata live-reloaded!") 500 lrld)
+    hrld (macro (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/notify.sh Kanata hard-reloading! && launchctl kickstart -k gui/501/com.nvc.kanata"))
+)
+
+
+;; ============================================================
+;; TMUX MACROS
+;; ============================================================
+
+(defalias
+  tx-home (macro @aghostty 300 C-spc $tmux-delay h)
+  tx-conf (macro @aghostty 300 C-spc $tmux-delay f)
+  tx-down (macro @aghostty 300 C-spc $tmux-delay w)
+  tx-priv (macro @aghostty 300 C-spc $tmux-delay i)
+  tx-proj (macro @aghostty 300 C-spc $tmux-delay j)
+  tx-dotf (macro @aghostty 300 C-spc $tmux-delay .)
+  tx-sesh (macro @aghostty 300 C-spc $tmux-delay S-t)
+
+  tx-rnmw (macro @aghostty 300 C-spc $tmux-delay ,)
+  tx-rtmx (macro @aghostty 300 C-spc $tmux-delay r)
+  tx-furl (macro @aghostty 300 C-spc $tmux-delay u)
+  tx-tcmd (macro @aghostty 300 C-spc $tmux-delay S-;)
+  tx-splt (macro @aghostty 300 C-spc $tmux-delay /)
+  tx-last (macro @aghostty 300 C-spc $tmux-delay spc)
+)
+
+
+;; ============================================================
+;; LAYERS
+;; ============================================================
+
+(deflayer main
+  esc  brdn brup mctl sls  dtn  dnd  prev pp   next mute vold volu
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    rmet  ;; NUM
+  @tab-nav    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
+  @esc-lmet a  s    d   f    g    h    j    k    l    @scln-subl   @ivt-rmet    ret    ;; A
+  lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft       ;; Z
+  fn     lctl lmet @lmet-ret    spc    bspc   ralt ◀   ▼    ▶    ;; MOD
+)
+
+
+(deflayer sublayer
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   XX   @subl-rayc XX  XX  XX   XX  XX   XX   XX   XX  XX XX ;; Q
+  XX   @subl-apps @subl-tmux  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; A
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; Z
+  XX   XX   XX   @subl-aero           XX            XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer apps
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   @awhatsapp @afinder XX  XX   XX   XX   @asettings   XX   XX   XX   XX   XX ;; Q
+  XX   XX   @aspotify  XX @alibrewolf XX XX XX XX XX  XX   XX XX ;; A
+  XX   XX   XX   @achrome @avscode @abrave XX @adiscord XX XX XX XX XX ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer raycast
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   XX   XX   @ryemoji XX  XX   XX   XX   XX   XX   XX   XX   XX   XX ;; Q
+  XX   XX   XX   XX   XX   @rygoog XX  XX   XX   @ryfile XX  XX   XX  ;; A
+  XX   XX   XX   @ryclip XX  XX   XX   XX   XX   XX   XX   XX   XX     ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer aerospace
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX            ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @ar-smtd   @ar-smti   XX ;; NUM
+  XX   @ar-qw    XX   XX  @ar-rld   @ar-lytst  @ar-lytad XX   XX   XX   XX  @ar-smtd  @ar-smti  XX ;; Q
+  lctl XX   XX   XX  @ar-fsc   XX   @ar-fcl   @ar-fcd   @ar-fcu   @ar-fcr  XX  XX  XX
+  lsft XX   @ar-qw   @ar-rld   @ar-flt   XX   XX   @ar-rswl @ar-rshd @ar-rshu @ar-rswr  XX   rsft ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX               ;; MOD
+)
+
+(deflayer system
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  XX   M-q  M-w  XX   @lrld  M-t  XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
+  XX   XX   XX   XX   XX   XX   prev vold volu next ▶⏸  XX  XX          ;; A
+  XX   XX   XX   @hrld   XX   M-C-q M-n  mute M-,  XX  XX   XX   XX          ;; Z
+  XX   XX   XX   M--             XX             M-=   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer nav
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX    ;; NUM
+  XX   M-q  M-w  XX   @lrld  M-t  XX   S-A-◀   S-A-▼   S-A-▲   S-A-▶   XX   XX   XX  ;; Q
+  lctl   M-a   M-s   M-d   M-f   XX   M-[   M-S-[   M-S-]   M-]   XX   XX   XX        ;; A
+  lsft   M-z   M-x   M-c   M-v   XX   ◀    ▼    ▲    ▶   XX   XX   rsft         ;; Z
+  XX   XX   XX   M--             XX             M-+   XX   XX   XX   XX     ;; MOD
+)
+
+(deflayer tmux
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX             ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX        ;; NUM
+  XX   XX   @tx-down  XX   @tx-rtmx  XX   XX   @tx-furl  @tx-priv  XX  XX  XX  XX  XX  ;; Q
+  XX   XX   XX   XX   @tx-conf  XX   @tx-home   @tx-proj   @tx-sesh  XX   @tx-tcmd XX  XX   ;; A
+  lsft XX   XX   XX  XX   XX   XX   XX   @tx-rnmw  @tx-dotf  @tx-splt XX  rsft  ;; Z
+  XX   XX   XX   XX             @tx-last            XX   XX   XX   XX   XX  ;; MOD
+)
