@@ -1,10 +1,11 @@
 #!/bin/bash
+sleep 1
 export CONFIG_DIR="$HOME/.config/sketchybar"
 export PLUGIN_DIR="$CONFIG_DIR/plugins"
 export ITEM_DIR="$CONFIG_DIR/items"
 
-source "$ITEM_DIR/apple.sh"
 source "$CONFIG_DIR/colors.sh"
+source "$ITEM_DIR/apple.sh"
 
 sketchybar --bar \
   height=30         \
@@ -37,6 +38,9 @@ sketchybar --default \
 
 source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/front_app.sh"
+source "$ITEM_DIR/bluetooth.sh"
+source "$ITEM_DIR/wifi.sh"
+source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/network.sh"
 
 sketchybar --update
