@@ -1,3 +1,0 @@
-# alt - f         : yabai -m window --toggle zoom-fullscreen
-# shift + alt - f : yabai -m window --toggle native-fullscreen
-# alt + shift - e : open -a "System Settings"

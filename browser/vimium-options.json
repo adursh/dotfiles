@@ -1,5 +1,0 @@
-{
-  "keyMappings": "# Insert your preferred key mappings here.\nmap s LinkHints.activateMode\nmap S LinkHints.activateModeToOpenInNewTab\nunmap f\nunmap t\nunmap x",
-  "grabBackFocus": true,
-  "settingsVersion": "2.3"
-}

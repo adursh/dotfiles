@@ -1,3 +1,0 @@
-#!/bin/bash
-/opt/homebrew/bin/blueutil --power 0
-osascript -e "set volume output muted true"
