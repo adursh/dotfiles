@@ -1,12 +1,14 @@
 #!/bin/bash
-sleep 1
+sleep 4
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 export CONFIG_DIR="$HOME/.config/sketchybar"
 export PLUGIN_DIR="$CONFIG_DIR/plugins"
 export ITEM_DIR="$CONFIG_DIR/items"
 
 source "$CONFIG_DIR/colors.sh"
-source "$ITEM_DIR/apple.sh"
 
+##### Bar Appearance #####
 sketchybar --bar \
   height=30         \
   position=top      \
@@ -21,12 +23,13 @@ sketchybar --bar \
   sticky=on         \
   display=main
 
+##### Defaults #####
 sketchybar --default \
   icon.drawing=off                          \
   label.font="SF Pro Text:Regular:12.0"     \
   label.color=$SUBTEXT0                     \
-  label.padding_left=7                      \
-  label.padding_right=7                     \
+  label.padding_left=5                      \
+  label.padding_right=5                     \
   padding_left=1                            \
   padding_right=1                           \
   background.height=20                      \
@@ -36,25 +39,125 @@ sketchybar --default \
   background.border_color=$SURFACE1        \
   background.drawing=off
 
-source "$ITEM_DIR/spaces.sh"
-source "$ITEM_DIR/front_app.sh"
-source "$ITEM_DIR/bluetooth.sh"
-source "$ITEM_DIR/wifi.sh"
-source "$ITEM_DIR/battery.sh"
-source "$ITEM_DIR/network.sh"
+##### Left Items #####
 
+# Apple Logo
+sketchybar --add item apple left \
+  --set apple \
+    icon.drawing=on \
+    icon="$(printf '\xef\xa3\xbf')" \
+    icon.font="SF Pro:Bold:20.0" \
+    icon.color=0xffcdd6f4 \
+    padding_left=6 \
+    padding_right=14 \
+    label.drawing=off \
+    background.drawing=off \
+    click_script="open -a 'System Preferences'"
+
+# Aerospace Workspace Event
+sketchybar --add event aerospace_workspace_change
+
+# Aerospace Workspaces (1-10)
+for sid in 1 2 3 4 5 6 7 8 9 10; do
+  sketchybar --add item "space.$sid" left \
+    --subscribe "space.$sid" aerospace_workspace_change \
+    --set "space.$sid" \
+      drawing=off \
+      label="$sid" \
+      label.color=0xff7f849c \
+      label.font="SF Pro Text:Medium:18.0" \
+      background.drawing=off \
+      background.color=0xff313244 \
+      background.corner_radius=7 \
+      background.height=24 \
+      background.border_width=1 \
+      background.border_color=0xff45475a \
+      click_script="aerospace workspace $sid" \
+      script="$PLUGIN_DIR/aerospace.sh $sid"
+done
+
+# Front App
+sketchybar --add item front_app left \
+  --set front_app \
+    label.drawing=on \
+    label.font="SF Pro Text:Semibold:14.0" \
+    label.color=0xffcdd6f4 \
+    padding_left=12 \
+    padding_right=4 \
+    background.drawing=off \
+    script="$PLUGIN_DIR/front_app.sh" \
+  --subscribe front_app front_app_switched
+
+##### Right Items #####
+
+# Battery
+sketchybar --add item battery right \
+  --set battery \
+    update_freq=60 \
+    icon.drawing=on \
+    icon.font="SF Pro Text:Regular:15.0" \
+    icon.color=$TEXT \
+    label.drawing=off \
+    padding_left=4 \
+    padding_right=8 \
+    background.drawing=off \
+    script="$PLUGIN_DIR/battery.sh" \
+  --subscribe battery system_woke power_source_change
+
+# Bluetooth
+sketchybar --add item bluetooth right \
+  --set bluetooth \
+    update_freq=30 \
+    icon.drawing=on \
+    icon.font="SF Pro Text:Regular:15.0" \
+    icon.color=$TEXT \
+    label.drawing=off \
+    padding_left=4 \
+    padding_right=4 \
+    background.drawing=off \
+    script="$PLUGIN_DIR/bluetooth.sh" \
+  --subscribe bluetooth system_woke
+
+# WiFi
+sketchybar --add item wifi right \
+  --set wifi \
+    update_freq=10 \
+    icon.drawing=on \
+    icon.font="SF Pro Text:Regular:15.0" \
+    icon.color=$TEXT \
+    label.drawing=off \
+    padding_left=8 \
+    padding_right=4 \
+    background.drawing=off \
+    script="$PLUGIN_DIR/wifi.sh" \
+    --subscribe wifi system_woke
+
+# Group wifi, bluetooth, battery
+sketchybar --add bracket system_icons wifi bluetooth battery \
+  --set system_icons \
+    background.drawing=on \
+    background.color=$SURFACE0 \
+    background.corner_radius=7 \
+    background.height=22 \
+    background.border_width=1 \
+    background.border_color=$SURFACE1 \
+
+# Network Speed
+sketchybar --add item network_speed right \
+  --set network_speed \
+    update_freq=2 \
+    label.font="SF Pro Text:Regular Italic:12.0" \
+    label.color=0xff6c6c8a \
+    background.drawing=off \
+    script="$PLUGIN_DIR/network_speed.py" \
+    padding_left=8 \
+    padding_right=12
+
+
+##### Finalizing Setup #####
 sketchybar --update
 
-# force overrides after default
-sketchybar --set front_app \
-  label.font="SF Pro Text:Semibold:14.0" \
-  background.drawing=off
-
-sketchybar --set network_speed \
-  label.font="SF Pro Text:Regular Italic:12.0" \
-  label.color=0xff6c6c8a \
-  background.drawing=off
-
+# Trigger initial workspace update
 CURRENT=$(aerospace list-workspaces --focused 2>/dev/null)
 [ -n "$CURRENT" ] && sketchybar --trigger aerospace_workspace_change \
   FOCUSED_WORKSPACE="$CURRENT" PREV_WORKSPACE=""
