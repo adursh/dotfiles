@@ -1,16 +1,11 @@
-# #!/bin/bash
-# BT=$(system_profiler SPBluetoothDataType 2>/dev/null | grep "State:" | awk '{print $2}')
-#
-# if [ "$BT" = "On" ]; then
-#   ICON="󰂯"
-# else
-#   ICON="󰂲"
-# fi
-#
-# sketchybar --set bluetooth icon="$ICON"
-
-
 #!/bin/bash
+
+#check for blueutil
+if ! command -v blueutil &>/dev/null; then
+  sketchybar --set bluetooth icon="󰂯"
+  exit 0
+fi
+
 STATE=$(blueutil --power)
 CONNECTED=$(blueutil --connected | wc -l | tr -d ' ')
 
