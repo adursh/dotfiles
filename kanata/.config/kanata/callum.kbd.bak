@@ -8,10 +8,6 @@
   concurrent-tap-hold yes
 )
 
-(defoverrides
-  (lmet bspc) (lalt bspc)
-)
-
 (defvar
   tap-time 200
   hold-time 200
@@ -28,24 +24,21 @@
   fn     lctl lalt lmet          spc         rmet ralt ◀    ▼    ▶         ;; MOD
 )
 
-
-;; ============================================================
-;; GENERAL
-;; ============================================================
-
-(defalias
-    lmet-ret (tap-hold-press $tap-time $hold-time ret lalt)
-    esc-lmet (tap-hold-release $tap-time $hold-time esc lmet)
-    ivt-rmet  (tap-hold-press $tap-time $hold-time ' rmet)
-)
-
 ;; ============================================================
 ;; LAYER TRIGGERS
 ;; ============================================================
-
 (defalias
-  scln-subl (tap-hold-release $subl-time $subl-time ; (layer-while-held sublayer))
-  tab-nav     (tap-hold-release $tap-time $hold-time tab (layer-while-held nav))
+  ;; lmet: tap = ret, hold = callum-mods layer
+  lmet-ret  (tap-hold-press $tap-time $hold-time ret (layer-while-held lalt))
+  ;; rmet: tap = bspc, hold = sym layer
+  rmet-sym  (tap-hold-press $tap-time $hold-time bspc (layer-while-held sym))
+  ;; caps: tap = esc, hold = nav layer
+  caps-nav  (tap-hold-press $tap-time $hold-time esc (layer-while-held nav))
+  ivt-nav  (tap-hold-press $tap-time $hold-time ' (layer-while-held nav))
+  ;; scln: tap = inverted-comma, hold = sublayer
+  scln-subl (tap-hold-press $subl-time $subl-time ; (layer-while-held sublayer))
+  ;; w: tap = w, hold = system layer
+  tab-sys     (tap-hold-release $tap-time $hold-time tab (layer-while-held system))
 )
 
 ;; ============================================================
@@ -68,6 +61,7 @@
   scam-hrclc C-A-M-m   ;; homerow click
   scam-hrsrc M-S-C-A-/  ;; homerow search
   scam-hrscl C-A-M-.   ;; homerow scroll
+  scam-rc C-A-M-spc   ;; raycast
 )
 
 ;; ============================================================
@@ -180,13 +174,50 @@
 
 (deflayer main
   esc  brdn brup mctl sls  dtn  dnd  prev pp   next mute vold volu
-  grv    1    2    3    4    5    6    7    8    9    0    -    =    rmet  ;; NUM
-  @tab-nav    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
-  @esc-lmet a  s    d   f    g    h    j    k    l    @scln-subl   @ivt-rmet    ret    ;; A
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc  ;; NUM
+  @tab-sys    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
+  @caps-nav a  s    d   f    g    h    j    k    l    @scln-subl   @ivt-nav    ret        ;; A  ;;right caps-nav on '' is experimental
   lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft       ;; Z
-  fn     lctl lmet @lmet-ret    spc    bspc   ralt ◀   ▼    ▶    ;; MOD
+  fn     lctl lalt @lmet-ret    spc    @rmet-sym ralt ◀   ▼    ▶    ;; MOD
 )
 
+
+(deflayer callum-mods
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  M-tab  @ar-ws1  @ar-ws2  @ar-ws3  @ar-ws4  @ar-ws5  @ar-ws6  @ar-ws7  @ar-ws8  @ar-ws9  @ar-ws10   XX   XX   XX     ;; Q
+  XX   (one-shot-press-pcancel 2000 lctl) (one-shot-press-pcancel 2000 lsft) (one-shot-press-pcancel 2000 lalt) (one-shot-press-pcancel 2000 lmet) XX XX (one-shot-press-pcancel 2000 rmet) (one-shot-press-pcancel 2000 ralt) (one-shot-press-pcancel 2000 rsft) (one-shot-press-pcancel 2000 rctl) XX XX ;; A
+  lsft   XX   XX   XX   XX   XX   XX   XX   XX   @scam-hrscl   @scam-hrclc   XX   rsft          ;; Z
+  XX   XX   XX   XX             @scam-rc             @aghostty   XX   XX   XX   XX     ;; MOD ;;duplicate launcher and terminal keymap for convenience
+)
+
+
+;; (deflayer nav
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   del    ;; NUM
+;;   XX   XX   XX   XX   XX   M-t  XX   S-A-◀ S-A-▼ S-A-▲ S-A-▶ XX  XX   XX ;; Q
+;;   XX   XX   XX   M-[  M-]  @scam1   ◀    ▼    ▲    ▶    XX   XX   XX          ;; A
+;;   XX   XX   M-w  XX   XX   XX   M-n  XX   XX   XX   XX   XX   XX          ;; Z
+;;   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+;; )
+
+;; (deflayer sym
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+;;   S-`   S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  -   =   XX    ;; Q
+;;   XX   1    2    3    4    5    6    7    8    9    0    `   XX             ;; A
+;;   lsft   XX  XX   XX   [    S-[  S-]  ]  XX   XX   XX   \   rsft           ;; Z
+;;   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+;; )
+
+(deflayer sym
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+  S-`  1    2    3    4    5    6    7    8    9    0    -    =    XX    ;; Q
+  XX  S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0    `   XX             ;; A
+  lsft   XX  XX   XX   [    S-[  S-]  ]  XX   XX   \   XX   rsft           ;; Z
+  XX   XX   XX   XX             XX             XX   XX   XX   XX   XX     ;; MOD
+)
 
 (deflayer sublayer
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
@@ -236,10 +267,10 @@
 (deflayer nav
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX    ;; NUM
-  XX   M-q  M-w  XX   @lrld  M-t  XX   S-A-◀   S-A-▼   S-A-▲   S-A-▶   XX   XX   XX  ;; Q
+  XX   M-q  M-w  XX   M-r  M-t  XX   S-A-◀   S-A-▼   S-A-▲   S-A-▶   XX   XX   XX  ;; Q
   lctl   M-a   M-s   M-d   M-f   XX   M-[   M-S-[   M-S-]   M-]   XX   XX   XX        ;; A
   lsft   M-z   M-x   M-c   M-v   XX   ◀    ▼    ▲    ▶   XX   XX   rsft         ;; Z
-  XX   XX   XX   M--             XX             M-+   XX   XX   XX   XX     ;; MOD
+  XX   XX   XX   M--             @scam-rc             A-bspc   XX   XX   XX   XX     ;; MOD
 )
 
 (deflayer tmux
