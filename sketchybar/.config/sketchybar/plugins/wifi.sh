@@ -1,10 +1,10 @@
 #!/bin/bash
-WIFI=$(networksetup -getairportnetwork en0 2>/dev/null)
+SSID=$(ipconfig getsummary en0 2>/dev/null | awk '/SSID/{print $3}')
 
-if echo "$WIFI" | grep -q "You are not associated"; then
-  ICON="󰤭"  # disconnected
+if [ -n "$SSID" ]; then
+  ICON="󰤨"
 else
-  ICON="󰤨"  # connected
+  ICON="󰤭"
 fi
 
 sketchybar --set wifi icon="$ICON"
