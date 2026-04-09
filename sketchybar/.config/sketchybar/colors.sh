@@ -1,6 +1,7 @@
 #!/bin/bash
-# export BAR_COLOR=0xff11111b
-# export BAR_COLOR=0xff1e1e2e
+export GREEN=0xffa6e3a1
+export PEACH=0xfffab387
+export RED=0xfff38ba8
 export BAR_COLOR=0xff181825
 export SURFACE0=0xff313244
 export SURFACE1=0xff45475a
