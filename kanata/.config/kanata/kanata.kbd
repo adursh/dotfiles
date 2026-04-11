@@ -140,10 +140,10 @@
 ;; SYSTEM CONTROLS
 ;; ============================================================
 
-(defalias
-    sys-kbdup (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kbdbrightness.sh up")
-    sys-kbddn (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kbdbrightness.sh down")
-)
+;; (defalias
+;;     sys-kbdup (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kbdbrightness.sh up")
+;;     sys-kbddn (cmd sudo -u nvc zsh -lc "$HOME/.config/scripts/macos/kbdbrightness.sh down")
+;; )
 
 ;; reload kanata with notification
 (defalias
@@ -165,6 +165,7 @@
   tx-proj (macro @aghostty 300 C-spc $tmux-delay j)
   tx-dotf (macro @aghostty 300 C-spc $tmux-delay .)
   tx-sesh (macro @aghostty 300 C-spc $tmux-delay S-t)
+  tx-tmux (macro @aghostty 300 C-spc $tmux-delay t)
 
   tx-rnmw (macro @aghostty 300 C-spc $tmux-delay ,)
   tx-rtmx (macro @aghostty 300 C-spc $tmux-delay r)
@@ -176,6 +177,41 @@
 
 
 ;; ============================================================
+;; MEDIA & ARROW MODIFIERS
+;; ============================================================
+
+(defalias
+  h-mod (switch 
+          ((and lctl lalt)) (unmod prev) break 
+          ((and fn lalt)) (unmod brup) break
+          ((and lctl)) (unmod left) break
+          () h break
+        )
+  j-mod (switch 
+          ((and lctl lalt)) (unmod vold) break 
+          ((and fn lalt)) (unmod bldn) break
+          ((and lctl)) (unmod down) break
+          () j break
+        )
+  k-mod (switch 
+          ((and lctl lalt)) (unmod volu) break 
+          ((and fn lalt)) (unmod blup) break
+          ((and lctl)) (unmod up) break
+          () k break
+        )
+  l-mod (switch 
+          ((and lctl lalt)) (unmod next) break 
+          ((and fn lalt)) (unmod brdn) break
+          ((and lctl)) (unmod right) break
+          () l break
+        )
+  scln-mod (switch 
+          ((and lctl lalt)) (unmod pp) break 
+          () @scln-subl break
+        )
+)
+
+;; ============================================================
 ;; LAYERS
 ;; ============================================================
 
@@ -183,9 +219,9 @@
   esc  brdn brup mctl sls  dtn  dnd  prev pp   next mute vold volu
   grv    1    2    3    4    5    6    7    8    9    0    -    =    rmet  ;; NUM
   @tab-nav    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
-  @esc-lmet a  s    d   f    g    h    j    k    l    @scln-subl   @ivt-rmet    ret    ;; A
+  @esc-lmet a  s    d   f    g    @h-mod @j-mod @k-mod @l-mod @scln-mod   @ivt-rmet    ret    ;; A
   lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft       ;; Z
-  fn   @ctrl-nav   lmet   @lmet-ret        spc         bspc   ralt   ◀   ▼    ▶    ;; MOD
+  fn   lctl   lmet   @lmet-ret        spc         bspc   ralt   ◀   ▼    ▶    ;; MOD
 )
 
 (deflayer sublayer
@@ -224,14 +260,14 @@
   XX   XX   XX   XX             XX             XX   XX   XX   XX   XX               ;; MOD
 )
 
-(deflayer system
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
-  XX   M-q  M-w  XX   @lrld  M-t  XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
-  XX   XX   XX   XX   XX   XX   prev vold volu next ▶⏸  XX  XX          ;; A
-  XX   XX   XX   @hrld   XX   M-C-q M-n  mute M-,  XX  XX   XX   XX          ;; Z
-  XX   XX   XX   M--             XX             M-=   XX   XX   XX   XX     ;; MOD
-)
+;; (deflayer system
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
+;;   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX     ;; NUM
+;;   XX   M-q  M-w  XX   @lrld  M-t  XX   brdn @sys-kbddn @sys-kbdup brup   XX   XX   XX     ;; Q
+;;   XX   XX   XX   XX   XX   XX   prev vold volu next ▶⏸  XX  XX          ;; A
+;;   XX   XX   XX   @hrld   XX   M-C-q M-n  mute M-,  XX  XX   XX   XX          ;; Z
+;;   XX   XX   XX   M--             XX             M-=   XX   XX   XX   XX     ;; MOD
+;; )
 
 (deflayer nav
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX          ;; ESC + F-ROW
@@ -254,7 +290,7 @@
 (deflayer tmux
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX             ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX        ;; NUM
-  XX   XX   @tx-down  XX   @tx-rtmx  XX   XX   @tx-furl  @tx-priv  XX  XX  XX  XX  XX  ;; Q
+  XX   XX   @tx-down  XX   @tx-rtmx  @tx-tmux   XX   @tx-furl  @tx-priv  XX  XX  XX  XX  XX  ;; Q
   XX   XX   XX   XX   @tx-conf  XX   @tx-home   @tx-proj   @tx-sesh  XX   @tx-tcmd XX  XX   ;; A
   lsft XX   XX   XX  XX   XX   XX   XX   @tx-rnmw  @tx-dotf  @tx-splt XX  rsft  ;; Z
   XX   XX   XX   XX             @tx-last            XX   XX   XX   XX   XX  ;; MOD
