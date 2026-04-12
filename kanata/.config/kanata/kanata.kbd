@@ -46,7 +46,7 @@
 (defalias
   scln-subl (tap-hold-release $subl-time $subl-time ; (layer-while-held sublayer))
   tab-nav (tap-hold-release $tap-time $hold-time tab (layer-while-held nav))
-  ctrl-nav (layer-while-held ctrl-nav)
+  ;; ctrl-nav (layer-while-held ctrl-nav)
 )
 
 ;; ============================================================
@@ -183,7 +183,7 @@
 (defalias
   h-mod (switch 
           ((and lctl lalt)) (unmod prev) break 
-          ((and fn lalt)) (unmod brup) break
+          ((and fn lalt)) (unmod brdn) break
           ((and lctl)) (unmod left) break
           () h break
         )
@@ -201,13 +201,41 @@
         )
   l-mod (switch 
           ((and lctl lalt)) (unmod next) break 
-          ((and fn lalt)) (unmod brdn) break
+          ((and fn lalt)) (unmod brup) break
           ((and lctl)) (unmod right) break
           () l break
+        )
+  m-mod (switch 
+          ((and lctl lalt)) (layer-switch mouse) break 
+          () m break
         )
   scln-mod (switch 
           ((and lctl lalt)) (unmod pp) break 
           () @scln-subl break
+        )
+)
+
+;; ============================================================
+;; MOUSE MACROS
+;; ============================================================
+
+(defalias
+  m-ex (layer-switch main)
+  
+  m-up (movemouse-accel-up 1 1000 1 5)
+  m-dn (movemouse-accel-down 1 1000 1 5)
+  m-lf (movemouse-accel-left 1 1000 1 5)
+  m-rt (movemouse-accel-right 1 1000 1 5)
+  
+  ;; Scrolling (mapped to u/d)
+  mw-u (mwheel-down 50 1)
+  mw-d (mwheel-up 50 1)
+  
+  ;; Jump to top/bottom (gg / G style) mapped to g
+  g-mod (switch 
+          ((and lsft)) (macro M-down) break 
+          ((and rsft)) (macro M-down) break 
+          () (macro M-up) break
         )
 )
 
@@ -220,7 +248,7 @@
   grv    1    2    3    4    5    6    7    8    9    0    -    =    rmet  ;; NUM
   @tab-nav    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
   @esc-lmet a  s    d   f    g    @h-mod @j-mod @k-mod @l-mod @scln-mod   @ivt-rmet    ret    ;; A
-  lsft   z    x    c    v    b    n    m    ,    .    /    ▲    rsft       ;; Z
+  lsft   z    x    c    v    b    n    @m-mod    ,    .    /    ▲    rsft       ;; Z
   fn   lctl   lmet   @lmet-ret        spc         bspc   ralt   ◀   ▼    ▶    ;; MOD
 )
 
@@ -278,15 +306,6 @@
   XX   XX   XX   M--             XX             M-+   XX   XX   XX   XX     ;; MOD
 )
 
-(deflayer ctrl-nav   
-  _    _    _    _    _    _    _    _    _    _    _    _    _          ;; ESC + F-ROW
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _     ;; NUM
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _     ;; Q
-  _    _    _    _    _    _    ◀    ▼    ▲    ▶    _    _    _          ;; A
-  _    _    _    _    _    _    A-◀  A-▼  A-▲  A-▶  _    _    _          ;; Z
-  _    _    _    _              _              _    _    _    _    _     ;; MOD
-)
-
 (deflayer tmux
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX             ;; ESC + F-ROW
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX        ;; NUM
@@ -294,4 +313,13 @@
   XX   XX   XX   XX   @tx-conf  XX   @tx-home   @tx-proj   @tx-sesh  XX   @tx-tcmd XX  XX   ;; A
   lsft XX   XX   XX  XX   XX   XX   XX   @tx-rnmw  @tx-dotf  @tx-splt XX  rsft  ;; Z
   XX   XX   XX   XX             @tx-last            XX   XX   XX   XX   XX  ;; MOD
+)
+
+(deflayer mouse
+  _    _    _    _    _    _    _    _    _    _    _    _    _          ;; ESC + F-ROW
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     ;; NUM
+  _    _    _    _    _    _    _    @mw-u _    _    _    _    _    _    ;; Q
+  @m-ex _   mrgt @mw-d mlft @g-mod @m-lf @m-dn @m-up @m-rt _    _    _      ;; A
+  _    _    _    _    _    _    _    @m-ex _    _    _    _    _          ;; Z
+  _    _    _    _              mlft           _    _    _    _    _     ;; MOD
 )
