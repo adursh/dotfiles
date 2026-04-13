@@ -7,14 +7,8 @@ return {
 	config = function()
 		-- Install formatters/linters via Mason
 		require("mason-null-ls").setup({
-			ensure_installed = {
-				"stylua",
-				"black",
-				"isort",
-				"prettierd",
-				"clang-format",
-			},
-			automatic_installation = true,
+			ensure_installed = {},
+			automatic_installation = false,
 		})
 
 		-- Configure none-ls

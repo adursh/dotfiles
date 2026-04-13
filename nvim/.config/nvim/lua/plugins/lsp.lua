@@ -11,15 +11,8 @@ return {
 		dependencies = { "williamboman/mason.nvim" },
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = {
-					"lua_ls",
-					"clangd",
-					"jdtls",
-					"html",
-					"cssls",
-					"tailwindcss",
-					"jsonls",
-				},
+				ensure_installed = {},
+				automatic_installation = false,
 				handlers = {
 					-- Default handler (runs for all servers)
 					function(server_name)

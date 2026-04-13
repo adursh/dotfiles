@@ -67,17 +67,10 @@ return {
 		},
 		opts = {
 			ensure_installed = {
-				"c",
-				"cpp",
-				"java",
-				"javascript",
 				"lua",
 				"vim",
 				"vimdoc",
 				"query",
-				"markdown",
-				"markdown_inline",
-				"json",
 			},
 			sync_install = false,
 			auto_install = true,
