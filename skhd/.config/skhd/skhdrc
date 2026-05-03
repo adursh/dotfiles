@@ -17,5 +17,5 @@ alt - e : open -a "Finder"
 # open Safari
 alt - s : open -a Safari
 
-# open ghostty
-cmd - enter : open -a ghostty 
+# open Ghostty
+alt - return : open -a Ghostty
