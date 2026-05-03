@@ -3,7 +3,7 @@ export PATH="$PATH:/Users/nvc/.local/bin"
 
 # ─── TMUX ────────────────────────────────────────────────────────────────────
 if command -v tmux &>/dev/null && [[ -z "$TMUX" ]]; then
-  tmux new-session -A -s home -c ~
+  tmux new-session -A -s "$USER" -c ~
 fi
 
 # ─── HISTORY ──────────────────────────────────────────────────────────────────
@@ -89,3 +89,9 @@ zvm_after_init() {
 }
 
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/nvc/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
