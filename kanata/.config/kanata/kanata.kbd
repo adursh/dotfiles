@@ -183,25 +183,25 @@
 (defalias
   h-mod (switch 
           ((and lctl lalt)) (unmod prev) break 
-          ((and fn lalt)) (unmod brdn) break
+          ((and fn lalt)) (unmod lsft lalt bldn) break
           ((and lctl)) (unmod left) break
           () h break
         )
   j-mod (switch 
-          ((and lctl lalt)) (unmod vold) break 
-          ((and fn lalt)) (unmod bldn) break
+          ((and lctl lalt)) (unmod lsft lalt vold) break 
+          ((and fn lalt)) (unmod lsft lalt brdn) break
           ((and lctl)) (unmod down) break
           () j break
         )
   k-mod (switch 
-          ((and lctl lalt)) (unmod volu) break 
-          ((and fn lalt)) (unmod blup) break
+          ((and lctl lalt)) (unmod lsft lalt volu) break 
+          ((and fn lalt)) (unmod lsft lalt brup) break
           ((and lctl)) (unmod up) break
           () k break
         )
   l-mod (switch 
           ((and lctl lalt)) (unmod next) break 
-          ((and fn lalt)) (unmod brup) break
+          ((and fn lalt)) (unmod lsft lalt blup) break
           ((and lctl)) (unmod right) break
           () l break
         )
@@ -302,7 +302,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX    ;; NUM
   XX   M-q  M-w  XX   @lrld  M-t  XX   S-A-◀   S-A-▼   S-A-▲   S-A-▶   XX   XX   XX  ;; Q
   lctl   M-a   M-s   M-d   M-f   XX   M-[   M-S-[   M-S-]   M-]   XX   XX   XX        ;; A
-  lsft   M-z   M-x   M-c   M-v   XX   ◀    ▼    ▲    ▶   XX   XX   rsft         ;; Z
+  lsft   M-z   M-x   M-c   M-v   XX   XX    mute   XX    XX   XX   XX   rsft         ;; Z
   XX   XX   XX   M--             XX             M-+   XX   XX   XX   XX     ;; MOD
 )
 
