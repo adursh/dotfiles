@@ -2,18 +2,21 @@
 # GENERAL
 ################################
 
+config-version = 2
 start-at-login = true
-
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+automatically-unhide-macos-hidden-apps = true
 default-root-container-layout = 'accordion'
+accordion-padding = 30
 
 # janky borders
 # after-startup-command = [
-#   "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=3.0 style=square hidpi=off"
+#  "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=3.0 style=square hidpi=off"
 # ]
 
 after-startup-command = [
   'exec-and-forget sketchybar',
-  # "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=3.0 hidpi=on",
+  # "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 hidpi=on",
   'workspace 1', 'layout v_accordion',
   'workspace 2', 'layout v_accordion',
   'workspace 3', 'layout v_accordion',
@@ -35,8 +38,8 @@ after-startup-command = [
 exec-on-workspace-change = ['/bin/bash', '-c', 'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE']
 
 # disabled — fight layout and cause chaos on restart
-enable-normalization-flatten-containers = false
-enable-normalization-opposite-orientation-for-nested-containers = false
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
 
 key-mapping.preset = "qwerty"
 
@@ -46,12 +49,12 @@ key-mapping.preset = "qwerty"
 ################################
 
 [gaps]
-inner.horizontal = 6
-inner.vertical = 6
-outer.left = 6
-outer.right = 6
-outer.top = 6
-outer.bottom = 6
+inner.horizontal = 10
+inner.vertical = 10
+outer.left = 10
+outer.right = 10
+outer.top = 10
+outer.bottom = 10
 
 
 ################################
@@ -129,8 +132,7 @@ alt-equal = "resize smart +30"
 # WINDOW CONTROLS
 ###############################
 
-alt-q = 'close'
-alt-shift-q = 'close --quit-if-last-window'
+alt-q = 'close --quit-if-last-window'
 alt-v = "layout floating tiling"
 alt-f = "fullscreen"
 
