@@ -20,14 +20,32 @@ vim.keymap.set("n", "<leader>cd", vim.cmd.Ex)
 -- 	map(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
 -- 	map(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
 -- end
---
--- vim.api.nvim_create_autocmd("TermOpen", {
--- 	pattern = "*",
--- 	callback = function()
--- 		pcall(set_terminal_keymaps)
---         vim.cmd("startinsert")
--- 	end,
--- })
+
+-- Navigate vim panels with arrow keys
+vim.keymap.set({"n", "i"}, "<Left>",  "<Cmd>wincmd h<CR>", {})
+vim.keymap.set({"n", "i"}, "<Down>",  "<Cmd>wincmd j<CR>", {})
+vim.keymap.set({"n", "i"}, "<Up>",    "<Cmd>wincmd k<CR>", {})
+vim.keymap.set({"n", "i"}, "<Right>", "<Cmd>wincmd l<CR>", {})
+
+-- Navigate in terminal mode with arrow keys
+function _G.set_terminal_keymaps()
+  local opts = { noremap = true }
+  local map = vim.api.nvim_buf_set_keymap
+
+  map(0, "t", "<Esc>",   [[<C-\><C-n>]], opts)
+  map(0, "t", "<Left>",  [[<C-\><C-n><C-W>h]], opts)
+  map(0, "t", "<Down>",  [[<C-\><C-n><C-W>j]], opts)
+  map(0, "t", "<Up>",    [[<C-\><C-n><C-W>k]], opts)
+  map(0, "t", "<Right>", [[<C-\><C-n><C-W>l]], opts)
+end
+
+vim.api.nvim_create_autocmd("TermOpen", {
+	pattern = "*",
+	callback = function()
+		pcall(set_terminal_keymaps)
+        vim.cmd("startinsert")
+	end,
+})
 
 -- clipboard
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })

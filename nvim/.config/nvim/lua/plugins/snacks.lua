@@ -13,10 +13,11 @@ return {
 			enabled = true,
 			replace_netrw = true,
 			hidden = true,
+            ignored = true,
 			auto_close = true,
-			filters = {
-				exclude = { ".env" }
-			},
+			-- filters = {
+			-- 	exclude = { ".env" }
+			-- },
 		},
 		indent = { enabled = true },
 		input = { enabled = true },
@@ -26,6 +27,7 @@ return {
 		},
 		picker = {
 			enabled = true,
+            ignored = true,
 			sources = {
 				files = {
 					hidden = true,
@@ -35,6 +37,7 @@ return {
 				},
 				explorer = {
 					hidden = true,
+                    ignore = true,
 					-- auto_close = false,
 					layout = {
 						layout = {
