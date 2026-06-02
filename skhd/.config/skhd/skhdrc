@@ -13,9 +13,14 @@
 # open system settings
 alt - i : open -a "System Settings"
 alt - e : open -a "Finder"
+alt - b : open -a "Brave Browser"
 
 # open Safari
-alt - s : open -a Safari
+alt - s : open -a Siri
 
 # open Ghostty
 alt - return : open -a Ghostty
+
+# screenshot
+alt - p : screencapture -iW -c
+alt + shift - p : screencapture -i -c

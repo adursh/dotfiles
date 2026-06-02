@@ -5,7 +5,7 @@
 config-version = 2
 start-at-login = true
 persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-automatically-unhide-macos-hidden-apps = true
+# automatically-unhide-macos-hidden-apps = true
 default-root-container-layout = 'accordion'
 accordion-padding = 30
 
@@ -16,17 +16,16 @@ accordion-padding = 30
 
 after-startup-command = [
   'exec-and-forget sketchybar',
-  # "exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 hidpi=on",
-  'workspace 1', 'layout v_accordion',
-  'workspace 2', 'layout v_accordion',
-  'workspace 3', 'layout v_accordion',
-  'workspace 4', 'layout v_accordion',
-  'workspace 5', 'layout v_accordion',
-  'workspace 6', 'layout v_accordion',
-  'workspace 7', 'layout v_accordion',
-  'workspace 8', 'layout v_accordion',
-  'workspace 9', 'layout v_accordion',
-  'workspace 10', 'layout v_accordion',
+  'workspace 1', 'layout accordion',
+  'workspace 2', 'layout accordion',
+  'workspace 3', 'layout accordion',
+  'workspace 4', 'layout accordion',
+  'workspace 5', 'layout accordion',
+  'workspace 6', 'layout accordion',
+  'workspace 7', 'layout accordion',
+  'workspace 8', 'layout accordion',
+  'workspace 9', 'layout accordion',
+  'workspace 10', 'layout accordion',
 ]
 
 # sketchybar
@@ -49,12 +48,12 @@ key-mapping.preset = "qwerty"
 ################################
 
 [gaps]
-inner.horizontal = 10
-inner.vertical = 10
-outer.left = 10
-outer.right = 10
-outer.top = 10
-outer.bottom = 10
+inner.horizontal = 6
+inner.vertical = 6
+outer.left = 6
+outer.right = 6
+outer.top = 6
+outer.bottom = 6
 
 
 ################################
@@ -132,7 +131,8 @@ alt-equal = "resize smart +30"
 # WINDOW CONTROLS
 ###############################
 
-alt-q = 'close --quit-if-last-window'
+alt-q = 'close'
+alt-shift-q = 'close --quit-if-last-window'
 alt-v = "layout floating tiling"
 alt-f = "fullscreen"
 
@@ -185,8 +185,19 @@ alt-shift-0 = "move-node-to-workspace 10 --focus-follows-window"
 
 alt-shift-r = [
   "exec-and-forget aerospace reload-config",
+  "exec-and-forget pkill -SIGUSR1 sketchybar || (killall sketchybar; sketchybar)",
   "exec-and-forget $HOME/.config/scripts/macos/notify.sh Aerospace config-reloaded!"
 ]
+
+alt-shift-semicolon = "mode join"
+
+[mode.join.binding]
+h = "join-with left"
+j = "join-with down"
+k = "join-with up"
+l = "join-with right"
+esc = "mode main"
+enter = "mode main"
 
 
 ################################
@@ -209,9 +220,9 @@ run = "layout floating"
 if.app-id = "com.apple.AppStore"
 run = "layout floating"
 
-[[on-window-detected]]
-if.app-id = "com.apple.finder"
-run = "layout floating"
+# [[on-window-detected]]
+# if.app-id = "com.apple.finder"
+# run = "layout floating"
 
 
 ##############################

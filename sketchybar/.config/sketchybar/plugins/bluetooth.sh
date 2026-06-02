@@ -7,11 +7,11 @@ if ! command -v blueutil &>/dev/null; then
 fi
 
 STATE=$(blueutil --power)
-CONNECTED=$(blueutil --connected | wc -l | tr -d ' ')
+CONNECTED=$(blueutil --connected)
 
 if [ "$STATE" = "0" ]; then
   ICON="󰂲"
-elif [ "$CONNECTED" -gt "0" ]; then
+elif [ -n "$CONNECTED" ]; then
   ICON="󰂱"
 else
   ICON="󰂯"

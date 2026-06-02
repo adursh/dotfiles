@@ -95,3 +95,15 @@ fpath=(/Users/nvc/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+# OpenClaw Completion
+source "/Users/nvc/.openclaw/completions/openclaw.zsh"
+
+# Added by Antigravity IDE
+export PATH="/Users/nvc/.antigravity-ide/antigravity-ide/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/nvc/.local/bin:$PATH"
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
