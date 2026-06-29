@@ -94,7 +94,7 @@ install_packages() {
     return
   fi
   brew update || warn "brew update failed"
-  brew bundle --file="$DOTFILES_DIR/Brewfile" --no-lock \
+  brew bundle --file="$DOTFILES_DIR/Brewfile" \
     || warn "Some packages failed to install (non-fatal)"
   info "Brew bundle complete"
 }
