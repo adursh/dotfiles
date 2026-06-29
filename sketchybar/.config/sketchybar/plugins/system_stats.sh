@@ -49,7 +49,7 @@ case "$NAME" in
   cpu)
     [ -z "$CPU_USAGE" ] && exit 0
     VAL="${CPU_USAGE%%%}"
-    GRAPH_VAL=$(echo "$VAL" | awk '{printf "%.2f", $1/100}')
+    GRAPH_VAL=$(echo "$VAL" | awk '{printf "%.2f", ($1/100) * 0.8}')
     if [ "$VAL" -ge 80 ]; then
       GCOLOR="$RED"
       GFILL="0x22f38ba8"

@@ -10,7 +10,8 @@ case ${PERCENTAGE} in
   9[0-9]|100) ICON="􀛨"; COLOR=0xffa6e3a1 ;;
   [6-8][0-9])  ICON="􀺸"; COLOR=$TEXT ;;
   [3-5][0-9])  ICON="􀺶"; COLOR=$TEXT ;;
-  [1-2][0-9])  ICON="􀛩"; COLOR=0xfffab387 ;;
+  1[1-9]|2[0-9]) ICON="􀛩"; COLOR=0xfffab387 ;;
+  [0-9]|10)    ICON="􀛪"; COLOR=$RED ;;
   *)            ICON="􀛪"; COLOR=0xfff38ba8 ;;
 esac
 

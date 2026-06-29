@@ -4,17 +4,10 @@ SID="$1"
 
 if [ "$SID" = "$FOCUSED_WORKSPACE" ]; then
   sketchybar --set "$NAME" \
-    drawing=on \
-    label.color=0xffcdd6f4 \
-    background.drawing=off
+    background.drawing=on \
+    label.color=0xffcdd6f4
 else
-  [ -z "$OCCUPIED_WORKSPACES" ] && OCCUPIED_WORKSPACES=$(aerospace list-windows --all --format %{workspace} 2>/dev/null | sort -un)
-  if echo "$OCCUPIED_WORKSPACES" | grep -qw "$SID"; then
-    sketchybar --set "$NAME" \
-      drawing=on \
-      label.color=0xff7f849c \
-      background.drawing=off
-  else
-    sketchybar --set "$NAME" drawing=off
-  fi
+  sketchybar --set "$NAME" \
+    background.drawing=off \
+    label.color=0xff585b70
 fi
