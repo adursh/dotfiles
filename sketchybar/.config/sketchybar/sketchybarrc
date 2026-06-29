@@ -138,6 +138,8 @@ sketchybar --add bracket system_icons wifi bluetooth battery \
     background.height=22 \
     background.border_width=1 \
     background.border_color=$SURFACE1 \
+    background.padding_left=4 \
+    background.padding_right=4 \
 
 # Spacer between groups
 sketchybar --add item spacer_stats right \
@@ -145,8 +147,8 @@ sketchybar --add item spacer_stats right \
     label.drawing=off \
     icon.drawing=off \
     background.drawing=off \
-    padding_left=2 \
-    padding_right=2 \
+    padding_left=0 \
+    padding_right=0 \
     width=8
 
 # System Stats Provider
@@ -157,13 +159,13 @@ sketchybar --add event system_stats
 sketchybar --add item disk right \
   --set disk \
     icon.drawing=on \
-    icon="􀤂" \
+    icon="􀥾" \
     icon.font="SF Pro Text:Regular:14.0" \
     icon.color=$TEXT \
-    label.font="SF Pro Text:Medium:11.0" \
-    label.color=$TEXT \
+    label.font="SF Pro Text:Semibold:11.0" \
+    label.color=0xdecdd6f4 \
     padding_left=2 \
-    padding_right=4 \
+    padding_right=8 \
     background.drawing=off \
     script="$PLUGIN_DIR/system_stats.sh" \
   --subscribe disk system_stats
@@ -175,51 +177,66 @@ sketchybar --add item ram right \
     icon="􀫦" \
     icon.font="SF Pro Text:Regular:14.0" \
     icon.color=$TEXT \
-    label.font="SF Pro Text:Medium:11.0" \
-    label.color=$TEXT \
+    label.font="SF Pro Text:Semibold:11.0" \
+    label.color=0xdecdd6f4 \
     padding_left=2 \
     padding_right=2 \
     background.drawing=off \
     script="$PLUGIN_DIR/system_stats.sh" \
   --subscribe ram system_stats
 
-# CPU Usage (leftmost in stats group)
-sketchybar --add item cpu right \
-  --set cpu \
+# CPU Temperature (far left of right side, hidden until hot)
+sketchybar --add item cpu_temp right \
+  --set cpu_temp \
     icon.drawing=on \
-    icon="􀫥" \
+    icon="􁏃" \
     icon.font="SF Pro Text:Regular:14.0" \
-    icon.color=$TEXT \
-    label.font="SF Pro Text:Medium:11.0" \
-    label.color=$TEXT \
+    icon.color=$RED_MUTED \
+    label.font="SF Pro Text:Semibold:11.0" \
+    label.color=$RED \
+    label.drawing=off \
     padding_left=8 \
     padding_right=2 \
     background.drawing=off \
     script="$PLUGIN_DIR/system_stats.sh" \
-  --subscribe cpu system_stats
-
-# # System Stats Bracket (disabled for testing)
-# sketchybar --add bracket system_stats_bracket disk ram cpu \
-#   --set system_stats_bracket \
-#     background.drawing=on \
-#     background.color=$SURFACE0 \
-#     background.corner_radius=7 \
-#     background.height=22 \
-#     background.border_width=1 \
-#     background.border_color=$SURFACE1
-
-# CPU Temperature (far left of right side, hidden until hot)
-sketchybar --add item cpu_temp right \
-  --set cpu_temp \
-    icon.drawing=off \
-    label.font="SF Pro Text:Medium:11.0" \
-    label.color=$RED \
-    label.drawing=off \
-    padding_left=4 \
-    padding_right=4 \
-    background.drawing=off \
-    script="$PLUGIN_DIR/system_stats.sh" \
   --subscribe cpu_temp system_stats
+
+# System Stats Bracket
+sketchybar --add bracket system_stats_bracket cpu_temp disk ram \
+  --set system_stats_bracket \
+    background.drawing=on \
+    background.color=$SURFACE0 \
+    background.corner_radius=7 \
+    background.height=22 \
+    background.border_width=1 \
+    background.border_color=$SURFACE1
+    background.padding_left=4 \
+    background.padding_right=4 \
+
+# CPU Graph (standalone, left of bracket)
+sketchybar --add graph cpu right 50 \
+  --set cpu \
+    icon.drawing=off \
+    label.drawing=on \
+    label.font="SF Pro Text:Bold:10.0" \
+    label.color=$SUBTEXT0 \
+    label.y_offset=0 \
+    graph.color=0xff89b4fa \
+    graph.fill_color=0x2289b4fa \
+    graph.line_width=1.5 \
+    y_offset=0 \
+    background.drawing=on \
+    background.height=22 \
+    background.color=$SURFACE0 \
+    background.corner_radius=7 \
+    background.border_width=1 \
+    background.border_color=$SURFACE1 \
+    background.padding_left=4 \
+    background.padding_right=4 \
+    padding_left=4 \
+    padding_right=8 \
+    script="$PLUGIN_DIR/system_stats.sh" \
+  --subscribe cpu system_stats
 
 # Network Speed
 sketchybar --add item network_speed right \
@@ -229,7 +246,7 @@ sketchybar --add item network_speed right \
     label.color=0xff6c6c8a \
     background.drawing=off \
     script="$PLUGIN_DIR/network_speed.py" \
-    padding_left=8 \
+    padding_left=4 \
     padding_right=8
 
 

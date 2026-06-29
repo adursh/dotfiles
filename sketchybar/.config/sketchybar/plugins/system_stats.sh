@@ -1,16 +1,12 @@
 #!/bin/bash
 source "$HOME/.config/sketchybar/colors.sh"
 
-# Icons: normal → white, moderate → peach, critical → red
+# Icons: always white, switch to warning variant only at critical
 color_for_usage() {
-  local val="${1%%%}"
-  if [ "$val" -ge 80 ]; then echo "$RED"
-  elif [ "$val" -ge 50 ]; then echo "$PEACH"
-  else echo "$TEXT"
-  fi
+  echo "$TEXT"
 }
 
-# CPU: normal chip, warning chip when high
+# CPU: outline normally, filled at critical
 cpu_icon() {
   local val="${1%%%}"
   if [ "$val" -ge 80 ]; then echo "􀧓"
@@ -18,70 +14,76 @@ cpu_icon() {
   fi
 }
 
-# RAM: normal memory, warning when high
+# RAM: outline normally, filled at critical
 ram_icon() {
   local val="${1%%%}"
-  if [ "$val" -ge 80 ]; then echo "􀫧"
+  if [ "$val" -ge 80 ]; then echo "􀧖"
   else echo "􀫦"
   fi
 }
 
-# Disk: normal drive, warning when full
+# Disk: outline normally, filled at critical
 disk_icon() {
   local val="${1%%%}"
-  if [ "$val" -ge 80 ]; then echo "􀤃"
-  else echo "􀤂"
+  if [ "$val" -ge 80 ]; then echo "􀨪"
+  else echo "􀥾"
   fi
 }
 
-# Temperature color thresholds
-color_for_temp() {
-  local val="${1%°C}"
-  local int_val="${val%.*}"
-  if [ "$int_val" -ge 80 ]; then echo "$RED"
-  elif [ "$int_val" -ge 60 ]; then echo "$PEACH"
-  else echo "$TEXT"
-  fi
-}
-
-# Temperature icon: low/mid/high thermometer
+# Temperature icon: changes variant at thresholds
 temp_icon() {
   local val="${1%°C}"
   local int_val="${val%.*}"
-  if [ "$int_val" -ge 80 ]; then echo "􀇮"
+  if [ "$int_val" -ge 80 ]; then echo "􁏄"
   elif [ "$int_val" -ge 60 ]; then echo "􀇬"
-  else echo "􀇪"
+  else echo "􁏃"
   fi
+}
+
+# Temperature color: always white for icon
+color_for_temp() {
+  echo "$TEXT"
 }
 
 case "$NAME" in
   cpu)
     [ -z "$CPU_USAGE" ] && exit 0
-    COLOR=$(color_for_usage "$CPU_USAGE")
-    ICON=$(cpu_icon "$CPU_USAGE")
-    sketchybar --set cpu icon="$ICON" icon.color="$COLOR" label="$CPU_USAGE" label.color="$COLOR"
+    VAL="${CPU_USAGE%%%}"
+    GRAPH_VAL=$(echo "$VAL" | awk '{printf "%.2f", $1/100}')
+    if [ "$VAL" -ge 80 ]; then
+      GCOLOR="$RED"
+      GFILL="0x22f38ba8"
+    elif [ "$VAL" -ge 50 ]; then
+      GCOLOR="$PEACH"
+      GFILL="0x22fab387"
+    else
+      GCOLOR="0xff89b4fa"
+      GFILL="0x2289b4fa"
+    fi
+    sketchybar --set cpu label="$CPU_USAGE" label.color="$TEXT" graph.color="$GCOLOR" graph.fill_color="$GFILL" \
+               --push cpu "$GRAPH_VAL"
     ;;
   ram)
     [ -z "$RAM_USAGE" ] && exit 0
     COLOR=$(color_for_usage "$RAM_USAGE")
     ICON=$(ram_icon "$RAM_USAGE")
-    sketchybar --set ram icon="$ICON" icon.color="$COLOR" label="$RAM_USAGE" label.color="$COLOR"
+    sketchybar --set ram icon="$ICON" icon.color="$COLOR" label="$RAM_USAGE" label.color=0xdecdd6f4
     ;;
   disk)
     [ -z "$DISK_USAGE" ] && exit 0
     COLOR=$(color_for_usage "$DISK_USAGE")
     ICON=$(disk_icon "$DISK_USAGE")
-    sketchybar --set disk icon="$ICON" icon.color="$COLOR" label="$DISK_USAGE" label.color="$COLOR"
+    sketchybar --set disk icon="$ICON" icon.color="$COLOR" label="$DISK_USAGE" label.color=0xdecdd6f4
     ;;
   cpu_temp)
     [ -z "$CPU_TEMP" ] && exit 0
     TEMP_VAL="${CPU_TEMP%°C}"
     TEMP_INT="${TEMP_VAL%.*}"
-    if [ "$TEMP_INT" -ge 50 ]; then
-      COLOR=$(color_for_temp "$CPU_TEMP")
-      sketchybar --set cpu_temp label="$CPU_TEMP" label.color="$COLOR" label.drawing=on
+    if [ "$TEMP_INT" -ge 20 ]; then
+      ICON=$(temp_icon "$CPU_TEMP")
+      sketchybar --set cpu_temp icon="$ICON" icon.color="$TEXT" label="${TEMP_INT}°C" label.color=0xdecdd6f4 label.drawing=on drawing=on
     else
-      sketchybar --set cpu_temp label.drawing=off
+      sketchybar --set cpu_temp drawing=off
     fi
     ;;
 esac
