@@ -1,9 +1,10 @@
-tap "felixkratz/formulae"
-tap "fsouza/prettierd"
-tap "jandedobbeleer/oh-my-posh"
-tap "koekeishiya/formulae"
-tap "mhaeuser/mhaeuser"
-tap "nikitabobko/tap"
+tap "felixkratz/formulae", trusted: true
+tap "fsouza/prettierd", trusted: true
+tap "jandedobbeleer/oh-my-posh", trusted: true
+tap "joncrangle/tap", trusted: true
+tap "koekeishiya/formulae", trusted: true
+tap "mhaeuser/mhaeuser", trusted: true
+tap "nikitabobko/tap", trusted: true
 brew "bat"
 brew "blueutil"
 brew "btop"
@@ -33,13 +34,17 @@ brew "zoxide"
 brew "zsh"
 brew "zsh-vi-mode"
 brew "felixkratz/formulae/borders"
+brew "felixkratz/formulae/sketchybar"
 brew "fsouza/prettierd/prettierd"
+brew "jandedobbeleer/oh-my-posh/oh-my-posh"
+brew "joncrangle/tap/sketchybar-system-stats"
 brew "koekeishiya/formulae/skhd"
 brew "koekeishiya/formulae/yabai"
 cask "nikitabobko/tap/aerospace"
 cask "brave-browser"
 cask "ente-auth"
 cask "firefox"
+cask "ghostty"
 cask "google-chrome"
 cask "hammerspoon"
 cask "kitty"
