@@ -61,11 +61,14 @@ for sid in 1 2 3 4 5 6 7 8 9 10; do
   sketchybar --add item "space.$sid" left \
     --subscribe "space.$sid" aerospace_workspace_change \
     --set "space.$sid" \
-      drawing=off \
-      lazy=on \
       label="$sid" \
-      label.font="SF Pro Text:Medium:14.0" \
+      label.color=0xff585b70 \
+      label.font="SF Pro Text:Regular:14.0" \
       background.drawing=off \
+      background.color=0xffa6e3a1 \
+      background.corner_radius=0 \
+      background.height=2 \
+      background.y_offset=-10 \
       click_script="aerospace workspace $sid" \
       script="$PLUGIN_DIR/aerospace.sh $sid"
 done
@@ -124,7 +127,7 @@ sketchybar --add item wifi right \
     padding_right=4 \
     background.drawing=off \
     script="$PLUGIN_DIR/wifi.sh" \
-    --subscribe wifi system_woke
+    --subscribe wifi wifi_change system_woke
 
 # Group wifi, bluetooth, battery
 sketchybar --add bracket system_icons wifi bluetooth battery \
@@ -136,22 +139,94 @@ sketchybar --add bracket system_icons wifi bluetooth battery \
     background.border_width=1 \
     background.border_color=$SURFACE1 \
 
+# Spacer between groups
+sketchybar --add item spacer_stats right \
+  --set spacer_stats \
+    label.drawing=off \
+    icon.drawing=off \
+    background.drawing=off \
+    padding_left=2 \
+    padding_right=2 \
+    width=8
+
+# System Stats Provider
+killall stats_provider 2>/dev/null
+sketchybar --add event system_stats
+
+# Disk Usage
+sketchybar --add item disk right \
+  --set disk \
+    icon.drawing=on \
+    icon="􀤂" \
+    icon.font="SF Pro Text:Regular:14.0" \
+    icon.color=$TEXT \
+    label.font="SF Pro Text:Medium:11.0" \
+    label.color=$TEXT \
+    padding_left=2 \
+    padding_right=4 \
+    background.drawing=off \
+    script="$PLUGIN_DIR/system_stats.sh" \
+  --subscribe disk system_stats
+
+# RAM Usage
+sketchybar --add item ram right \
+  --set ram \
+    icon.drawing=on \
+    icon="􀫦" \
+    icon.font="SF Pro Text:Regular:14.0" \
+    icon.color=$TEXT \
+    label.font="SF Pro Text:Medium:11.0" \
+    label.color=$TEXT \
+    padding_left=2 \
+    padding_right=2 \
+    background.drawing=off \
+    script="$PLUGIN_DIR/system_stats.sh" \
+  --subscribe ram system_stats
+
+# CPU Usage (leftmost in stats group)
+sketchybar --add item cpu right \
+  --set cpu \
+    icon.drawing=on \
+    icon="􀫥" \
+    icon.font="SF Pro Text:Regular:14.0" \
+    icon.color=$TEXT \
+    label.font="SF Pro Text:Medium:11.0" \
+    label.color=$TEXT \
+    padding_left=8 \
+    padding_right=2 \
+    background.drawing=off \
+    script="$PLUGIN_DIR/system_stats.sh" \
+  --subscribe cpu system_stats
+
+# System Stats Bracket
+sketchybar --add bracket system_stats_bracket disk ram cpu \
+  --set system_stats_bracket \
+    background.drawing=on \
+    background.color=$SURFACE0 \
+    background.corner_radius=7 \
+    background.height=22 \
+    background.border_width=1 \
+    background.border_color=$SURFACE1
+
 # Network Speed
 sketchybar --add item network_speed right \
   --set network_speed \
     update_freq=2 \
-    label.font="SF Pro Text:Regular Italic:12.0" \
+    label.font="SF Pro Text:Regular Italic:11.0" \
     label.color=0xff6c6c8a \
     background.drawing=off \
     script="$PLUGIN_DIR/network_speed.py" \
     padding_left=8 \
-    padding_right=12
+    padding_right=8
 
 
 ##### Finalizing Setup #####
 # Start bluetooth monitor daemon
 pkill -f "bluetooth_monitor.sh" 2>/dev/null
 "$PLUGIN_DIR/bluetooth_monitor.sh" &
+
+# Start system stats provider
+stats_provider --cpu usage --memory ram_usage --disk usage --interval 4 &
 
 sketchybar --update
 
