@@ -1,8 +1,15 @@
+
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
 # ─── PATH ────────────────────────────────────────────────────────────────────
 export PATH="$PATH:/Users/nvc/.local/bin"
 
 # ─── TMUX ────────────────────────────────────────────────────────────────────
-if command -v tmux &>/dev/null && [[ -z "$TMUX" ]]; then
+export TERM=xterm-256color
+if command -v tmux &>/dev/null \
+  && [[ -z "$TMUX" ]] \
+  && [[ "$TERM_PROGRAM" != "vscode" ]]; then
   tmux new-session -A -s "$USER" -c ~
 fi
 
@@ -97,7 +104,7 @@ compinit
 # End of Docker CLI completions
 
 # OpenClaw Completion
-source "/Users/nvc/.openclaw/completions/openclaw.zsh"
+
 
 # Added by Antigravity IDE
 export PATH="/Users/nvc/.antigravity-ide/antigravity-ide/bin:$PATH"
@@ -107,3 +114,9 @@ export PATH="/Users/nvc/.antigravity-ide/antigravity-ide/bin:$PATH"
 export PATH="/Users/nvc/.local/bin:$PATH"
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+
+# AWS credentials loaded from ~/.aws/credentials
