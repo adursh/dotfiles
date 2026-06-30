@@ -12,7 +12,7 @@ sketchybar --bar \
   height=30         \
   position=top      \
   color=0x80111128 \
-  blur_radius=90    \
+  blur_radius=30    \
   border_width=0    \
   padding_left=12   \
   padding_right=12  \
@@ -101,10 +101,13 @@ sketchybar --add item battery right \
     script="$PLUGIN_DIR/battery.sh" \
   --subscribe battery system_woke power_source_change
 
-# Bluetooth
-sketchybar --add event bluetooth_change
+# Bluetooth (event-driven: fires on connect/disconnect/power changes)
+sketchybar --add event bt_status "com.apple.bluetooth.status"
+sketchybar --add event bt_power_on "IOBluetoothHostControllerPoweredOnNotification"
+sketchybar --add event bt_power_off "IOBluetoothHostControllerPoweredOffNotification"
 sketchybar --add item bluetooth right \
   --set bluetooth \
+    update_freq=60 \
     icon.drawing=on \
     icon.font="SF Pro Text:Regular:15.0" \
     icon.color=$TEXT \
@@ -113,7 +116,7 @@ sketchybar --add item bluetooth right \
     padding_right=4 \
     background.drawing=off \
     script="$PLUGIN_DIR/bluetooth.sh" \
-  --subscribe bluetooth bluetooth_change
+  --subscribe bluetooth bt_status bt_power_on bt_power_off system_woke
 
 # WiFi
 sketchybar --add item wifi right \
@@ -245,21 +248,17 @@ sketchybar --add item network_speed right \
     label.font="SF Pro Text:Regular Italic:11.0" \
     label.color=0xff6c6c8a \
     background.drawing=off \
-    script="$PLUGIN_DIR/network_speed.py" \
+    script="$PLUGIN_DIR/network_speed.sh" \
     padding_left=4 \
     padding_right=8
 
 
 ##### Finalizing Setup #####
-# Start bluetooth monitor daemon
-pkill -f "bluetooth_monitor.sh" 2>/dev/null
-"$PLUGIN_DIR/bluetooth_monitor.sh" &
-
 sketchybar --update
 
 # Start system stats provider (cpu usage, ram, disk — temperature handled separately)
 pkill -f temp_provider.sh 2>/dev/null
-(sleep 2; nohup stats_provider --cpu usage --memory ram_usage --disk usage --interval 10 > /tmp/stats_provider.log 2>&1) &
+(sleep 2; nohup stats_provider --cpu usage --memory ram_usage --disk usage --interval 5 > /tmp/stats_provider.log 2>&1) &
 
 # Start temperature provider (uses macmon for real Apple Silicon temps)
 (sleep 2; nohup "$PLUGIN_DIR/temp_provider.sh" > /tmp/temp_provider.log 2>&1) &
