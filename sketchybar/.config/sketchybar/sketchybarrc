@@ -256,10 +256,11 @@ sketchybar --add item network_speed right \
 
 ##### Finalizing Setup #####
 
-# Wake handler: restarts stats/temp helpers on lid open
+# Health check: restarts dead helpers on wake or every 30s
 sketchybar --add item wake_handler right \
   --set wake_handler \
     drawing=off \
+    update_freq=30 \
     script="$PLUGIN_DIR/wake_handler.sh" \
   --subscribe wake_handler system_woke
 
