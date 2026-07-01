@@ -16,5 +16,5 @@ macmon pipe --interval $((INTERVAL * 1000)) 2>/dev/null | while IFS= read -r lin
   # Skip if jq failed or returned null/empty
   [ -z "$CPU_TEMP" ] || [ "$CPU_TEMP" = "null" ] && continue
 
-  sketchybar --trigger system_stats CPU_TEMP="${CPU_TEMP}°C" GPU_TEMP="${GPU_TEMP}°C"
+  sketchybar --trigger temp_update CPU_TEMP="${CPU_TEMP}°C" GPU_TEMP="${GPU_TEMP}°C"
 done

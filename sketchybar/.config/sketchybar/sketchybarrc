@@ -157,6 +157,7 @@ sketchybar --add item spacer_stats right \
 # System Stats Provider
 killall stats_provider 2>/dev/null
 sketchybar --add event system_stats
+sketchybar --add event temp_update
 
 # Disk Usage
 sketchybar --add item disk right \
@@ -202,7 +203,7 @@ sketchybar --add item cpu_temp right \
     padding_right=2 \
     background.drawing=off \
     script="$PLUGIN_DIR/system_stats.sh" \
-  --subscribe cpu_temp system_stats
+  --subscribe cpu_temp temp_update
 
 # System Stats Bracket
 sketchybar --add bracket system_stats_bracket cpu_temp disk ram \
