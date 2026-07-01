@@ -250,10 +250,19 @@ sketchybar --add item network_speed right \
     background.drawing=off \
     script="$PLUGIN_DIR/network_speed.sh" \
     padding_left=4 \
-    padding_right=8
+    padding_right=8 \
+  --subscribe network_speed system_woke
 
 
 ##### Finalizing Setup #####
+
+# Wake handler: restarts stats/temp helpers on lid open
+sketchybar --add item wake_handler right \
+  --set wake_handler \
+    drawing=off \
+    script="$PLUGIN_DIR/wake_handler.sh" \
+  --subscribe wake_handler system_woke
+
 sketchybar --update
 
 # Start system stats provider (cpu usage, ram, disk — temperature handled separately)
