@@ -28,6 +28,9 @@ elif [ "$DIST" -ge 3 ]; then W=13
 elif [ "$DIST" -eq 2 ]; then W=14
 fi
 SLEEP_DUR=$(awk -v d=$DUR 'BEGIN{printf "%.2f", d*0.0167}')
+# Squash runs at the slide's pace: shrink+regrow together complete in
+# about the same time as the slide itself.
+SQ=$(( (DUR + 1) / 2 ))
 
 sketchybar --set ws_indicator background.x_offset=$(( T + D ))
 sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T
@@ -39,15 +42,16 @@ if [ "$DIST" -eq 1 ]; then
   exit 0
 fi
 
-# Landing squash starts exactly when the slide ends and uses the same
-# frame count as the slide, so shrink and travel feel like one motion.
-# front_app padding is animated in sync so it does not shift.
+# Landing squash starts exactly when the slide ends and completes in the
+# same time the slide took (shrink + regrow each at SQ frames), so the
+# length change keeps the slide's pace. front_app padding is animated in
+# sync so it does not shift.
 sleep "$SLEEP_DUR"
 if [ "$SID" -lt "$OLD" ]; then
-  sketchybar --animate linear $DUR --set ws_indicator width=$W width=16
+  sketchybar --animate linear $SQ --set ws_indicator width=$W width=16
 else
-  sketchybar --animate linear $DUR --set ws_indicator width=$W background.x_offset=$(( T + 16 - W )) width=16 background.x_offset=$T
+  sketchybar --animate linear $SQ --set ws_indicator width=$W background.x_offset=$(( T + 16 - W )) width=16 background.x_offset=$T
 fi
-sketchybar --animate linear $DUR --set front_app padding_left=$(( 12 + 16 - W )) padding_left=12
+sketchybar --animate linear $SQ --set front_app padding_left=$(( 12 + 16 - W )) padding_left=12
 
 sketchybar --animate tanh 8 --set "$NAME" label.color=0xffcdd6f4
