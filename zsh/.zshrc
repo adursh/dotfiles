@@ -9,7 +9,9 @@ export PATH="$PATH:/Users/nvc/.local/bin"
 export TERM=xterm-256color
 if command -v tmux &>/dev/null \
   && [[ -z "$TMUX" ]] \
-  && [[ "$TERM_PROGRAM" != "vscode" ]]; then
+  && [[ -o interactive ]] \
+  && [[ "$TERM_PROGRAM" != "vscode" ]] \
+  && [[ "$TERM_PROGRAM" != "kiro" ]]; then
   tmux new-session -A -s "$USER" -c ~
 fi
 
@@ -81,29 +83,25 @@ alias tmux-clean='rm -f ~/.local/share/tmux/resurrect/last && tmux kill-server'
 #   source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh  # must be last
 # }
 
-ZVM_LAZY_KEYBINDINGS=false
-ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
-ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
+if [[ -o interactive ]]; then
+  ZVM_INIT_MODE=sourcing
+  ZVM_LAZY_KEYBINDINGS=false
+  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+  ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
+  ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
 
-eval "$(starship init zsh)"
+  eval "$(starship init zsh)"
 
-zvm_after_init() {
-  eval "$(fzf --zsh)"
-  source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-  ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-  source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-}
+  zvm_after_init() {
+    eval "$(fzf --zsh)"
+    source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+    source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  }
 
-source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+  source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+fi
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/nvc/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
-
-# OpenClaw Completion
 
 
 # Added by Antigravity IDE
@@ -118,5 +116,3 @@ export PATH="/Users/nvc/.local/bin:$PATH"
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
-
-# AWS credentials loaded from ~/.aws/credentials

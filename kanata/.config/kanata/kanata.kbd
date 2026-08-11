@@ -249,7 +249,7 @@
   @tab-nav    q    w  e  r    t    y    u    i    o    p    [    ]    \     ;; Q
   @esc-lmet a  s    d   f    g    @h-mod @j-mod @k-mod @l-mod @scln-mod   @ivt-rmet    ret    ;; A
   lsft   z    x    c    v    b    n    @m-mod    ,    .    /    ▲    rsft       ;; Z
-  fn   lctl   lmet   @lmet-ret        spc         bspc   ralt   ◀   ▼    ▶    ;; MOD
+  fn   lctl   lmet   lalt        spc         bspc   ralt   ◀   ▼    ▶    ;; MOD
 )
 
 (deflayer sublayer

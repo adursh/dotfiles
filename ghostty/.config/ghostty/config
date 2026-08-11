@@ -35,3 +35,6 @@ keybind = cmd+r=text:\x00r
 
 # copy mode
 keybind = cmd+[=text:\x00[
+
+# tmux scratchpad
+keybind = cmd+;=text:\x00g
