@@ -65,13 +65,23 @@ for sid in 1 2 3 4 5 6 7 8 9 10; do
       label.color=0xff585b70 \
       label.font="SF Pro Text:Regular:14.0" \
       background.drawing=off \
-      background.color=0xffa6e3a1 \
       background.corner_radius=0 \
       background.height=2 \
       background.y_offset=-10 \
       click_script="aerospace workspace $sid" \
       script="$PLUGIN_DIR/aerospace.sh $sid"
 done
+
+# Sliding workspace indicator (single thumb, moves between spaces)
+sketchybar --add item ws_indicator left \
+  --set ws_indicator \
+    label.drawing=off \
+    icon.drawing=off \
+    width=16 \
+    background.drawing=on \
+    background.color=0xffa6e3a1 \
+    background.height=2 \
+    background.y_offset=-10
 
 # Front App
 sketchybar --add item front_app left \
@@ -213,7 +223,7 @@ sketchybar --add bracket system_stats_bracket cpu_temp disk ram \
     background.corner_radius=7 \
     background.height=22 \
     background.border_width=1 \
-    background.border_color=$SURFACE1
+    background.border_color=$SURFACE1 \
     background.padding_left=4 \
     background.padding_right=4 \
 
@@ -277,7 +287,12 @@ sleep 1
 
 # Trigger initial workspace update
 CURRENT=$(aerospace list-workspaces --focused 2>/dev/null)
-[ -n "$CURRENT" ] && sketchybar --trigger aerospace_workspace_change \
+case "$CURRENT" in
+  1|2|3|4|5|6|7|8|9|10)
+    TARGET=(0 -202 -183 -165 -145 -125 -105 -85 -65 -45 -21)
+    sketchybar --set ws_indicator background.x_offset=${TARGET[$CURRENT]} ;;
+esac
+sketchybar --trigger aerospace_workspace_change \
   FOCUSED_WORKSPACE="$CURRENT" PREV_WORKSPACE=""
 
 # Trigger initial front_app update

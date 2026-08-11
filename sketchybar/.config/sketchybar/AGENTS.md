@@ -40,6 +40,12 @@ sketchybar --update
 sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="1"
 ```
 
+### Workspace Slider Design
+- `ws_indicator` is a single sliding thumb anchored after `space.10`; it is **never** `--move`d.
+- Per-digit `background.x_offset` targets are measured from digit glyph centers minus a small optical nudge (home center = 254.5): `TARGET=(0 -202 -183 -165 -145 -125 -105 -85 -65 -45 -21)` in both `sketchybarrc` startup and `plugins/aerospace.sh`.
+- `plugins/aerospace.sh`: slides via `x_offset` (delta = old target − new target) with duration proportional to distance (`DUR = 5 + DIST` frames, tanh) so speed stays constant. Landing squash depth scales with distance: none for adjacent moves, `W=14` (2 ws), `W=12` (3–5), `W=10` (6+). Rightward squash pins the right edge with `x_offset = T + 16 - W`; leftward anchors left. `front_app` padding is animated in sync (`12 + 16 - W` → 12) so it does not shift. Squash starts when the slide ends (`sleep DUR*0.0167`).
+- `background.width` is an invalid property; item `width` animation anchors left and shifts flow items — compensate flow neighbors with padding.
+
 ### Testing Individual Scripts
 ```bash
 # Run a plugin directly (for debugging)
