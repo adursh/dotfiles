@@ -44,10 +44,18 @@ if [ "$P" -le 0 ]; then
   exit 0
 fi
 
-# Squash the trailing side: padding_left for rightward motion (shrink
-# from the back), padding_right for leftward. Setting it to its current
-# value (0) in the first block chains the squash after the slide.
-if [ "$SID" -gt "$OLD" ]; then SIDE=padding_left; else SIDE=padding_right; fi
-sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T background.$SIDE=0 \
-  --animate linear $SQ --set ws_indicator background.$SIDE=$P background.$SIDE=0 \
-  $HIGHLIGHT
+# Squash the trailing side with a left-anchored width shrink: rightward
+# motion pins the leading (right) edge via x_offset, leftward keeps the
+# left edge fixed. front_app padding is compensated in the SAME message
+# (same curve + duration), so its position is exact at every frame.
+if [ "$SID" -gt "$OLD" ]; then
+  sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T width=16 front_app padding_left=12 \
+    --animate linear $SQ --set ws_indicator width=$W background.x_offset=$((T+P)) width=16 background.x_offset=$T \
+    --animate linear $SQ --set front_app padding_left=$((12+P)) padding_left=12 \
+    $HIGHLIGHT
+else
+  sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T width=16 front_app padding_left=12 \
+    --animate linear $SQ --set ws_indicator width=$W width=16 \
+    --animate linear $SQ --set front_app padding_left=$((12+P)) padding_left=12 \
+    $HIGHLIGHT
+fi
