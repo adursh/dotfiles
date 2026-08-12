@@ -41,10 +41,14 @@ sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="1"
 ```
 
 ### Workspace Slider Design
-- `ws_indicator` is a single sliding thumb anchored after `space.10`; it is **never** `--move`d.
-- Per-digit `background.x_offset` targets are measured from digit glyph centers minus a small optical nudge (home center = 254.5): `TARGET=(0 -202 -183 -165 -145 -125 -105 -85 -65 -45 -21)` in both `sketchybarrc` startup and `plugins/aerospace.sh`.
-- `plugins/aerospace.sh`: slides via `x_offset` (delta = old target − new target) with duration proportional to distance (`DUR = 5 + DIST` frames, tanh) so speed stays constant. Landing squash depth scales with distance: none for adjacent moves, `W=14` (2 ws), `W=12` (3–5), `W=10` (6+). Rightward squash pins the right edge with `x_offset = T + 16 - W`; leftward anchors left. `front_app` padding is animated in sync (`12 + 16 - W` → 12) so it does not shift. Squash starts when the slide ends (`sleep DUR*0.0167`).
-- `background.width` is an invalid property; item `width` animation anchors left and shifts flow items — compensate flow neighbors with padding.
+- `ws_indicator` is a single sliding thumb anchored after `space.10`; it is **never** `--move`d. Constant `width=16`; per-digit `background.x_offset` targets are measured from digit glyph centers minus an optical nudge: `TARGET=(0 -202 -183 -165 -145 -125 -105 -85 -65 -45 -21)` (home center = 254.5).
+- ONE hidden listener item (`ws_listener`, `drawing=off`) subscribes to `aerospace_workspace_change` — never subscribe the same script to every `space.N` (10× concurrent processes = race fuel).
+- `plugins/aerospace.sh` emits the ENTIRE slide + squash + highlight in ONE `sketchybar` message, so a newer workspace change atomically replaces any in-flight animation:
+  - Slide: `--animate tanh $DUR --set ws_indicator background.x_offset=$T` — starts from the thumb's current (possibly mid-flight) value; NO cache file, NO sleep, NO manual START jump. `DUR = min(3 + DIST, 6)` frames.
+  - Squash: chained keyframe (set `background.<side>=0` to its current value in the slide block to make it wait), animating `background.padding_left/right 0→P→0` (`P = 16 - W`: 4/3/2 for dist ≥6/3-5/2; none for adjacent). Padding on a const-width item is layout-neutral → front_app needs NO compensation.
+  - Highlight: one `--set space.N label.color=...` per digit (all dark) + animated fade on the focused one — full truth per event, last message always wins.
+- `background.x_offset` is an `int`; animating `width` shifts every item right — never squash with `width`; use `background.padding_*` (layout-neutral) instead.
+- Query path for the thumb: `sketchybar --query ws_indicator` → `geometry.background.x_offset`.
 
 ### Testing Individual Scripts
 ```bash

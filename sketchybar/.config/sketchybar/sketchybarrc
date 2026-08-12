@@ -59,7 +59,6 @@ sketchybar --add event aerospace_workspace_change
 # Aerospace Workspaces (1-10)
 for sid in 1 2 3 4 5 6 7 8 9 10; do
   sketchybar --add item "space.$sid" left \
-    --subscribe "space.$sid" aerospace_workspace_change \
     --set "space.$sid" \
       label="$sid" \
       label.color=0xff585b70 \
@@ -68,9 +67,16 @@ for sid in 1 2 3 4 5 6 7 8 9 10; do
       background.corner_radius=0 \
       background.height=2 \
       background.y_offset=-10 \
-      click_script="aerospace workspace $sid" \
-      script="$PLUGIN_DIR/aerospace.sh $sid"
+      click_script="aerospace workspace $sid"
 done
+
+# Hidden listener for the workspace-change event: runs the indicator
+# logic once per event (not once per space item).
+sketchybar --add item ws_listener right \
+  --set ws_listener \
+    drawing=off \
+    script="$PLUGIN_DIR/aerospace.sh" \
+  --subscribe ws_listener aerospace_workspace_change
 
 # Sliding workspace indicator (single thumb, moves between spaces)
 sketchybar --add item ws_indicator left \
@@ -287,13 +293,8 @@ sleep 1
 
 # Trigger initial workspace update
 CURRENT=$(aerospace list-workspaces --focused 2>/dev/null)
-case "$CURRENT" in
-  1|2|3|4|5|6|7|8|9|10)
-    TARGET=(0 -202 -183 -165 -145 -125 -105 -85 -65 -45 -21)
-    sketchybar --set ws_indicator background.x_offset=${TARGET[$CURRENT]} ;;
-esac
-sketchybar --trigger aerospace_workspace_change \
-  FOCUSED_WORKSPACE="$CURRENT" PREV_WORKSPACE=""
+[ -n "$CURRENT" ] && sketchybar --trigger aerospace_workspace_change \
+  FOCUSED_WORKSPACE="$CURRENT"
 
 # Trigger initial front_app update
 sketchybar --trigger front_app_switched

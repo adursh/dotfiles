@@ -1,57 +1,53 @@
 #!/bin/bash
 
-SID="$1"
+# Robust workspace indicator update.
+# - Runs from ONE listener item (ws_listener) per event, not 10.
+# - Emits the whole slide + squash + highlight in ONE sketchybar message,
+#   so a newer workspace change atomically replaces any in-flight one.
+# - The slide starts from the thumb's current (possibly mid-flight)
+#   x_offset; no cache file, no sleep, no manual START jump.
+# - Squash uses background.padding on a constant-width item, which does
+#   not affect layout, so front_app needs no compensation.
 
-# Label highlight updates immediately on every trigger (no delayed fades),
-# so rapid workspace switching cannot leave stale digits lit.
-if [ "$SID" != "$FOCUSED_WORKSPACE" ]; then
-  sketchybar --animate tanh 8 --set "$NAME" label.color=0xff585b70
-  exit 0
-fi
-sketchybar --animate tanh 8 --set "$NAME" label.color=0xffcdd6f4
+SID="$FOCUSED_WORKSPACE"
+[ -z "$SID" ] && exit 0
+OLD="${PREV_WORKSPACE:-$SID}"
 
-CACHE="/tmp/sketchybar_ws_indicator"
-OLD=$(cat "$CACHE" 2>/dev/null)
-[ -z "$OLD" ] && OLD="$SID"
-echo "$SID" > "$CACHE"
-
-# Thumb is anchored after space.10; per-digit x_offset targets are the
-# digit glyph centers (home center = 254.5) minus a small optical nudge.
+# Per-digit targets: digit glyph centers (home center = 254.5) minus a
+# small optical nudge.
 TARGET=(0 -202 -183 -165 -145 -125 -105 -85 -65 -45 -21)
 T=${TARGET[$SID]}
-D=$(( ${TARGET[$OLD]} - T ))
 
-# Slide duration grows with distance but caps at 6 frames, so long jumps
-# travel faster. Squash runs at the slide's pace and its depth stays
-# moderate even for long jumps.
 DIST=$(( SID - OLD )); [ "$DIST" -lt 0 ] && DIST=$(( -DIST ))
 DUR=$(( 3 + DIST )); [ "$DUR" -gt 6 ] && DUR=6
 if   [ "$DIST" -ge 6 ]; then W=12
 elif [ "$DIST" -ge 3 ]; then W=13
 elif [ "$DIST" -eq 2 ]; then W=14
 fi
-SLEEP_DUR=$(awk -v d=$DUR 'BEGIN{printf "%.2f", d*0.0167}')
-# Squash runs at the slide's pace: shrink+regrow together complete in
-# about the same time as the slide itself.
 SQ=$(( (DUR + 1) / 2 ))
+P=$(( 16 - W ))
 
-sketchybar --set ws_indicator background.x_offset=$(( T + D ))
-sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T
+# Highlight: snap every digit dark, fade the focused one in. Each event
+# encodes full truth (--set takes one item per call), so the last message
+# always wins.
+HIGHLIGHT=""
+for n in 1 2 3 4 5 6 7 8 9 10; do
+  [ "$n" = "$SID" ] && continue
+  HIGHLIGHT+=" --set space.$n label.color=0xff585b70"
+done
+HIGHLIGHT+=" --animate tanh 8 --set space.$SID label.color=0xffcdd6f4"
 
-# Adjacent moves: no squash, done after the short slide.
-if [ "$DIST" -eq 1 ]; then
-  sleep "$SLEEP_DUR"
+if [ "$P" -le 0 ]; then
+  # Adjacent (or startup): just slide, no squash.
+  sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T \
+    $HIGHLIGHT
   exit 0
 fi
 
-# Landing squash starts exactly when the slide ends and completes in the
-# same time the slide took (shrink + regrow each at SQ frames), so the
-# length change keeps the slide's pace. front_app padding is animated in
-# sync so it does not shift.
-sleep "$SLEEP_DUR"
-if [ "$SID" -lt "$OLD" ]; then
-  sketchybar --animate linear $SQ --set ws_indicator width=$W width=16
-else
-  sketchybar --animate linear $SQ --set ws_indicator width=$W background.x_offset=$(( T + 16 - W )) width=16 background.x_offset=$T
-fi
-sketchybar --animate linear $SQ --set front_app padding_left=$(( 12 + 16 - W )) padding_left=12
+# Squash the trailing side: padding_left for rightward motion (shrink
+# from the back), padding_right for leftward. Setting it to its current
+# value (0) in the first block chains the squash after the slide.
+if [ "$SID" -gt "$OLD" ]; then SIDE=padding_left; else SIDE=padding_right; fi
+sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T background.$SIDE=0 \
+  --animate linear $SQ --set ws_indicator background.$SIDE=$P background.$SIDE=0 \
+  $HIGHLIGHT
