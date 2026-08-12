@@ -2,10 +2,13 @@
 
 SID="$1"
 
+# Label highlight updates immediately on every trigger (no delayed fades),
+# so rapid workspace switching cannot leave stale digits lit.
 if [ "$SID" != "$FOCUSED_WORKSPACE" ]; then
   sketchybar --animate tanh 8 --set "$NAME" label.color=0xff585b70
   exit 0
 fi
+sketchybar --animate tanh 8 --set "$NAME" label.color=0xffcdd6f4
 
 CACHE="/tmp/sketchybar_ws_indicator"
 OLD=$(cat "$CACHE" 2>/dev/null)
@@ -18,11 +21,11 @@ TARGET=(0 -202 -183 -165 -145 -125 -105 -85 -65 -45 -21)
 T=${TARGET[$SID]}
 D=$(( ${TARGET[$OLD]} - T ))
 
-# Slide duration grows with distance but caps at 10 frames, so long jumps
-# travel faster. Squash runs at the same frame count as the slide and its
-# depth stays moderate even for long jumps.
+# Slide duration grows with distance but caps at 8 frames, so long jumps
+# travel faster. Squash runs at the slide's pace and its depth stays
+# moderate even for long jumps.
 DIST=$(( SID - OLD )); [ "$DIST" -lt 0 ] && DIST=$(( -DIST ))
-DUR=$(( 5 + DIST )); [ "$DUR" -gt 10 ] && DUR=10
+DUR=$(( 4 + DIST )); [ "$DUR" -gt 8 ] && DUR=8
 if   [ "$DIST" -ge 6 ]; then W=12
 elif [ "$DIST" -ge 3 ]; then W=13
 elif [ "$DIST" -eq 2 ]; then W=14
@@ -38,7 +41,6 @@ sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T
 # Adjacent moves: no squash, done after the short slide.
 if [ "$DIST" -eq 1 ]; then
   sleep "$SLEEP_DUR"
-  sketchybar --animate tanh 8 --set "$NAME" label.color=0xffcdd6f4
   exit 0
 fi
 
@@ -53,5 +55,3 @@ else
   sketchybar --animate linear $SQ --set ws_indicator width=$W background.x_offset=$(( T + 16 - W )) width=16 background.x_offset=$T
 fi
 sketchybar --animate linear $SQ --set front_app padding_left=$(( 12 + 16 - W )) padding_left=12
-
-sketchybar --animate tanh 8 --set "$NAME" label.color=0xffcdd6f4
