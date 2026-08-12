@@ -21,11 +21,11 @@ TARGET=(0 -202 -183 -165 -145 -125 -105 -85 -65 -45 -21)
 T=${TARGET[$SID]}
 D=$(( ${TARGET[$OLD]} - T ))
 
-# Slide duration grows with distance but caps at 8 frames, so long jumps
+# Slide duration grows with distance but caps at 6 frames, so long jumps
 # travel faster. Squash runs at the slide's pace and its depth stays
 # moderate even for long jumps.
 DIST=$(( SID - OLD )); [ "$DIST" -lt 0 ] && DIST=$(( -DIST ))
-DUR=$(( 4 + DIST )); [ "$DUR" -gt 8 ] && DUR=8
+DUR=$(( 3 + DIST )); [ "$DUR" -gt 6 ] && DUR=6
 if   [ "$DIST" -ge 6 ]; then W=12
 elif [ "$DIST" -ge 3 ]; then W=13
 elif [ "$DIST" -eq 2 ]; then W=14
