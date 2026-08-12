@@ -6,8 +6,12 @@
 #   so a newer workspace change atomically replaces any in-flight one.
 # - The slide starts from the thumb's current (possibly mid-flight)
 #   x_offset; no cache file, no sleep, no manual START jump.
-# - Squash uses background.padding on a constant-width item, which does
-#   not affect layout, so front_app needs no compensation.
+# - Squash: left-anchored item-width shrink (16 -> W -> 16) with the
+#   leading edge pinned via x_offset (rightward) or the left edge fixed
+#   (leftward); front_app padding is compensated by the SAME animator
+#   (same curve + duration), so its position is exact at every frame.
+# - background.padding_* translates the whole thumb (both edges move,
+#   width unchanged) - it does NOT inset, so it cannot squash.
 
 SID="$FOCUSED_WORKSPACE"
 [ -z "$SID" ] && exit 0
@@ -20,6 +24,7 @@ T=${TARGET[$SID]}
 
 DIST=$(( SID - OLD )); [ "$DIST" -lt 0 ] && DIST=$(( -DIST ))
 DUR=$(( 3 + DIST )); [ "$DUR" -gt 6 ] && DUR=6
+W=16
 if   [ "$DIST" -ge 6 ]; then W=12
 elif [ "$DIST" -ge 3 ]; then W=13
 elif [ "$DIST" -eq 2 ]; then W=14
@@ -46,16 +51,19 @@ fi
 
 # Squash the trailing side with a left-anchored width shrink: rightward
 # motion pins the leading (right) edge via x_offset, leftward keeps the
-# left edge fixed. front_app padding is compensated in the SAME message
-# (same curve + duration), so its position is exact at every frame.
+# left edge fixed. The front_app padding compensation sits in the SAME
+# --animate block (verified: one animator drives every --set that
+# follows it), so it is pixel-synced with the width keyframes.
 if [ "$SID" -gt "$OLD" ]; then
-  sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T width=16 front_app padding_left=12 \
+  sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T width=16 \
+    --set front_app padding_left=12 \
     --animate linear $SQ --set ws_indicator width=$W background.x_offset=$((T+P)) width=16 background.x_offset=$T \
-    --animate linear $SQ --set front_app padding_left=$((12+P)) padding_left=12 \
+    --set front_app padding_left=$((12+P)) padding_left=12 \
     $HIGHLIGHT
 else
-  sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T width=16 front_app padding_left=12 \
+  sketchybar --animate tanh $DUR --set ws_indicator background.x_offset=$T width=16 \
+    --set front_app padding_left=12 \
     --animate linear $SQ --set ws_indicator width=$W width=16 \
-    --animate linear $SQ --set front_app padding_left=$((12+P)) padding_left=12 \
+    --set front_app padding_left=$((12+P)) padding_left=12 \
     $HIGHLIGHT
 fi
